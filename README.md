@@ -1,0 +1,2 @@
+# hyrox-inscriptions
+Hyrox events
