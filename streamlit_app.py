@@ -67,7 +67,7 @@ def create_booking_atomic(session_id, full_name, phone, email):
         "p_phone": phone,
         "p_email": email,
     }
-    resp = sb.rpc("book_session", payload).execute()
+    resp = sb.rpc("book_session_v2", payload).execute()
     if not resp.data:
         return False, "Error inesperado en la reserva."
     return bool(resp.data["ok"]), resp.data["message"]
@@ -103,7 +103,10 @@ if not dates:
     st.warning("No hay sesiones cargadas en la base de datos todavía.")
     st.stop()
 
-event_date = st.selectbox("Fecha del evento", options=dates)
+EVENT_DATE = "2026-04-10"
+
+event_date = EVENT_DATE
+st.write(f"Fecha del evento: **{event_date}**")
 
 sessions = fetch_sessions(event_date)
 activities = sorted(list({s["activity"] for s in sessions}))
