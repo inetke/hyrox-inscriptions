@@ -133,19 +133,27 @@ st.divider()
 st.subheader("Datos de inscripción")
 
 with st.form("booking_form", clear_on_submit=True):
-    full_name = st.text_input("Nombre y Apellidos", max_chars=80)
-    phone = st.text_input("Móvil", max_chars=20, help="Ej: +34 600 123 456")
-    email = st.text_input("Email", max_chars=120)
+    # Persona 1
+    full_name = st.text_input("Nombre y apellidos", max_chars=80, key="p1_name")
+    phone = st.text_input("Teléfono móvil", max_chars=20, help="Ej: +34 600 123 456", key="p1_phone")
+    email = st.text_input("Correo electrónico", max_chars=120, key="p1_email")
+
+    # Persona 2 (solo si es pareja)
     partner_full_name = ""
     partner_phone = ""
     partner_email = ""
 
     if is_pair:
-        st.markdown("### Datos de la segunda persona")
-        partner_full_name = st.text_input("Nombre y Apellido", max_chars=80)
-        partner_phone = st.text_input("Móvil", max_chars=20, help="Ej: +34 600 123 456")
-        partner_email = st.text_input("Email", max_chars=120)
-    consent = st.checkbox("Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.")
+        st.markdown("### Datos del/la compañero/a")
+        partner_full_name = st.text_input("Nombre y apellidos (persona 2)", max_chars=80, key="p2_name")
+        partner_phone = st.text_input("Teléfono móvil (persona 2)", max_chars=20, help="Ej: +34 600 123 456", key="p2_phone")
+        partner_email = st.text_input("Correo electrónico (persona 2)", max_chars=120, key="p2_email")
+
+    consent = st.checkbox(
+        "Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.",
+        key="consent",
+    )
+
     submit = st.form_submit_button("Confirmar inscripción ✅", use_container_width=True)
 
 if submit:
