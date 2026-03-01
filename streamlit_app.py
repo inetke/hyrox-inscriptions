@@ -144,10 +144,10 @@ with st.form("booking_form", clear_on_submit=True):
     partner_email = ""
 
     if is_pair:
-        st.markdown("### Datos del/la compañero/a")
-        partner_full_name = st.text_input("Nombre y apellidos (persona 2)", max_chars=80, key="p2_name")
-        partner_phone = st.text_input("Teléfono móvil (persona 2)", max_chars=20, help="Ej: +34 600 123 456", key="p2_phone")
-        partner_email = st.text_input("Correo electrónico (persona 2)", max_chars=120, key="p2_email")
+        st.markdown("### Datos de la segunda persona")
+        partner_full_name = st.text_input("Nombre y apellidos (segunda persona)", max_chars=80, key="p2_name")
+        partner_phone = st.text_input("Teléfono móvil (segunda persona)", max_chars=20, help="Ej: +34 600 123 456", key="p2_phone")
+        partner_email = st.text_input("Correo electrónico (segunda persona)", max_chars=120, key="p2_email")
 
     consent = st.checkbox(
         "Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.",
@@ -183,11 +183,11 @@ if submit:
             st.stop()
 
         if not re.match(PHONE_REGEX, partner_phone.strip()):
-            st.error("Teléfono móvil (persona 2) inválido. Revisa el formato.")
+            st.error("Teléfono móvil (segunda persona) inválido. Revisa el formato.")
             st.stop()
 
         if "@" not in partner_email or "." not in partner_email:
-            st.error("Correo electrónico (persona 2) inválido.")
+            st.error("Correo electrónico (segunda persona) inválido.")
             st.stop()
 
     ok, msg = create_booking_atomic(selected_session["id"],
