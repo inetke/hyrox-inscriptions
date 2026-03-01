@@ -189,13 +189,10 @@ st.divider()
 
 with st.expander(ADMIN_TITLE):
     admin_pw = st.text_input("Contraseña admin", type="password")
+
     if admin_pw and admin_pw == get_admin_password():
-        st.success("¡Inscripción confirmada!")
-st.info(
-    f"✅ Categoría: {activity}  \n"
-    f"🕒 Turno: {str(selected_session['start_time'])[:5]}-{str(selected_session['end_time'])[:5]}  \n"
-    f"📅 Fecha: {event_date}"
-)
+        st.success("Acceso concedido.")
+
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
 
@@ -203,14 +200,17 @@ st.info(
             st.write("Aún no hay inscripciones para esta fecha.")
         else:
             st.dataframe(df, use_container_width=True)
+
             csv_buf = io.StringIO()
             df.to_csv(csv_buf, index=False)
+
             st.download_button(
-                "Descargar CSV",
+                "Descargar inscritos (CSV)",
                 data=csv_buf.getvalue().encode("utf-8"),
                 file_name=f"inscritos_{event_date}.csv",
                 mime="text/csv",
                 use_container_width=True,
             )
+
     elif admin_pw:
         st.error("Contraseña incorrecta.")
