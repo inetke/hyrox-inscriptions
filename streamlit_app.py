@@ -5,7 +5,52 @@ import pandas as pd
 import streamlit as st
 from supabase import create_client, Client
 
-st.set_page_config(page_title="Inscripciones Evento", page_icon="✅", layout="centered")
+st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
+
+st.markdown("""
+<style>
+/* Cards */
+.card {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 12px;
+}
+
+/* Smaller labels */
+.small { opacity: 0.8; font-size: 0.9rem; }
+
+/* Make form look tighter */
+div[data-testid="stForm"] {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+</style>
+""", unsafe_allow_html=True)
+
+with st.sidebar:
+    st.image("assets/logo.png", width=180)
+    st.markdown("### Competición HYROX")
+    st.caption("Selecciona categoría y turno. Plazas limitadas.")
+
+st.markdown("# Inscripción Competición HYROX")
+st.caption("Las plazas se asignan por orden de inscripción. Si un turno se llena, desaparecerá.")
+
+col1, col2 = st.columns([1, 1], gap="large")
+
+with col1:
+    st.markdown("## 1) Elige categoría")
+    activity = st.selectbox("Categoría", options=activities)
+
+    st.markdown("## 2) Turnos disponibles")
+    # aquí tu radio / listado de horarios
+
+with col2:
+    st.markdown("## 3) Datos de inscripción")
+    # aquí tu st.form(...)
 
 APP_TITLE = "Inscripción Competición HYROX"
 ADMIN_TITLE = "Panel admin"
