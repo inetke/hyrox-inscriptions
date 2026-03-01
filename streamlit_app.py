@@ -160,30 +160,35 @@ if submit:
     if selected_session["remaining"] <= 0:
         st.error("Lo sentimos: este turno se acaba de llenar. Elige otro horario.")
         st.stop()
+
     if not full_name.strip():
-        st.error("Falta Nombre y Apellido.")
+        st.error("Falta nombre y apellidos.")
         st.stop()
+
     if not re.match(PHONE_REGEX, phone.strip()):
-        st.error("Móvil inválido. Revisa el formato.")
+        st.error("Teléfono móvil inválido. Revisa el formato.")
         st.stop()
+
     if "@" not in email or "." not in email:
-        st.error("Email inválido.")
+        st.error("Correo electrónico inválido.")
         st.stop()
+
     if not consent:
         st.error("Necesitas aceptar el uso de datos para inscribirte.")
         st.stop()
-if is_pair:
-    if not partner_full_name.strip():
-        st.error("Falta el Nombre y Apellido de la segunda persona.")
-        st.stop()
 
-    if not re.match(PHONE_REGEX, partner_phone.strip()):
-        st.error("Móvil (segunda persona) inválido. Revisa el formato.")
-        st.stop()
+    if is_pair:
+        if not partner_full_name.strip():
+            st.error("Falta el nombre y apellidos de la segunda persona.")
+            st.stop()
 
-    if "@" not in partner_email or "." not in partner_email:
-        st.error("Email (segunda persona) inválido.")
-        st.stop()
+        if not re.match(PHONE_REGEX, partner_phone.strip()):
+            st.error("Teléfono móvil (persona 2) inválido. Revisa el formato.")
+            st.stop()
+
+        if "@" not in partner_email or "." not in partner_email:
+            st.error("Correo electrónico (persona 2) inválido.")
+            st.stop()
 
     ok, msg = create_booking_atomic(selected_session["id"],
                                     full_name.strip(),
