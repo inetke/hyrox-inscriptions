@@ -7,7 +7,7 @@ from supabase import create_client, Client
 
 st.set_page_config(page_title="Inscripciones Evento", page_icon="✅", layout="centered")
 
-APP_TITLE = "Inscripción a actividades"
+APP_TITLE = "Inscripción Competición HYROX"
 ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
@@ -112,13 +112,13 @@ st.write(f"Fecha del evento: **{event_date}**")
 
 sessions = fetch_sessions(event_date)
 activities = sorted(list({s["activity"] for s in sessions}))
-activity = st.selectbox("Actividad", options=activities)
+activity = st.selectbox("Categoría", options=activities)
 
 is_pair = (activity.strip().lower() == "hyrox pareja")
 
 filtered = [s for s in sessions if s["activity"] == activity]
 
-st.subheader("Horarios disponibles")
+st.subheader("Turnos disponibles")
 options = []
 option_map = {}
 for s in filtered:
@@ -130,10 +130,10 @@ selected_label = st.radio("Elige tu franja", options=options)
 selected_session = option_map[selected_label]
 
 st.divider()
-st.subheader("Tus datos")
+st.subheader("Datos de inscripción")
 
 with st.form("booking_form", clear_on_submit=True):
-    full_name = st.text_input("Nombre y Apellido", max_chars=80)
+    full_name = st.text_input("Nombre y Apellidos", max_chars=80)
     phone = st.text_input("Móvil", max_chars=20, help="Ej: +34 600 123 456")
     email = st.text_input("Email", max_chars=120)
     partner_full_name = ""
@@ -142,15 +142,15 @@ with st.form("booking_form", clear_on_submit=True):
 
     if is_pair:
         st.markdown("### Datos de la segunda persona")
-        partner_full_name = st.text_input("Nombre y Apellido (persona 2)", max_chars=80)
-        partner_phone = st.text_input("Móvil (persona 2)", max_chars=20, help="Ej: +34 600 123 456")
-        partner_email = st.text_input("Email (persona 2)", max_chars=120)
-    consent = st.checkbox("Acepto que se usen mis datos solo para gestionar esta inscripción.")
-    submit = st.form_submit_button("Reservar plaza ✅", use_container_width=True)
+        partner_full_name = st.text_input("Nombre y Apellido", max_chars=80)
+        partner_phone = st.text_input("Móvil", max_chars=20, help="Ej: +34 600 123 456")
+        partner_email = st.text_input("Email", max_chars=120)
+    consent = st.checkbox("Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.")
+    submit = st.form_submit_button("Confirmar inscripción ✅", use_container_width=True)
 
 if submit:
     if selected_session["remaining"] <= 0:
-        st.error("Esa sesión ya está llena. Elige otra franja.")
+        st.error("Lo sentimos: este turno se acaba de llenar. Elige otro horario.")
         st.stop()
     if not full_name.strip():
         st.error("Falta Nombre y Apellido.")
@@ -166,15 +166,15 @@ if submit:
         st.stop()
 if is_pair:
     if not partner_full_name.strip():
-        st.error("Falta el Nombre y Apellido de la persona 2.")
+        st.error("Falta el Nombre y Apellido de la segunda persona.")
         st.stop()
 
     if not re.match(PHONE_REGEX, partner_phone.strip()):
-        st.error("Móvil (persona 2) inválido. Revisa el formato.")
+        st.error("Móvil (segunda persona) inválido. Revisa el formato.")
         st.stop()
 
     if "@" not in partner_email or "." not in partner_email:
-        st.error("Email (persona 2) inválido.")
+        st.error("Email (segunda persona) inválido.")
         st.stop()
 
     ok, msg = create_booking_atomic(selected_session["id"],
@@ -190,7 +190,12 @@ st.divider()
 with st.expander(ADMIN_TITLE):
     admin_pw = st.text_input("Contraseña admin", type="password")
     if admin_pw and admin_pw == get_admin_password():
-        st.success("Acceso concedido.")
+        st.success("¡Inscripción confirmada!")
+st.info(
+    f"✅ Categoría: {activity}  \n"
+    f"🕒 Turno: {str(selected_session['start_time'])[:5]}-{str(selected_session['end_time'])[:5]}  \n"
+    f"📅 Fecha: {event_date}"
+)
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
 
