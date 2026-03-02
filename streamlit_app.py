@@ -15,19 +15,6 @@ with st.sidebar:
 st.markdown("# Inscripción Competición HYROX")
 st.caption("Las plazas se asignan por orden de inscripción. Si un turno se llena, desaparecerá.")
 
-col1, col2 = st.columns([1, 1], gap="large")
-
-with col1:
-    st.markdown("## 1) Elige categoría")
-    activity = st.selectbox("Categoría", options=activities)
-
-    st.markdown("## 2) Turnos disponibles")
-    # aquí tu radio / listado de horarios
-
-with col2:
-    st.markdown("## 3) Datos de inscripción")
-    # aquí tu st.form(...)
-
 st.markdown("""
 <style>
 /* Cards */
