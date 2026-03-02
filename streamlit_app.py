@@ -1,47 +1,24 @@
 import os
 import re
 import io
+import base64
 import pandas as pd
 import streamlit as st
 from supabase import create_client, Client
-import base64
 
+
+# ---------------- Helpers ----------------
 def img_to_base64(path: str) -> str:
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
 
+
+# ---------------- Page config ----------------
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
 
-logo_b64 = img_to_base64("assets/logo.png")
-
-# --- Header centrado ---
+# CSS (aplica a toda la app)
 st.markdown(
-    f"""
-    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:10px;">
-        <img src="data:image/png;base64,{logo_b64}" style="width:180px; height:auto;" />
-        <h1 style="margin:0; text-align:center;">Inscripción Competición HYROX</h1>
-        <p style="margin:0; opacity:0.85; text-align:center;">
-            Plazas limitadas. Si un turno se llena, desaparecerá.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-with st.sidebar:
-    st.markdown("## HYROX")
-    st.caption("Selecciona categoría y turno. Plazas limitadas.")
-    st.divider()
-    st.markdown("**Fecha del evento**")
-    st.write(event_date)
-    st.divider()
-    st.markdown("**¿Dudas?**")
-    st.caption("Escríbenos por WhatsApp / Instagram.")
-
-st.markdown("# Inscripción Competición HYROX")
-st.caption("Las plazas se asignan por orden de inscripción. Si un turno se llena, desaparecerá.")
-
-st.markdown("""
+    """
 <style>
 /* Cards */
 .card {
@@ -62,17 +39,29 @@ div[data-testid="stForm"] {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
 }
+
+/* Reduce top padding a bit */
+.block-container { padding-top: 1.5rem; }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
-
+# ---------------- Constants ----------------
 ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
+# Evento fijo (cambia aquí la fecha)
+EVENT_DATE = "2026-04-10"
+event_date = EVENT_DATE
+
+
+# ---------------- Secrets / Clients ----------------
 def get_admin_password() -> str:
     if "admin" in st.secrets and "password" in st.secrets["admin"]:
         return st.secrets["admin"]["password"]
     return os.environ.get("ADMIN_PASSWORD", "")
+
 
 def get_supabase() -> Client:
     if "supabase" not in st.secrets:
@@ -82,42 +71,52 @@ def get_supabase() -> Client:
     key = st.secrets["supabase"]["service_role_key"]
     return create_client(url, key)
 
+
 sb = get_supabase()
 
-# ---- Data helpers (REST) ----
-def fetch_event_dates():
-    resp = sb.table("sessions").select("event_date").execute()
-    dates = sorted({row["event_date"] for row in resp.data})
-    return dates
 
-def fetch_sessions(event_date):
-    # Trae sesiones del día
-    resp_s = sb.table("sessions").select("id,activity,start_time,end_time,capacity").eq("event_date", event_date).execute()
-    sessions = resp_s.data
+# ---------------- Data helpers (REST) ----------------
+def fetch_sessions(event_date_str: str):
+    # Sessions del día
+    resp_s = (
+        sb.table("sessions")
+        .select("id,activity,start_time,end_time,capacity")
+        .eq("event_date", event_date_str)
+        .execute()
+    )
+    sessions = resp_s.data or []
 
-    # Trae bookings del día y cuenta por session_id
+    # Bookings del día (cuenta por session_id)
     resp_b = (
         sb.table("bookings")
         .select("session_id, sessions!inner(event_date)")
-        .eq("sessions.event_date", event_date)
+        .eq("sessions.event_date", event_date_str)
         .execute()
     )
     counts = {}
-    for row in resp_b.data:
+    for row in (resp_b.data or []):
         sid = row["session_id"]
         counts[sid] = counts.get(sid, 0) + 1
 
-    # Calcula remaining
+    # remaining
     for s in sessions:
         booked = counts.get(s["id"], 0)
         s["booked"] = booked
         s["remaining"] = int(s["capacity"]) - int(booked)
 
-    # Orden
     sessions.sort(key=lambda x: (x["activity"], x["start_time"]))
     return sessions
 
-def create_booking_atomic(session_id, full_name, phone, email, partner_full_name=None, partner_phone=None, partner_email=None):
+
+def create_booking_atomic(
+    session_id,
+    full_name,
+    phone,
+    email,
+    partner_full_name=None,
+    partner_phone=None,
+    partner_email=None,
+):
     payload = {
         "p_session_id": int(session_id),
         "p_full_name": full_name,
@@ -132,37 +131,56 @@ def create_booking_atomic(session_id, full_name, phone, email, partner_full_name
         return False, "Error inesperado en la reserva."
     return bool(resp.data["ok"]), resp.data["message"]
 
-def fetch_bookings(event_date):
+
+def fetch_bookings(event_date_str: str):
     resp = (
         sb.table("bookings")
-        .select("full_name,phone,email,created_at, sessions!inner(event_date,activity,start_time,end_time)")
-        .eq("sessions.event_date", event_date)
+        .select(
+            "full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at, sessions!inner(event_date,activity,start_time,end_time)"
+        )
+        .eq("sessions.event_date", event_date_str)
         .execute()
     )
+
     rows = []
-    for r in resp.data:
+    for r in (resp.data or []):
         s = r["sessions"]
-        rows.append({
-            "event_date": s["event_date"],
-            "activity": s["activity"],
-            "start_time": s["start_time"],
-            "end_time": s["end_time"],
-            "full_name": r["full_name"],
-            "phone": r["phone"],
-            "email": r["email"],
-            "created_at": r["created_at"],
-        })
+        rows.append(
+            {
+                "event_date": s["event_date"],
+                "activity": s["activity"],
+                "start_time": s["start_time"],
+                "end_time": s["end_time"],
+                "full_name": r.get("full_name"),
+                "phone": r.get("phone"),
+                "email": r.get("email"),
+                "partner_full_name": r.get("partner_full_name"),
+                "partner_phone": r.get("partner_phone"),
+                "partner_email": r.get("partner_email"),
+                "created_at": r.get("created_at"),
+            }
+        )
     rows.sort(key=lambda x: (x["activity"], x["start_time"], x["created_at"]))
     return rows
 
-# ---- UI ----
-st.markdown("# Inscripción Competición HYROX")
-st.caption("Las plazas se asignan por orden de inscripción.")
 
-EVENT_DATE = "2026-04-10"
-event_date = EVENT_DATE
-st.write(f"Fecha del evento: **{event_date}**")
+# ---------------- Header (logo centered) ----------------
+logo_b64 = img_to_base64("assets/logo.png")
 
+st.markdown(
+    f"""
+    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:6px; margin-bottom:10px;">
+        <img src="data:image/png;base64,{logo_b64}" style="width:180px; height:auto;" />
+        <h1 style="margin:0; text-align:center;">Inscripción Competición HYROX</h1>
+        <p style="margin:0; opacity:0.85; text-align:center;">
+            Plazas limitadas. Si un turno se llena, desaparecerá.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ---------------- Load sessions / activities ----------------
 sessions = fetch_sessions(event_date)
 if not sessions:
     st.warning("No hay turnos cargados para esta fecha.")
@@ -170,11 +188,23 @@ if not sessions:
 
 activities = sorted({s["activity"] for s in sessions})
 
+# ---------------- Sidebar ----------------
+with st.sidebar:
+    st.markdown("## HYROX")
+    st.caption("Selecciona categoría y turno. Plazas limitadas.")
+    st.divider()
+    st.markdown("**Fecha del evento**")
+    st.write(event_date)
+    st.divider()
+    st.markdown("**¿Dudas?**")
+    st.caption("Escríbenos por WhatsApp / Instagram.")
+
+# ---------------- Main UI ----------------
 left, right = st.columns([1, 1], gap="large")
 
 with left:
-    st.markdown("## Elige categoría")
-    activity = st.selectbox("Categoría", options=activities)
+    st.markdown("## Categoría")
+    activity = st.selectbox("Categoría", options=activities, label_visibility="collapsed")
     is_pair = (activity == "Hyrox Pareja")
 
     st.markdown("## Turnos disponibles")
@@ -196,7 +226,9 @@ with right:
     with st.form("booking_form", clear_on_submit=True):
         # Persona 1
         full_name = st.text_input("Nombre y apellidos", max_chars=80, key="p1_name")
-        phone = st.text_input("Teléfono móvil", max_chars=20, help="Ej: +34 600 123 456", key="p1_phone")
+        phone = st.text_input(
+            "Teléfono móvil", max_chars=20, help="Ej: +34 600 123 456", key="p1_phone"
+        )
         email = st.text_input("Correo electrónico", max_chars=120, key="p1_email")
 
         # Persona 2 (solo si es pareja)
@@ -205,10 +237,19 @@ with right:
         partner_email = ""
 
         if is_pair:
-            st.markdown("### Datos de la segunda persona")
-            partner_full_name = st.text_input("Nombre y apellidos (segunda persona)", max_chars=80, key="p2_name")
-            partner_phone = st.text_input("Teléfono móvil (segunda persona)", max_chars=20, help="Ej: +34 600 123 456", key="p2_phone")
-            partner_email = st.text_input("Correo electrónico (segunda persona)", max_chars=120, key="p2_email")
+            st.markdown("### Datos del/la compañero/a")
+            partner_full_name = st.text_input(
+                "Nombre y apellidos (persona 2)", max_chars=80, key="p2_name"
+            )
+            partner_phone = st.text_input(
+                "Teléfono móvil (persona 2)",
+                max_chars=20,
+                help="Ej: +34 600 123 456",
+                key="p2_phone",
+            )
+            partner_email = st.text_input(
+                "Correo electrónico (persona 2)", max_chars=120, key="p2_email"
+            )
 
         consent = st.checkbox(
             "Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.",
@@ -244,11 +285,11 @@ with right:
                 st.stop()
 
             if not re.match(PHONE_REGEX, partner_phone.strip()):
-                st.error("Teléfono móvil (segunda persona) inválido. Revisa el formato.")
+                st.error("Teléfono móvil (persona 2) inválido. Revisa el formato.")
                 st.stop()
 
             if "@" not in partner_email or "." not in partner_email:
-                st.error("Correo electrónico (segunda persona) inválido.")
+                st.error("Correo electrónico (persona 2) inválido.")
                 st.stop()
 
         ok, msg = create_booking_atomic(
@@ -272,6 +313,7 @@ with right:
 
 st.divider()
 
+# ---------------- Admin ----------------
 with st.expander(ADMIN_TITLE):
     admin_pw = st.text_input("Contraseña admin", type="password")
 
