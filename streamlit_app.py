@@ -1,20 +1,33 @@
 import os
 import re
 import io
-import base64
 import pandas as pd
 import streamlit as st
 from supabase import create_client, Client
 
 
-# ---------------- Helpers ----------------
-def img_to_base64(path: str) -> str:
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode("utf-8")
-
-
 # ---------------- Page config ----------------
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
+
+col_logo = st.columns([1,2,1])[1]
+
+with col_logo:
+    st.image(
+        "assets/logo.png",
+        use_container_width=True
+    )
+
+st.markdown(
+    """
+    <h1 style='text-align:center; margin-top:10px;'>
+        Inscripción Competición HYROX
+    </h1>
+    <p style='text-align:center; opacity:0.8;'>
+        Plazas limitadas. Si un turno se llena, desaparecerá.
+    </p>
+    """,
+    unsafe_allow_html=True
+)
 
 # CSS (aplica a toda la app)
 st.markdown(
@@ -164,22 +177,6 @@ def fetch_bookings(event_date_str: str):
     return rows
 
 
-# ---------------- Header (logo centered) ----------------
-logo_b64 = img_to_base64("assets/logo.png")
-
-st.markdown(
-    f"""
-    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:6px; margin-bottom:10px;">
-        <img src="data:image/png;base64,{logo_b64}" style="width:180px; height:auto;" />
-        <h1 style="margin:0; text-align:center;">Inscripción Competición HYROX</h1>
-        <p style="margin:0; opacity:0.85; text-align:center;">
-            Plazas limitadas. Si un turno se llena, desaparecerá.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
 # ---------------- Load sessions / activities ----------------
 sessions = fetch_sessions(event_date)
 if not sessions:
@@ -237,18 +234,18 @@ with right:
         partner_email = ""
 
         if is_pair:
-            st.markdown("### Datos del/la compañero/a")
+            st.markdown("### Datos de la segunda persona")
             partner_full_name = st.text_input(
-                "Nombre y apellidos (persona 2)", max_chars=80, key="p2_name"
+                "Nombre y apellidos (segunda persona)", max_chars=80, key="p2_name"
             )
             partner_phone = st.text_input(
-                "Teléfono móvil (persona 2)",
+                "Teléfono móvil (segunda persona)",
                 max_chars=20,
                 help="Ej: +34 600 123 456",
                 key="p2_phone",
             )
             partner_email = st.text_input(
-                "Correo electrónico (persona 2)", max_chars=120, key="p2_email"
+                "Correo electrónico (segunda persona)", max_chars=120, key="p2_email"
             )
 
         consent = st.checkbox(
