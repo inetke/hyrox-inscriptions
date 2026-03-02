@@ -203,7 +203,7 @@ with st.sidebar:
 
     st.divider()
     st.markdown("**📍 Ubicación**")
-    st.link_button("📍 Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
+    st.link_button("Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
 
     st.divider()
     st.markdown("**💬 Contacto**")
