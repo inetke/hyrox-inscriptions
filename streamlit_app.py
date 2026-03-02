@@ -288,8 +288,8 @@ with right:
         )
 
         st.warning(
-    "⚠️ La inscripción NO queda confirmada hasta realizar el pago."
-)
+            "⚠️ La inscripción NO queda confirmada hasta realizar el pago."
+        )
 
         st.form_submit_button("Reservar plaza (pendiente de pago) 📝", use_container_width=True)
 
