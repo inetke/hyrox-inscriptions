@@ -291,7 +291,7 @@ with right:
             "⚠️ La inscripción NO queda confirmada hasta realizar el pago."
         )
 
-        st.form_submit_button("Reservar plaza (pendiente de pago) 📝", use_container_width=True)
+        submit = st.form_submit_button("Reservar plaza (pendiente de pago) 📝", use_container_width=True)
 
     if submit:
         if selected_session["remaining"] <= 0:
