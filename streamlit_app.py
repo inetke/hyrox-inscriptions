@@ -4,13 +4,39 @@ import io
 import pandas as pd
 import streamlit as st
 from supabase import create_client, Client
+import base64
+
+def img_to_base64(path: str) -> str:
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
 
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
 
+logo_b64 = img_to_base64("assets/logo.png")
+
+# --- Header centrado ---
+st.markdown(
+    f"""
+    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:10px;">
+        <img src="data:image/png;base64,{logo_b64}" style="width:180px; height:auto;" />
+        <h1 style="margin:0; text-align:center;">Inscripción Competición HYROX</h1>
+        <p style="margin:0; opacity:0.85; text-align:center;">
+            Plazas limitadas. Si un turno se llena, desaparecerá.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 with st.sidebar:
-    st.image("assets/logo.png", width=180)
-    st.markdown("### Competición HYROX")
+    st.markdown("## HYROX")
     st.caption("Selecciona categoría y turno. Plazas limitadas.")
+    st.divider()
+    st.markdown("**Fecha del evento**")
+    st.write(event_date)
+    st.divider()
+    st.markdown("**¿Dudas?**")
+    st.caption("Escríbenos por WhatsApp / Instagram.")
 
 st.markdown("# Inscripción Competición HYROX")
 st.caption("Las plazas se asignan por orden de inscripción. Si un turno se llena, desaparecerá.")
@@ -40,7 +66,6 @@ div[data-testid="stForm"] {
 """, unsafe_allow_html=True)
 
 
-APP_TITLE = "Inscripción Competición HYROX"
 ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
@@ -131,7 +156,6 @@ def fetch_bookings(event_date):
     return rows
 
 # ---- UI ----
-# ---- UI ----
 st.markdown("# Inscripción Competición HYROX")
 st.caption("Las plazas se asignan por orden de inscripción.")
 
@@ -149,11 +173,11 @@ activities = sorted({s["activity"] for s in sessions})
 left, right = st.columns([1, 1], gap="large")
 
 with left:
-    st.markdown("## 1) Elige categoría")
+    st.markdown("## Elige categoría")
     activity = st.selectbox("Categoría", options=activities)
     is_pair = (activity == "Hyrox Pareja")
 
-    st.markdown("## 2) Turnos disponibles")
+    st.markdown("## Turnos disponibles")
     filtered = [s for s in sessions if s["activity"] == activity]
 
     options = []
@@ -167,7 +191,7 @@ with left:
     selected_session = option_map[selected_label]
 
 with right:
-    st.markdown("## 3) Datos de inscripción")
+    st.markdown("## Datos de inscripción")
 
     with st.form("booking_form", clear_on_submit=True):
         # Persona 1
