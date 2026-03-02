@@ -157,10 +157,10 @@ event_date = EVENT_DATE
 st.write(f"Fecha del evento: **{event_date}**")
 
 sessions = fetch_sessions(event_date)
-activities = sorted(list({s["activity"] for s in sessions}))
+activities = sorted({s["activity"] for s in sessions})
 activity = st.selectbox("Categoría", options=activities)
 
-is_pair = (activity.strip().lower() == "hyrox pareja")
+is_pair = (activity == "Hyrox Pareja")
 
 filtered = [s for s in sessions if s["activity"] == activity]
 
