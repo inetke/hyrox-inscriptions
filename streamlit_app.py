@@ -67,6 +67,13 @@ PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 # Evento fijo (cambia aquí la fecha)
 EVENT_DATE = "2026-04-10"
 event_date = EVENT_DATE
+WHATSAPP_PHONE = "34600123456"  # sin + ni espacios (España: 34 + número)
+INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
+MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
+BIZUM_PHONE = "+34 600 123 456"
+BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
+PRICE_INDIVIDUAL = "20€"
+PRICE_PAIR = "40€ por pareja"
 
 
 # ---------------- Secrets / Clients ----------------
@@ -190,11 +197,38 @@ with st.sidebar:
     st.markdown("## HYROX")
     st.caption("Selecciona categoría y turno. Plazas limitadas.")
     st.divider()
+
     st.markdown("**Fecha del evento**")
     st.write(event_date)
+
     st.divider()
-    st.markdown("**¿Dudas?**")
-    st.caption("Escríbenos por WhatsApp / Instagram.")
+    st.markdown("**📍 Ubicación**")
+    st.link_button("📍 Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💬 Contacto**")
+
+    # WhatsApp directo (abre chat)
+    wa_text = "Hola! Quiero información sobre la inscripción HYROX."
+    whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
+    st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
+
+    # Instagram
+    st.link_button("Instagram", INSTAGRAM_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💶 Precio y pago**")
+    st.markdown(
+        f"""
+- **Individual:** {PRICE_INDIVIDUAL}  
+- **Pareja:** {PRICE_PAIR}  
+
+**Bizum:** {BIZUM_PHONE}  
+**Transferencia (IBAN):** `{BANK_IBAN}`  
+
+⚠️ *La plaza se confirma tras recibir el pago.*
+""".strip()
+    )
 
 # ---------------- Main UI ----------------
 left, right = st.columns([1, 1], gap="large")
