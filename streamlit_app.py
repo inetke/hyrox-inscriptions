@@ -131,105 +131,120 @@ def fetch_bookings(event_date):
     return rows
 
 # ---- UI ----
-st.title(APP_TITLE)
-
-dates = fetch_event_dates()
-if not dates:
-    st.warning("No hay sesiones cargadas en la base de datos todavía.")
-    st.stop()
+# ---- UI ----
+st.markdown("# Inscripción Competición HYROX")
+st.caption("Las plazas se asignan por orden de inscripción.")
 
 EVENT_DATE = "2026-04-10"
-
 event_date = EVENT_DATE
 st.write(f"Fecha del evento: **{event_date}**")
 
 sessions = fetch_sessions(event_date)
+if not sessions:
+    st.warning("No hay turnos cargados para esta fecha.")
+    st.stop()
+
 activities = sorted({s["activity"] for s in sessions})
-activity = st.selectbox("Categoría", options=activities)
 
-is_pair = (activity == "Hyrox Pareja")
+left, right = st.columns([1, 1], gap="large")
 
-filtered = [s for s in sessions if s["activity"] == activity]
+with left:
+    st.markdown("## 1) Elige categoría")
+    activity = st.selectbox("Categoría", options=activities)
+    is_pair = (activity == "Hyrox Pareja")
 
-st.subheader("Turnos disponibles")
-options = []
-option_map = {}
-for s in filtered:
-    label = f"{str(s['start_time'])[:5]} - {str(s['end_time'])[:5]}  ·  Plazas: {s['remaining']}/{s['capacity']}"
-    options.append(label)
-    option_map[label] = s
+    st.markdown("## 2) Turnos disponibles")
+    filtered = [s for s in sessions if s["activity"] == activity]
 
-selected_label = st.radio("Elige tu franja", options=options)
-selected_session = option_map[selected_label]
+    options = []
+    option_map = {}
+    for s in filtered:
+        label = f"{str(s['start_time'])[:5]} - {str(s['end_time'])[:5]}  ·  Plazas: {s['remaining']}/{s['capacity']}"
+        options.append(label)
+        option_map[label] = s
 
-st.divider()
-st.subheader("Datos de inscripción")
+    selected_label = st.radio("Elige tu franja", options=options)
+    selected_session = option_map[selected_label]
 
-with st.form("booking_form", clear_on_submit=True):
-    # Persona 1
-    full_name = st.text_input("Nombre y apellidos", max_chars=80, key="p1_name")
-    phone = st.text_input("Teléfono móvil", max_chars=20, help="Ej: +34 600 123 456", key="p1_phone")
-    email = st.text_input("Correo electrónico", max_chars=120, key="p1_email")
+with right:
+    st.markdown("## 3) Datos de inscripción")
 
-    # Persona 2 (solo si es pareja)
-    partner_full_name = ""
-    partner_phone = ""
-    partner_email = ""
+    with st.form("booking_form", clear_on_submit=True):
+        # Persona 1
+        full_name = st.text_input("Nombre y apellidos", max_chars=80, key="p1_name")
+        phone = st.text_input("Teléfono móvil", max_chars=20, help="Ej: +34 600 123 456", key="p1_phone")
+        email = st.text_input("Correo electrónico", max_chars=120, key="p1_email")
 
-    if is_pair:
-        st.markdown("### Datos de la segunda persona")
-        partner_full_name = st.text_input("Nombre y apellidos (segunda persona)", max_chars=80, key="p2_name")
-        partner_phone = st.text_input("Teléfono móvil (segunda persona)", max_chars=20, help="Ej: +34 600 123 456", key="p2_phone")
-        partner_email = st.text_input("Correo electrónico (segunda persona)", max_chars=120, key="p2_email")
+        # Persona 2 (solo si es pareja)
+        partner_full_name = ""
+        partner_phone = ""
+        partner_email = ""
 
-    consent = st.checkbox(
-        "Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.",
-        key="consent",
-    )
+        if is_pair:
+            st.markdown("### Datos de la segunda persona")
+            partner_full_name = st.text_input("Nombre y apellidos (segunda persona)", max_chars=80, key="p2_name")
+            partner_phone = st.text_input("Teléfono móvil (segunda persona)", max_chars=20, help="Ej: +34 600 123 456", key="p2_phone")
+            partner_email = st.text_input("Correo electrónico (segunda persona)", max_chars=120, key="p2_email")
 
-    submit = st.form_submit_button("Confirmar inscripción ✅", use_container_width=True)
+        consent = st.checkbox(
+            "Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.",
+            key="consent",
+        )
 
-if submit:
-    if selected_session["remaining"] <= 0:
-        st.error("Lo sentimos: este turno se acaba de llenar. Elige otro horario.")
-        st.stop()
+        submit = st.form_submit_button("Confirmar inscripción ✅", use_container_width=True)
 
-    if not full_name.strip():
-        st.error("Falta nombre y apellidos.")
-        st.stop()
-
-    if not re.match(PHONE_REGEX, phone.strip()):
-        st.error("Teléfono móvil inválido. Revisa el formato.")
-        st.stop()
-
-    if "@" not in email or "." not in email:
-        st.error("Correo electrónico inválido.")
-        st.stop()
-
-    if not consent:
-        st.error("Necesitas aceptar el uso de datos para inscribirte.")
-        st.stop()
-
-    if is_pair:
-        if not partner_full_name.strip():
-            st.error("Falta el nombre y apellidos de la segunda persona.")
+    if submit:
+        if selected_session["remaining"] <= 0:
+            st.error("Lo sentimos: este turno se acaba de llenar. Elige otro horario.")
             st.stop()
 
-        if not re.match(PHONE_REGEX, partner_phone.strip()):
-            st.error("Teléfono móvil (segunda persona) inválido. Revisa el formato.")
+        if not full_name.strip():
+            st.error("Falta nombre y apellidos.")
             st.stop()
 
-        if "@" not in partner_email or "." not in partner_email:
-            st.error("Correo electrónico (segunda persona) inválido.")
+        if not re.match(PHONE_REGEX, phone.strip()):
+            st.error("Teléfono móvil inválido. Revisa el formato.")
             st.stop()
 
-    ok, msg = create_booking_atomic(selected_session["id"],
-                                    full_name.strip(),
-                                    phone.strip(),
-                                    email.strip(),
-                                    partner_full_name.strip() if is_pair else None,
-                                    partner_phone.strip() if is_pair else None,
-                                    partner_email.strip() if is_pair else None,)
+        if "@" not in email or "." not in email:
+            st.error("Correo electrónico inválido.")
+            st.stop()
+
+        if not consent:
+            st.error("Necesitas aceptar el uso de datos para inscribirte.")
+            st.stop()
+
+        if is_pair:
+            if not partner_full_name.strip():
+                st.error("Falta el nombre y apellidos de la segunda persona.")
+                st.stop()
+
+            if not re.match(PHONE_REGEX, partner_phone.strip()):
+                st.error("Teléfono móvil (segunda persona) inválido. Revisa el formato.")
+                st.stop()
+
+            if "@" not in partner_email or "." not in partner_email:
+                st.error("Correo electrónico (segunda persona) inválido.")
+                st.stop()
+
+        ok, msg = create_booking_atomic(
+            selected_session["id"],
+            full_name.strip(),
+            phone.strip(),
+            email.strip(),
+            partner_full_name.strip() if is_pair else None,
+            partner_phone.strip() if is_pair else None,
+            partner_email.strip() if is_pair else None,
+        )
+
+        if ok:
+            st.success(msg)
+            st.info(
+                f"✅ {activity} · {str(selected_session['start_time'])[:5]}-{str(selected_session['end_time'])[:5]} · {event_date}"
+            )
+            st.rerun()
+        else:
+            st.error(msg)
 
 st.divider()
 
