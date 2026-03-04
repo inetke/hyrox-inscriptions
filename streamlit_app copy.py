@@ -358,6 +358,37 @@ with right:
         )
 
         if ok:
+            subject = "HYROX - Inscripción recibida (pendiente de pago)"
+
+            html = f"""
+            <h2>¡Gracias por inscribirte!</h2>
+            <p>Hemos recibido tu inscripción para:</p>
+
+            <ul>
+            <li><strong>Evento:</strong> HYROX</li>
+            <li><strong>Fecha:</strong> {event_date}</li>
+            <li><strong>Categoría:</strong> {activity}</li>
+            <li><strong>Horario:</strong> {str(selected_session['start_time'])[:5]} - {str(selected_session['end_time'])[:5]}</li>
+            </ul>
+
+            <p>⚠️ Tu plaza está <strong>pendiente de pago</strong>.</p>
+
+            <p><strong>Bizum:</strong> {BIZUM_PHONE}<br>
+            <strong>Transferencia:</strong> {BANK_IBAN}</p>
+
+            <p>Una vez confirmado el pago recibirás otro email de confirmación.</p>
+
+            <p>¡Nos vemos en la competición! 💥</p>
+            """
+
+            email_sent = send_email(email, subject, html)
+
+            if is_pair and partner_email:
+                send_email(partner_email, subject, html)
+
+            if not email_sent:
+                st.warning("Reserva realizada, pero hubo un problema enviando el email.")
+
             st.success(msg)
             st.info(
                 f"✅ {activity} · {str(selected_session['start_time'])[:5]}-{str(selected_session['end_time'])[:5]} · {event_date}"
@@ -365,8 +396,6 @@ with right:
             st.rerun()
         else:
             st.error(msg)
-
-st.divider()
 
 # ---------------- Admin ----------------
 with st.expander(ADMIN_TITLE):
