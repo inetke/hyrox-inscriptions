@@ -7,3 +7,14 @@ textColor="#FFFFFF"
 
 [server]
 headless=true
+
+[supabase]
+url = "TU_URL"
+service_role_key = "TU_SERVICE_ROLE"
+
+[admin]
+password = "TU_PASSWORD_ADMIN"
+
+[resend]
+api_key = "TU_API_KEY"
+from_email = "inscripciones@tudominio.com"
