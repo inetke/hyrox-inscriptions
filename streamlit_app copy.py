@@ -267,7 +267,12 @@ with left:
 
     is_pair = activity == "Hyrox Pareja"
 
-    filtered = [s for s in sessions if s["activity"] == activity]
+    filtered = [s for s in sessions
+    if s["activity"] == activity and s["remaining"] > 0]
+
+    if not filtered:
+    st.warning("Todas las plazas de esta categoría están completas.")
+    st.stop()
 
     option_map = {}
 
