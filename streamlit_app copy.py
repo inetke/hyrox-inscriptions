@@ -367,10 +367,27 @@ with st.expander("Panel admin"):
     if pw == get_admin_password():
 
         rows = fetch_bookings(event_date)
-
         df = pd.DataFrame(rows)
 
-        st.dataframe(df)
+        if df.empty:
+            st.warning("Aún no hay inscripciones.")
+            st.stop()
+
+        # Crear columna visual de estado
+        df["estado_pago"] = df["paid"].apply(
+            lambda x: "✅ Pagado" if x else "💰 Pendiente"
+        )
+
+        # Ordenar pendientes arriba
+        df = df.sort_values(by="paid")
+
+        # Contadores
+        pendientes = df[df["paid"] == False].shape[0]
+        pagados = df[df["paid"] == True].shape[0]
+
+        st.info(f"💰 Pendientes: {pendientes} | ✅ Pagados: {pagados}")
+
+        st.dataframe(df, use_container_width=True)
 
         st.markdown("### Confirmar pago")
 
@@ -396,9 +413,9 @@ with st.expander("Panel admin"):
             <p>Tu inscripción está confirmada.</p>
 
             <ul>
-            <li>Fecha: {row['event_date']}</li>
-            <li>Categoría: {row['activity']}</li>
-            <li>Horario: {row['start_time'][:5]}-{row['end_time'][:5]}</li>
+            <li><strong>Fecha:</strong> {row['event_date']}</li>
+            <li><strong>Categoría:</strong> {row['activity']}</li>
+            <li><strong>Horario:</strong> {row['start_time'][:5]}-{row['end_time'][:5]}</li>
             </ul>
 
             <p>¡Nos vemos en HYROX! 💥</p>
@@ -410,17 +427,17 @@ with st.expander("Panel admin"):
                 send_email(row["partner_email"], subject, html)
 
             st.success("Pago confirmado y emails enviados.")
+            st.rerun()
 
+        # Descargar CSV
         csv_buf = io.StringIO()
-
         df.to_csv(csv_buf, index=False)
 
         st.download_button(
             "Descargar CSV",
             csv_buf.getvalue(),
-            file_name="inscritos.csv"
+            file_name=f"inscritos_{event_date}.csv"
         )
 
     elif pw:
-
         st.error("Contraseña incorrecta")
