@@ -395,6 +395,26 @@ with st.expander("Panel admin"):
 
         st.info(f"💰 Pendientes: {pendientes} | ✅ Pagados: {pagados}")
 
+        busqueda = st.text_input("Buscar por nombre o email")
+
+        if busqueda:
+            df = df[
+                df["full_name"].str.contains(busqueda, case=False, na=False) |
+                df["email"].str.contains(busqueda, case=False, na=False)
+            ]
+
+        filtro = st.radio(
+            "Filtrar inscripciones",
+            ["Todas", "Pendientes", "Pagadas"],
+            horizontal=True
+        )
+
+        if filtro == "Pendientes":
+            df = df[df["paid"] == False]
+
+        elif filtro == "Pagadas":
+            df = df[df["paid"] == True]
+
         st.dataframe(df, use_container_width=True)
 
         st.markdown("### Confirmar pago")
