@@ -271,8 +271,8 @@ with left:
     if s["activity"] == activity and s["remaining"] > 0]
 
     if not filtered:
-    st.warning("Todas las plazas de esta categoría están completas.")
-    st.stop()
+        st.warning("Todas las plazas de esta categoría están completas.")
+        st.stop()
 
     option_map = {}
 
@@ -347,7 +347,10 @@ with right:
             <p>Bizum: {BIZUM_PHONE}</p>
             """
 
-            send_email(email, subject, html)
+            email_sent = send_email(email, subject, html)
+
+            if not email_sent:
+                st.warning("Reserva creada pero el email no pudo enviarse.")
 
             if is_pair:
                 send_email(partner_email, subject, html)
