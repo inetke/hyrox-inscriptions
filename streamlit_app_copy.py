@@ -149,6 +149,10 @@ def fetch_sessions(event_date_str):
 
     return sessions
 
+    if email_already_registered(selected_session["id"], email):
+
+        st.error("Este email ya está inscrito en este turno.")
+        st.stop()
 
 # ---------------- Create booking ----------------
 def create_booking_atomic(
