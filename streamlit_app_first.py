@@ -1,0 +1,378 @@
+import os
+import re
+import io
+import pandas as pd
+import streamlit as st
+from supabase import create_client, Client
+
+
+# ---------------- Page config ----------------
+st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
+
+col_logo = st.columns([1,2,1])[1]
+
+with col_logo:
+    st.image(
+        "assets/logo.png",
+        use_container_width=True
+    )
+
+st.markdown(
+    """
+    <h1 style='text-align:center; margin-top:10px;'>
+        Inscripción Competición HYROX
+    </h1>
+    <p style='text-align:center; opacity:0.8;'>
+        Plazas limitadas. Si un turno se llena, desaparecerá.
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
+# CSS (aplica a toda la app)
+st.markdown(
+    """
+<style>
+/* Cards */
+.card {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 12px;
+}
+
+/* Smaller labels */
+.small { opacity: 0.8; font-size: 0.9rem; }
+
+/* Make form look tighter */
+div[data-testid="stForm"] {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Reduce top padding a bit */
+.block-container { padding-top: 1.5rem; }
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
+# ---------------- Constants ----------------
+ADMIN_TITLE = "Panel admin"
+PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
+
+# Evento fijo (cambia aquí la fecha)
+EVENT_DATE = "2026-04-10"
+event_date = EVENT_DATE
+WHATSAPP_PHONE = "34600123456"  # sin + ni espacios (España: 34 + número)
+INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
+MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
+BIZUM_PHONE = "+34 600 123 456"
+BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
+PRICE_INDIVIDUAL = "20€"
+PRICE_PAIR = "40€ por pareja"
+
+
+# ---------------- Secrets / Clients ----------------
+def get_admin_password() -> str:
+    if "admin" in st.secrets and "password" in st.secrets["admin"]:
+        return st.secrets["admin"]["password"]
+    return os.environ.get("ADMIN_PASSWORD", "")
+
+
+def get_supabase() -> Client:
+    if "supabase" not in st.secrets:
+        st.error("Faltan secrets de Supabase.")
+        st.stop()
+    url = st.secrets["supabase"]["url"]
+    key = st.secrets["supabase"]["service_role_key"]
+    return create_client(url, key)
+
+
+sb = get_supabase()
+
+
+# ---------------- Data helpers (REST) ----------------
+def fetch_sessions(event_date_str: str):
+    # Sessions del día
+    resp_s = (
+        sb.table("sessions")
+        .select("id,activity,start_time,end_time,capacity")
+        .eq("event_date", event_date_str)
+        .execute()
+    )
+    sessions = resp_s.data or []
+
+    # Bookings del día (cuenta por session_id)
+    resp_b = (
+        sb.table("bookings")
+        .select("session_id, sessions!inner(event_date)")
+        .eq("sessions.event_date", event_date_str)
+        .execute()
+    )
+    counts = {}
+    for row in (resp_b.data or []):
+        sid = row["session_id"]
+        counts[sid] = counts.get(sid, 0) + 1
+
+    # remaining
+    for s in sessions:
+        booked = counts.get(s["id"], 0)
+        s["booked"] = booked
+        s["remaining"] = int(s["capacity"]) - int(booked)
+
+    sessions.sort(key=lambda x: (x["activity"], x["start_time"]))
+    return sessions
+
+
+def create_booking_atomic(
+    session_id,
+    full_name,
+    phone,
+    email,
+    partner_full_name=None,
+    partner_phone=None,
+    partner_email=None,
+):
+    payload = {
+        "p_session_id": int(session_id),
+        "p_full_name": full_name,
+        "p_phone": phone,
+        "p_email": email,
+        "p_partner_full_name": partner_full_name,
+        "p_partner_phone": partner_phone,
+        "p_partner_email": partner_email,
+    }
+    resp = sb.rpc("book_session_v2", payload).execute()
+    if not resp.data:
+        return False, "Error inesperado en la reserva."
+    return bool(resp.data["ok"]), resp.data["message"]
+
+
+def fetch_bookings(event_date_str: str):
+    resp = (
+        sb.table("bookings")
+        .select(
+            "full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at, sessions!inner(event_date,activity,start_time,end_time)"
+        )
+        .eq("sessions.event_date", event_date_str)
+        .execute()
+    )
+
+    rows = []
+    for r in (resp.data or []):
+        s = r["sessions"]
+        rows.append(
+            {
+                "event_date": s["event_date"],
+                "activity": s["activity"],
+                "start_time": s["start_time"],
+                "end_time": s["end_time"],
+                "full_name": r.get("full_name"),
+                "phone": r.get("phone"),
+                "email": r.get("email"),
+                "partner_full_name": r.get("partner_full_name"),
+                "partner_phone": r.get("partner_phone"),
+                "partner_email": r.get("partner_email"),
+                "created_at": r.get("created_at"),
+            }
+        )
+    rows.sort(key=lambda x: (x["activity"], x["start_time"], x["created_at"]))
+    return rows
+
+
+# ---------------- Load sessions / activities ----------------
+sessions = fetch_sessions(event_date)
+if not sessions:
+    st.warning("No hay turnos cargados para esta fecha.")
+    st.stop()
+
+activities = sorted({s["activity"] for s in sessions})
+
+# ---------------- Sidebar ----------------
+with st.sidebar:
+    st.markdown("## HYROX")
+    st.caption("Selecciona categoría y turno. Plazas limitadas.")
+    st.divider()
+
+    st.markdown("**Fecha del evento**")
+    st.write(event_date)
+
+    st.divider()
+    st.markdown("**📍 Ubicación**")
+    st.link_button("Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💬 Contacto**")
+
+    # WhatsApp directo (abre chat)
+    wa_text = "Hola! Quiero información sobre la inscripción HYROX."
+    whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
+    st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
+
+    # Instagram
+    st.link_button("Instagram", INSTAGRAM_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💶 Precio y pago**")
+    st.markdown(
+        f"""
+- **Individual:** {PRICE_INDIVIDUAL}  
+- **Pareja:** {PRICE_PAIR}  
+
+**Bizum:** {BIZUM_PHONE}  
+**Transferencia (IBAN):** `{BANK_IBAN}`  
+
+⚠️ *La plaza se confirma tras recibir el pago.*
+""".strip()
+    )
+
+# ---------------- Main UI ----------------
+left, right = st.columns([1, 1], gap="large")
+
+with left:
+    st.markdown("## Categoría")
+    activity = st.selectbox("Categoría", options=activities, label_visibility="collapsed")
+    is_pair = (activity == "Hyrox Pareja")
+
+    st.markdown("## Turnos disponibles")
+    filtered = [s for s in sessions if s["activity"] == activity]
+
+    options = []
+    option_map = {}
+    for s in filtered:
+        label = f"{str(s['start_time'])[:5]} - {str(s['end_time'])[:5]}  ·  Plazas: {s['remaining']}/{s['capacity']}"
+        options.append(label)
+        option_map[label] = s
+
+    selected_label = st.radio("Elige tu franja", options=options)
+    selected_session = option_map[selected_label]
+
+with right:
+    st.markdown("## Datos de inscripción")
+
+    with st.form("booking_form", clear_on_submit=True):
+        # Persona 1
+        full_name = st.text_input("Nombre y apellidos", max_chars=80, key="p1_name")
+        phone = st.text_input(
+            "Teléfono móvil", max_chars=20, help="Ej: +34 600 123 456", key="p1_phone"
+        )
+        email = st.text_input("Correo electrónico", max_chars=120, key="p1_email")
+
+        # Persona 2 (solo si es pareja)
+        partner_full_name = ""
+        partner_phone = ""
+        partner_email = ""
+
+        if is_pair:
+            st.markdown("### Datos de la segunda persona")
+            partner_full_name = st.text_input(
+                "Nombre y apellidos (segunda persona)", max_chars=80, key="p2_name"
+            )
+            partner_phone = st.text_input(
+                "Teléfono móvil (segunda persona)",
+                max_chars=20,
+                help="Ej: +34 600 123 456",
+                key="p2_phone",
+            )
+            partner_email = st.text_input(
+                "Correo electrónico (segunda persona)", max_chars=120, key="p2_email"
+            )
+
+        consent = st.checkbox(
+            "Autorizo el uso de mis datos únicamente para gestionar esta inscripción y comunicaciones relacionadas con la competición.",
+            key="consent",
+        )
+
+        st.warning(
+            "⚠️ La inscripción NO queda confirmada hasta realizar el pago."
+        )
+
+        submit = st.form_submit_button("Reservar plaza (pendiente de pago) 📝", use_container_width=True)
+
+    if submit:
+        if selected_session["remaining"] <= 0:
+            st.error("Lo sentimos: este turno se acaba de llenar. Elige otro horario.")
+            st.stop()
+
+        if not full_name.strip():
+            st.error("Falta nombre y apellidos.")
+            st.stop()
+
+        if not re.match(PHONE_REGEX, phone.strip()):
+            st.error("Teléfono móvil inválido. Revisa el formato.")
+            st.stop()
+
+        if "@" not in email or "." not in email:
+            st.error("Correo electrónico inválido.")
+            st.stop()
+
+        if not consent:
+            st.error("Necesitas aceptar el uso de datos para inscribirte.")
+            st.stop()
+
+        if is_pair:
+            if not partner_full_name.strip():
+                st.error("Falta el nombre y apellidos de la segunda persona.")
+                st.stop()
+
+            if not re.match(PHONE_REGEX, partner_phone.strip()):
+                st.error("Teléfono móvil (persona 2) inválido. Revisa el formato.")
+                st.stop()
+
+            if "@" not in partner_email or "." not in partner_email:
+                st.error("Correo electrónico (persona 2) inválido.")
+                st.stop()
+
+        ok, msg = create_booking_atomic(
+            selected_session["id"],
+            full_name.strip(),
+            phone.strip(),
+            email.strip(),
+            partner_full_name.strip() if is_pair else None,
+            partner_phone.strip() if is_pair else None,
+            partner_email.strip() if is_pair else None,
+        )
+
+        if ok:
+            st.success(msg)
+            st.info(
+                f"✅ {activity} · {str(selected_session['start_time'])[:5]}-{str(selected_session['end_time'])[:5]} · {event_date}"
+            )
+            st.rerun()
+        else:
+            st.error(msg)
+
+st.divider()
+
+# ---------------- Admin ----------------
+with st.expander(ADMIN_TITLE):
+    admin_pw = st.text_input("Contraseña admin", type="password")
+
+    if admin_pw and admin_pw == get_admin_password():
+        st.success("Acceso concedido.")
+
+        rows = fetch_bookings(event_date)
+        df = pd.DataFrame(rows)
+
+        if df.empty:
+            st.write("Aún no hay inscripciones para esta fecha.")
+        else:
+            st.dataframe(df, use_container_width=True)
+
+            csv_buf = io.StringIO()
+            df.to_csv(csv_buf, index=False)
+
+            st.download_button(
+                "Descargar inscritos (CSV)",
+                data=csv_buf.getvalue().encode("utf-8"),
+                file_name=f"inscritos_{event_date}.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+
+    elif admin_pw:
+        st.error("Contraseña incorrecta.")
