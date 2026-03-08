@@ -294,6 +294,13 @@ with left:
 
     selected_session = option_map[selected_label]
 
+    remaining = selected_session["remaining"]
+
+    if remaining <= 3:
+        st.warning(f"⚠️ ¡Solo quedan {remaining} plazas!")
+    else:
+        st.info(f"Plazas disponibles: {remaining}")
+
 
 with right:
 
@@ -380,6 +387,18 @@ with st.expander("Panel admin"):
 
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
+
+        st.markdown("### Plazas por turno")
+
+        sessions_df = pd.DataFrame(sessions)
+
+        sessions_df["ocupadas"] = sessions_df["booked"]
+        sessions_df["restantes"] = sessions_df["remaining"]
+
+        st.dataframe(
+            sessions_df[["activity","start_time","end_time","ocupadas","restantes"]],
+            use_container_width=True
+        )
 
         if df.empty:
             st.warning("Aún no hay inscripciones.")
