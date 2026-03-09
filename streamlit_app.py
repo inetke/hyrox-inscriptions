@@ -181,7 +181,9 @@ def create_booking_atomic(
         if not resp.data:
             return False, "Error inesperado."
 
-        return bool(resp.data["ok"]), resp.data["message"]
+        result = resp.data[0]
+
+        return bool(result["ok"]), result["message"]
 
     except Exception as e:
         print("Error RPC:", e)
