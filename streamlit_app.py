@@ -178,17 +178,22 @@ def create_booking_atomic(
     try:
         resp = sb.rpc("book_session_v2", payload).execute()
 
+        st.write("DEBUG RESP:", resp)
+        st.write("DEBUG DATA:", resp.data)
+
         if not resp.data:
             return False, "Error inesperado."
 
         result = resp.data[0]
 
-        return bool(result["ok"]), result["message"]
+        ok = result.get("ok", False)
+        message = result.get("message", "Error desconocido")
+
+        return ok, message
 
     except Exception as e:
-        print("Error RPC:", e)
+        st.error(e)
         return False, "Error en el servidor al crear la reserva."
-
 
 def fetch_bookings(event_date_str):
 
