@@ -155,6 +155,8 @@ def fetch_sessions(event_date_str):
         st.stop()
 
 # ---------------- Create booking ----------------
+import json
+
 def create_booking_atomic(
     session_id,
     full_name,
@@ -178,13 +180,14 @@ def create_booking_atomic(
     try:
         resp = sb.rpc("book_session_v2", payload).execute()
 
-        st.write("DEBUG RESP:", resp)
-        st.write("DEBUG DATA:", resp.data)
-
         if not resp.data:
             return False, "Error inesperado."
 
         result = resp.data[0]
+
+        # si viene como bytes lo convertimos
+        if isinstance(result, bytes):
+            result = json.loads(result.decode())
 
         ok = result.get("ok", False)
         message = result.get("message", "Error desconocido")
@@ -192,7 +195,7 @@ def create_booking_atomic(
         return ok, message
 
     except Exception as e:
-        st.error(e)
+        st.error(f"RPC error: {e}")
         return False, "Error en el servidor al crear la reserva."
 
 def fetch_bookings(event_date_str):
