@@ -175,12 +175,17 @@ def create_booking_atomic(
         "p_partner_email": partner_email,
     }
 
-    resp = sb.rpc("book_session_v2", payload).execute()
+    try:
+        resp = sb.rpc("book_session_v2", payload).execute()
 
-    if not resp.data:
-        return False, "Error inesperado."
+        if not resp.data:
+            return False, "Error inesperado."
 
-    return bool(resp.data["ok"]), resp.data["message"]
+        return bool(resp.data["ok"]), resp.data["message"]
+
+    except Exception as e:
+        print("Error RPC:", e)
+        return False, "Error en el servidor al crear la reserva."
 
 
 def fetch_bookings(event_date_str):
@@ -327,6 +332,23 @@ with right:
         submit = st.form_submit_button("Reservar plaza")
 
     if submit:
+
+        if not full_name.strip():
+            st.error("Introduce tu nombre.")
+            st.stop()
+
+        if not phone.strip():
+            st.error("Introduce tu teléfono.")
+            st.stop()
+
+        if not email.strip():
+            st.error("Introduce tu email.")
+            st.stop()
+
+        if is_pair:
+            if not partner_full_name.strip():
+                st.error("Introduce el nombre de la segunda persona.")
+                st.stop()
 
         ok, msg = create_booking_atomic(
             selected_session["id"],
