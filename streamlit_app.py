@@ -283,16 +283,19 @@ left, right = st.columns(2)
 with left:
 
     gender = st.selectbox("Categoría", ["Masculino", "Femenino"])
-    
+
     modality = st.selectbox("Modalidad", ["Individual", "Pareja"])
 
     is_pair = modality == "Pareja"
 
-    activity = f"{gender} {modality}"
-    
+    # Paso 4 (AQUÍ VA)
+    st.markdown(f"**Categoría seleccionada:** {gender} - {modality}")
+
     filtered = [
         s for s in sessions
-        if s["activity"] == activity and s["remaining"] > 0
+        if s["gender"] == gender
+        and s["modality"] == modality
+        and s["remaining"] > 0
     ]
 
     if not filtered:
@@ -300,19 +303,14 @@ with left:
         st.stop()
 
     option_map = {}
-
     options = []
 
     for s in filtered:
-
         label = f"{s['start_time'][:5]}-{s['end_time'][:5]} · {s['remaining']}/{s['capacity']}"
-
         options.append(label)
-
         option_map[label] = s
 
     selected_label = st.radio("Turno", options)
-
     selected_session = option_map[selected_label]
 
     remaining = selected_session["remaining"]
