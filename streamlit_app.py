@@ -282,12 +282,18 @@ left, right = st.columns(2)
 
 with left:
 
-    activity = st.selectbox("Categoría", activities)
+    gender = st.selectbox("Categoría", ["Masculino", "Femenino"])
+    
+    modality = st.selectbox("Modalidad", ["Individual", "Pareja"])
 
-    is_pair = activity == "Hyrox Pareja"
+    is_pair = modality == "Pareja"
 
-    filtered = [s for s in sessions
-    if s["activity"] == activity and s["remaining"] > 0]
+    activity = f"{gender} {modality}"
+    
+    filtered = [
+        s for s in sessions
+        if s["activity"] == activity and s["remaining"] > 0
+    ]
 
     if not filtered:
         st.warning("Todas las plazas de esta categoría están completas.")
