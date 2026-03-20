@@ -149,11 +149,6 @@ def fetch_sessions(event_date_str):
 
     return sessions
 
-    if email_already_registered(selected_session["id"], email):
-
-        st.error("Este email ya está inscrito en este turno.")
-        st.stop()
-
 # ---------------- Create booking ----------------
 import json
 
@@ -346,6 +341,10 @@ with right:
         submit = st.form_submit_button("Reservar plaza")
 
     if submit:
+        
+        if not consent:
+            st.error("Debes aceptar el uso de datos.")
+            st.stop()
 
         if not full_name.strip():
             st.error("Introduce tu nombre.")
