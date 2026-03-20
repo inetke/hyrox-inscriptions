@@ -120,7 +120,7 @@ def fetch_sessions(event_date_str):
 
     resp_s = (
         sb.table("sessions")
-        .select("id,activity,start_time,end_time,capacity")
+        .select("id,activity,gender,modality,start_time,end_time,capacity")
         .eq("event_date", event_date_str)
         .execute()
     )
