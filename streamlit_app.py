@@ -334,7 +334,9 @@ with right:
             partner_phone = st.text_input("Teléfono (segunda persona)")
             partner_email = st.text_input("Email (segunda persona)")
 
-        consent = st.checkbox("Acepto el uso de datos")
+        consent = st.checkbox(
+            "Acepto el uso de datos y entiendo que la reserva solo se confirma tras el pago"
+        )
 
         submit = st.form_submit_button("Reservar plaza")
 
