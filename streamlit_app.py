@@ -317,6 +317,8 @@ with left:
 with right:
 
     with st.form("booking_form", clear_on_submit=True):
+        
+        st.error("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
 
         full_name = st.text_input("Nombre y Apellido")
         phone = st.text_input("Teléfono")
@@ -333,10 +335,8 @@ with right:
             partner_full_name = st.text_input("Nombre y Apellido (segunda persona)")
             partner_phone = st.text_input("Teléfono (segunda persona)")
             partner_email = st.text_input("Email (segunda persona)")
-
-        consent = st.checkbox(
-            "Acepto el uso de datos y entiendo que la reserva solo se confirma tras el pago"
-        )
+            
+        consent = st.checkbox("Acepto el uso de datos")
 
         submit = st.form_submit_button("Reservar plaza")
 
