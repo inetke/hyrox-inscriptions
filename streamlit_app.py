@@ -318,7 +318,7 @@ with right:
 
     with st.form("booking_form", clear_on_submit=True):
 
-        full_name = st.text_input("Nombre")
+        full_name = st.text_input("Nombre y Apellido")
         phone = st.text_input("Teléfono")
         email = st.text_input("Email")
 
@@ -330,9 +330,9 @@ with right:
 
             st.markdown("### Segunda persona")
 
-            partner_full_name = st.text_input("Nombre 2")
-            partner_phone = st.text_input("Teléfono 2")
-            partner_email = st.text_input("Email 2")
+            partner_full_name = st.text_input("Nombre y Apellido (segunda persona)")
+            partner_phone = st.text_input("Teléfono (segunda persona)")
+            partner_email = st.text_input("Email (segunda persona)")
 
         consent = st.checkbox("Acepto el uso de datos")
 
