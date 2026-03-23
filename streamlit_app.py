@@ -237,7 +237,7 @@ activities = sorted({s["activity"] for s in sessions})
 # ---------------- Sidebar ----------------
 with st.sidebar:
     st.markdown("## HYROX")
-    st.caption("Selecciona categoría y turno. Plazas limitadas.")
+    st.caption("Selecciona categoría, modalidad y turno. Plazas limitadas.")
     st.divider()
 
     st.markdown("**Fecha del evento**")
