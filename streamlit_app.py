@@ -318,7 +318,7 @@ with right:
 
     with st.form("booking_form", clear_on_submit=True):
         
-        st.error("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
+        st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
 
         full_name = st.text_input("Nombre y Apellido")
         phone = st.text_input("Teléfono")
