@@ -70,7 +70,7 @@ PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 # Evento fijo (cambia aquí la fecha)
 EVENT_DATE = "2026-04-25"
 event_date = EVENT_DATE
-WHATSAPP_PHONE = "34600123456"  # sin + ni espacios (España: 34 + número)
+WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
 MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BIZUM_PHONE = "+34 659 09 22 27"
