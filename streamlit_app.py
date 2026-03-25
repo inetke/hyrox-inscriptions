@@ -73,7 +73,7 @@ event_date = EVENT_DATE
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
 MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
-PAGO EN EFECTIVO (Centro de Entrenamiento Inteligente Roberto Fernández) = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
+PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
 PRICE_INDIVIDUAL = "20€"
 PRICE_PAIR = "35€ por pareja"
@@ -267,7 +267,10 @@ with st.sidebar:
 - **Individual:** {PRICE_INDIVIDUAL}  
 - **Pareja:** {PRICE_PAIR}  
 
-**Bizum:** {BIZUM_PHONE}  
+💵 **Pago en efectivo en el centro**  
+
+📍 [Ir a la ubicación]({PAGO_EFECTIVO})
+
 **Transferencia (IBAN):** `{BANK_IBAN}`  
 
 ⚠️ *La plaza se confirma tras recibir el pago.*
