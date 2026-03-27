@@ -515,6 +515,8 @@ with st.expander("Panel admin"):
             <li><strong>Categoría:</strong> {row['activity']}</li>
             <li><strong>Horario:</strong> {row['start_time'][:5]}-{row['end_time'][:5]}</li>
             </ul>
+            
+            <p>📍 Recuerda llegar con antelación.</p>
 
             <p>¡Nos vemos en HYROX! 💥</p>
             """
