@@ -76,7 +76,7 @@ MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
 PRICE_INDIVIDUAL = "20€"
-PRICE_PAIR = "35€ por pareja"
+PRICE_PAIR = "40€ por pareja"
 
 
 # ---------------- Secrets / Clients ----------------
