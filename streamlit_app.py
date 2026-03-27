@@ -494,7 +494,14 @@ with st.expander("Panel admin"):
                 .eq("id", booking_id) \
                 .execute()
 
-            row = df[df["id"] == booking_id].iloc[0]
+            # 🔥 volver a traer datos actualizados
+            resp = sb.table("bookings") \
+                .select("email, partner_email") \
+                .eq("id", booking_id) \
+                .single() \
+                .execute()
+
+            row = resp.data
 
             subject = "HYROX - Inscripción confirmada"
 
