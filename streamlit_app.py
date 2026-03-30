@@ -300,8 +300,12 @@ with left:
 
     activity = f"Hyrox {modality}"
 
-    filtered = [s for s in sessions
-                if s["activity"] == activity and s["remaining"] > 0]
+    filtered = [
+        s for s in sessions
+        if s["gender"] == gender
+        and s["modality"] == modality
+        and s["remaining"] > 0
+    ]
     
     if not filtered:
         st.warning("Todas las plazas de esta categoría están completas.")
@@ -501,12 +505,13 @@ with st.expander("Panel admin"):
 
             # 🔥 volver a traer datos actualizados
             resp = sb.table("bookings") \
-                .select("email, partner_email") \
+                .select("email, partner_email, sessions(event_date, activity, start_time, end_time)") \
                 .eq("id", booking_id) \
                 .single() \
                 .execute()
 
             row = resp.data
+            s = row["sessions"]
 
             subject = "HYROX - Inscripción confirmada"
 
