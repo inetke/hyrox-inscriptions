@@ -509,9 +509,9 @@ with st.expander("Panel admin"):
             <p>Tu inscripción está confirmada.</p>
 
             <ul>
-            <li><strong>Fecha:</strong> {row['event_date']}</li>
-            <li><strong>Categoría:</strong> {row['activity']}</li>
-            <li><strong>Horario:</strong> {row['start_time'][:5]}-{row['end_time'][:5]}</li>
+            <li><strong>Fecha:</strong> {s['event_date']}</li>
+            <li><strong>Categoría:</strong> {s['activity']}</li>
+            <li><strong>Horario:</strong> {s['start_time'][:5]}-{s['end_time'][:5]}</li>
             </ul>
             
             <p>📍 Recuerda llegar con antelación.</p>
