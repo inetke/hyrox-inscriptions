@@ -99,21 +99,28 @@ sb = get_supabase()
 
 def send_email(to_email: str, subject: str, html_content: str):
     if "resend" not in st.secrets:
+        st.error("❌ No hay configuración de Resend en secrets")
         return False
 
     resend.api_key = st.secrets["resend"]["api_key"]
     from_email = st.secrets["resend"]["from_email"]
 
     try:
-        resend.Emails.send({
+        st.write("📤 Enviando email a:", to_email)
+
+        response = resend.Emails.send({
             "from": from_email,
             "to": [to_email],
             "subject": subject,
             "html": html_content,
         })
+
+        st.write("✅ Respuesta Resend:", response)
+
         return True
+
     except Exception as e:
-        print("Error enviando email:", e)
+        st.error(f"❌ Error enviando email: {e}")
         return False
 
 
