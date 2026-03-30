@@ -394,8 +394,6 @@ with right:
             </ul>
 
             <p>Tu plaza está pendiente de pago.</p>
-
-            <p>Bizum: {BIZUM_PHONE}</p>
             """
 
             email_sent = send_email(email, subject, html)
