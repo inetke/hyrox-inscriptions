@@ -227,21 +227,22 @@ def fetch_bookings(event_date_str):
     return rows
 
 def fetch_total_remaining():
-        resp = (
-            sb.table("bookings")
-            .select("partner_full_name")
-            .execute()
-        )
+    resp = (
+        sb.table("bookings")
+        .select("partner_full_name")
+        .eq("event_date", EVENT_DATE)
+        .execute()
+    )
 
-        occupied = 0
+    occupied = 0
 
-        for row in (resp.data or []):
-            if row["partner_full_name"]:
-                occupied += 2
-            else:
-                occupied += 1
+    for row in (resp.data or []):
+        if row["partner_full_name"]:
+            occupied += 2
+        else:
+            occupied += 1
 
-        return 100 - occupied
+    return 100 - occupied
 
 
 # ---------------- Load sessions / activities ----------------
