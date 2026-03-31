@@ -469,35 +469,42 @@ with st.expander("Panel admin"):
 
         if st.button("Marcar como pagado"):
 
+            # marcar como pagado
             sb.table("bookings") \
                 .update({"paid": True}) \
                 .eq("id", booking_id) \
                 .execute()
 
+            # recuperar datos actualizados
             resp = sb.table("bookings") \
-                .select("email, partner_email, event_date, full_name, partner_full_name") \
+                .select("email, partner_email, event_date, partner_full_name") \
                 .eq("id", booking_id) \
                 .single() \
                 .execute()
 
             row = resp.data
 
-            categoria = (
+            if not row:
+                st.error("No se encontró la reserva")
+                st.stop()
+
+            modalidad = (
                 "Pareja"
-                if row.get("partner_full_name") and row["partner_full_name"].strip()
+                if row.get("partner_full_name")
+                and str(row["partner_full_name"]).strip()
                 else "Individual"
             )
 
-            subject = "HYROX - Inscripción confirmada"
+            subject = "HYROX - Pago recibido y plaza confirmada"
 
             html = f"""
-            <h2>Pago recibido</h2>
+            <h2>✅ Pago recibido</h2>
 
-            <p>Tu inscripción está confirmada.</p>
+            <p>Tu inscripción está <strong>confirmada</strong>.</p>
 
             <ul>
-            <li><strong>Fecha:</strong> {row['event_date']}</li>
-            <li><strong>Modalidad:</strong> {categoria}</li>
+                <li><strong>Fecha:</strong> {row['event_date']}</li>
+                <li><strong>Modalidad:</strong> {modalidad}</li>
             </ul>
 
             <p>📢 Una semana antes te comunicaremos la tanda asignada.</p>
@@ -510,13 +517,14 @@ with st.expander("Panel admin"):
             email_sent = send_email(row["email"], subject, html)
 
             if not email_sent:
-                st.error("Error enviando email principal")
+                st.error("No se pudo enviar el email de confirmación")
+                st.stop()
 
-            if row.get("partner_email") and row["partner_email"].strip():
+            if row.get("partner_email") and str(row["partner_email"]).strip():
                 send_email(row["partner_email"], subject, html)
 
             st.success("Pago confirmado y emails enviados.")
-            #st.rerun()
+            st.rerun()
 
         st.markdown("### Eliminar inscripción")
 
