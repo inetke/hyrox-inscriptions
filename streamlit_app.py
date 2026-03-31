@@ -195,28 +195,21 @@ def create_booking_atomic(
         return False, "Error en el servidor."
 
 def fetch_bookings(event_date_str):
-
     resp = (
         sb.table("bookings")
         .select(
-            "id,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,sessions!inner(event_date,activity,start_time,end_time)"
+            "id,event_date,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid"
         )
-        .eq("sessions.event_date", event_date_str)
+        .eq("event_date", event_date_str)
         .execute()
     )
 
     rows = []
 
     for r in (resp.data or []):
-
-        s = r["sessions"]
-
         rows.append({
             "id": r["id"],
-            "event_date": s["event_date"],
-            "activity": s["activity"],
-            "start_time": s["start_time"],
-            "end_time": s["end_time"],
+            "event_date": r["event_date"],
             "full_name": r["full_name"],
             "email": r["email"],
             "partner_email": r["partner_email"],
@@ -244,14 +237,6 @@ def fetch_total_remaining():
 
     return 100 - occupied
 
-
-# ---------------- Load sessions / activities ----------------
-sessions = fetch_sessions(event_date)
-if not sessions:
-    st.warning("No hay turnos cargados para esta fecha.")
-    st.stop()
-
-activities = sorted({s["activity"] for s in sessions})
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
@@ -428,18 +413,13 @@ with st.expander("Panel admin"):
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
 
-        st.markdown("### Plazas por turno")
+        st.markdown("### Aforo del evento")
 
-        sessions_df = pd.DataFrame(sessions)
+        remaining = fetch_total_remaining()
+        occupied = 100 - remaining
 
-        sessions_df["ocupadas"] = sessions_df["booked"]
-        sessions_df["restantes"] = sessions_df["remaining"]
-
-        st.dataframe(
-            sessions_df[["activity","start_time","end_time","ocupadas","restantes"]],
-            use_container_width=True
-        )
-
+        st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
+        
         if df.empty:
             st.warning("Aún no hay inscripciones.")
             st.stop()
