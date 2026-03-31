@@ -476,13 +476,14 @@ with st.expander("Panel admin"):
 
             # 🔥 volver a traer datos actualizados
             resp = sb.table("bookings") \
-                .select("email, partner_email, sessions(event_date, activity, start_time, end_time)") \
+                .select("email, partner_email, event_date, full_name, partner_full_name") \
                 .eq("id", booking_id) \
                 .single() \
                 .execute()
 
             row = resp.data
-            s = row["sessions"]
+            
+            categoria = "Pareja" if row["partner_full_name"] else "Individual"
 
             subject = "HYROX - Inscripción confirmada"
 
@@ -492,10 +493,12 @@ with st.expander("Panel admin"):
             <p>Tu inscripción está confirmada.</p>
 
             <ul>
-            <li><strong>Fecha:</strong> {s['event_date']}</li>
-            <li><strong>Categoría:</strong> {s['activity']}</li>
+            <li><strong>Fecha:</strong> {row['event_date']}</li>
+            <li><strong>Modalidad:</strong> {categoria}</li>
+            </ul>
+
             <p>📢 Una semana antes te comunicaremos la tanda asignada.</p>
-            
+
             <p>📍 Recuerda llegar con antelación.</p>
 
             <p>¡Nos vemos en HYROX! 💥</p>
