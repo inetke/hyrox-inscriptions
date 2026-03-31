@@ -507,13 +507,16 @@ with st.expander("Panel admin"):
             <p>¡Nos vemos en HYROX! 💥</p>
             """
 
-            send_email(row["email"], subject, html)
+            email_sent = send_email(row["email"], subject, html)
 
-            if row["partner_email"]:
+            if not email_sent:
+                st.error("Error enviando email principal")
+
+            if row.get("partner_email") and row["partner_email"].strip():
                 send_email(row["partner_email"], subject, html)
 
             st.success("Pago confirmado y emails enviados.")
-            st.rerun()
+            #st.rerun()
 
         st.markdown("### Eliminar inscripción")
 
