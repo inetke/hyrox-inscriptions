@@ -1,34 +1,82 @@
-import io
-import json
 import os
-
-import pandas as pd
+import re
+import io
 import resend
+import pandas as pd
 import streamlit as st
-from supabase import Client, create_client
+from supabase import create_client, Client
 
 
 # ---------------- Page config ----------------
-st.set_page_config(
-    page_title="HYROX Inscripciones",
-    page_icon="💥",
-    layout="wide",
+st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
+
+col_logo = st.columns([1,2,1])[1]
+
+with col_logo:
+    st.image(
+        "assets/logo.png",
+        use_container_width=True
+    )
+
+st.markdown(
+    """
+    <h1 style='text-align:center; margin-top:10px;'>
+        Inscripción Competición HYROX
+    </h1>
+    <p style='text-align:center; opacity:0.8;'>
+        Plazas limitadas. Si un turno se llena, desaparecerá.
+    </p>
+    """,
+    unsafe_allow_html=True
 )
 
+st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
+
+# CSS (aplica a toda la app)
+st.markdown(
+    """
+<style>
+/* Cards */
+.card {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 12px;
+}
+
+/* Smaller labels */
+.small { opacity: 0.8; font-size: 0.9rem; }
+
+/* Make form look tighter */
+div[data-testid="stForm"] {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Reduce top padding a bit */
+.block-container { padding-top: 1.5rem; }
+</style>
+""",
+    unsafe_allow_html=True,
+)
 
 # ---------------- Constants ----------------
 ADMIN_TITLE = "Panel admin"
+PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
+
+# Evento fijo (cambia aquí la fecha)
 EVENT_DATE = "2026-05-16"
-TOTAL_CAPACITY = 100
-WHATSAPP_PHONE = "34659092227"
+event_date = EVENT_DATE
+WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
 MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
 PRICE_INDIVIDUAL = "20€"
 PRICE_PAIR = "40€ por pareja"
-ACTIVITY_INDIVIDUAL = "Hyrox Individual"
-ACTIVITY_PAIR = "Hyrox Pareja"
 
 
 # ---------------- Secrets / Clients ----------------
@@ -42,7 +90,6 @@ def get_supabase() -> Client:
     if "supabase" not in st.secrets:
         st.error("Faltan secrets de Supabase.")
         st.stop()
-
     url = st.secrets["supabase"]["url"]
     key = st.secrets["supabase"]["service_role_key"]
     return create_client(url, key)
@@ -50,11 +97,7 @@ def get_supabase() -> Client:
 
 sb = get_supabase()
 
-
-def send_email(to_email: str, subject: str, html_content: str) -> bool:
-    if not to_email:
-        return False
-
+def send_email(to_email: str, subject: str, html_content: str):
     if "resend" not in st.secrets:
         st.error("❌ No hay configuración de Resend en secrets")
         return False
@@ -63,101 +106,71 @@ def send_email(to_email: str, subject: str, html_content: str) -> bool:
     from_email = st.secrets["resend"]["from_email"]
 
     try:
-        resend.Emails.send(
-            {
-                "from": from_email,
-                "to": [to_email],
-                "subject": subject,
-                "html": html_content,
-            }
-        )
+        st.write("📤 Enviando email a:", to_email)
+
+        response = resend.Emails.send({
+            "from": from_email,
+            "to": [to_email],
+            "subject": subject,
+            "html": html_content,
+        })
+
+        st.write("✅ Respuesta Resend:", response)
+
         return True
-    except Exception as exc:
-        st.error(f"❌ Error enviando email: {exc}")
+
+    except Exception as e:
+        st.error(f"❌ Error enviando email: {e}")
         return False
 
 
-# ---------------- Data helpers ----------------
-def get_activity_session_map(event_date_str: str) -> dict[str, dict]:
-    resp = (
+# ---------------- Data helpers (REST) ----------------
+def fetch_sessions(event_date_str):
+
+    resp_s = (
         sb.table("sessions")
-        .select("id,activity")
+        .select("id,activity,gender,modality,start_time,end_time,capacity")
         .eq("event_date", event_date_str)
-        .in_("activity", [ACTIVITY_INDIVIDUAL, ACTIVITY_PAIR])
         .execute()
     )
 
-    session_map = {row["activity"]: row for row in (resp.data or [])}
-    return session_map
+    sessions = resp_s.data or []
 
-
-def fetch_bookings(event_date_str: str) -> list[dict]:
-    resp = (
+    resp_b = (
         sb.table("bookings")
-        .select(
-            """
-            id,
-            full_name,
-            phone,
-            email,
-            partner_full_name,
-            partner_phone,
-            partner_email,
-            created_at,
-            paid,
-            sessions!inner(event_date,activity)
-            """
-        )
+        .select("session_id, sessions!inner(event_date)")
         .eq("sessions.event_date", event_date_str)
         .execute()
     )
 
-    rows = []
-    for row in resp.data or []:
-        session = row["sessions"]
-        is_pair = session["activity"] == ACTIVITY_PAIR
-        people_count = 2 if is_pair else 1
+    counts = {}
 
-        rows.append(
-            {
-                "id": row["id"],
-                "event_date": session["event_date"],
-                "activity": session["activity"],
-                "modality": "Pareja" if is_pair else "Individual",
-                "people_count": people_count,
-                "full_name": row["full_name"],
-                "phone": row["phone"],
-                "email": row["email"],
-                "partner_full_name": row["partner_full_name"],
-                "partner_phone": row["partner_phone"],
-                "partner_email": row["partner_email"],
-                "paid": row["paid"],
-                "created_at": row["created_at"],
-            }
-        )
+    for row in (resp_b.data or []):
+        sid = row["session_id"]
+        counts[sid] = counts.get(sid, 0) + 1
 
-    return rows
+    for s in sessions:
+        booked = counts.get(s["id"], 0)
+        s["booked"] = booked
+        s["remaining"] = int(s["capacity"]) - int(booked)
 
+    sessions.sort(key=lambda x: (x["activity"], x["start_time"]))
 
-def get_capacity_status(bookings_rows: list[dict]) -> dict[str, int]:
-    used_slots = sum(int(row["people_count"]) for row in bookings_rows)
-    remaining_slots = max(TOTAL_CAPACITY - used_slots, 0)
-    return {
-        "used_slots": used_slots,
-        "remaining_slots": remaining_slots,
-        "total_capacity": TOTAL_CAPACITY,
-    }
+    return sessions
 
+# ---------------- Create booking ----------------
+import json
 
 def create_booking_atomic(
-    session_id: int,
-    full_name: str,
-    phone: str,
-    email: str,
-    partner_full_name: str | None = None,
-    partner_phone: str | None = None,
-    partner_email: str | None = None,
-) -> tuple[bool, str]:
+    session_id,
+    full_name,
+    phone,
+    email,
+    partner_full_name=None,
+    partner_phone=None,
+    partner_email=None,
+):
+
     payload = {
         "p_session_id": int(session_id),
         "p_full_name": full_name,
@@ -170,178 +183,154 @@ def create_booking_atomic(
 
     try:
         resp = sb.rpc("book_session_v2", payload).execute()
+
         if not resp.data:
             return False, "Error inesperado."
 
         result = resp.data[0]
+
+        # si viene como bytes lo convertimos
         if isinstance(result, bytes):
             result = json.loads(result.decode())
 
-        return result["ok"], result["message"]
-    except Exception as exc:
-        st.error(f"RPC error: {exc}")
-        return False, "Error en el servidor al crear la inscripción."
+        ok = result["ok"]
+        message = result["message"]
 
+        return ok, message
 
-# ---------------- UI helpers ----------------
-def render_intro() -> None:
-    col_logo = st.columns([1, 2, 1])[1]
-    with col_logo:
-        st.image("assets/logo.png", use_container_width=True)
+    except Exception as e:
+        st.error(f"RPC error: {e}")
+        return False, "Error en el servidor al crear la reserva."
 
-    st.markdown(
-        """
-        <h1 style='text-align:center; margin-top:10px;'>
-            Inscripción Competición HYROX
-        </h1>
-        <p style='text-align:center; opacity:0.8;'>
-            Plazas limitadas. El aforo total es de 100 personas.
-        </p>
-        """,
-        unsafe_allow_html=True,
-    )
+def fetch_bookings(event_date_str):
 
-    st.info(
-        "Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto."
-    )
-
-    st.markdown(
-        """
-        <style>
-        .card {
-            padding: 16px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
-            margin-bottom: 12px;
-        }
-        .small {
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-        div[data-testid="stForm"] {
-            padding: 16px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .block-container {
-            padding-top: 1.5rem;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_sidebar(event_date_str: str) -> None:
-    with st.sidebar:
-        st.markdown("## HYROX")
-        st.caption("Selecciona modalidad y completa tus datos. Plazas limitadas.")
-        st.divider()
-        st.markdown("**Fecha del evento**")
-        st.write(event_date_str)
-        st.divider()
-        st.markdown("**📍 Ubicación**")
-        st.link_button("Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
-        st.divider()
-        st.markdown("**💬 Contacto**")
-
-        wa_text = "Hola! Quiero información sobre la inscripción HYROX."
-        whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
-        st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
-        st.link_button("Instagram", INSTAGRAM_URL, use_container_width=True)
-
-        st.divider()
-        st.markdown("**💶 Precio y pago**")
-        st.markdown(
-            f"""
-            - **Individual:** {PRICE_INDIVIDUAL}
-            - **Pareja:** {PRICE_PAIR}
-
-            💵 **Pago en efectivo en el centro**
-            📍 [Ir a la ubicación]({PAGO_EFECTIVO})
-
-            **Transferencia (IBAN):** {BANK_IBAN}
-
-            ⚠️ *La plaza se confirma tras recibir el pago.*
-            """.strip()
+    resp = (
+        sb.table("bookings")
+        .select(
+            "id,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,sessions!inner(event_date,activity,start_time,end_time)"
         )
-
-
-def get_confirmation_email_html(
-    event_date_str: str,
-    modality: str,
-) -> str:
-    return f"""
-    <h2>Inscripción recibida</h2>
-    <p>Hemos recibido tu inscripción para el evento HYROX.</p>
-    <ul>
-        <li><strong>Fecha:</strong> {event_date_str}</li>
-        <li><strong>Modalidad:</strong> {modality}</li>
-    </ul>
-    <p>Tu plaza está pendiente de pago.</p>
-    <p>La inscripción quedará confirmada cuando recibamos el pago.</p>
-    """
-
-
-def get_paid_email_html(event_date_str: str, modality: str) -> str:
-    return f"""
-    <h2>Pago recibido</h2>
-    <p>Tu inscripción para HYROX está confirmada.</p>
-    <ul>
-        <li><strong>Fecha:</strong> {event_date_str}</li>
-        <li><strong>Modalidad:</strong> {modality}</li>
-    </ul>
-    <p>📍 Recuerda llegar con antelación.</p>
-    <p>¡Nos vemos en HYROX! 💥</p>
-    """
-
-
-# ---------------- App ----------------
-render_intro()
-render_sidebar(EVENT_DATE)
-
-session_map = get_activity_session_map(EVENT_DATE)
-if ACTIVITY_INDIVIDUAL not in session_map or ACTIVITY_PAIR not in session_map:
-    st.error(
-        "Debes tener creadas en Supabase las actividades 'Hyrox Individual' y 'Hyrox Pareja' para esta fecha."
+        .eq("sessions.event_date", event_date_str)
+        .execute()
     )
+
+    rows = []
+
+    for r in (resp.data or []):
+
+        s = r["sessions"]
+
+        rows.append({
+            "id": r["id"],
+            "event_date": s["event_date"],
+            "activity": s["activity"],
+            "start_time": s["start_time"],
+            "end_time": s["end_time"],
+            "full_name": r["full_name"],
+            "email": r["email"],
+            "partner_email": r["partner_email"],
+            "paid": r["paid"],
+            "created_at": r["created_at"]
+        })
+
+    return rows
+
+
+# ---------------- Load sessions / activities ----------------
+sessions = fetch_sessions(event_date)
+if not sessions:
+    st.warning("No hay turnos cargados para esta fecha.")
     st.stop()
 
-bookings = fetch_bookings(EVENT_DATE)
-capacity = get_capacity_status(bookings)
+activities = sorted({s["activity"] for s in sessions})
 
+# ---------------- Sidebar ----------------
+with st.sidebar:
+    st.markdown("## HYROX")
+    st.caption("Selecciona categoría, modalidad y turno. Plazas limitadas.")
+    st.divider()
+
+    st.markdown("**Fecha del evento**")
+    st.write(event_date)
+
+    st.divider()
+    st.markdown("**📍 Ubicación**")
+    st.link_button("Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💬 Contacto**")
+
+    # WhatsApp directo (abre chat)
+    wa_text = "Hola! Quiero información sobre la inscripción HYROX."
+    whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
+    st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
+
+    # Instagram
+    st.link_button("Instagram", INSTAGRAM_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💶 Precio y pago**")
+    st.markdown(
+        f"""
+- **Individual:** {PRICE_INDIVIDUAL}  
+- **Pareja:** {PRICE_PAIR}  
+
+💵 **Pago en efectivo en el centro**  
+
+📍 [Ir a la ubicación]({PAGO_EFECTIVO})
+
+**Transferencia (IBAN):** `{BANK_IBAN}`  
+
+⚠️ *La plaza se confirma tras recibir el pago.*
+""".strip()
+    )
+
+# ---------------- Main UI ----------------
 left, right = st.columns(2)
 
 with left:
+
+    gender = st.selectbox("Categoría", ["Masculino", "Femenino"])
+
     modality = st.selectbox("Modalidad", ["Individual", "Pareja"])
+
     is_pair = modality == "Pareja"
-    people_needed = 2 if is_pair else 1
-    activity = ACTIVITY_PAIR if is_pair else ACTIVITY_INDIVIDUAL
 
-    st.markdown(f"**Modalidad seleccionada:** {modality}")
+    # Paso 4 (AQUÍ VA)
+    st.markdown(f"**Categoría seleccionada:** {gender} - {modality}")
 
-    remaining_slots = capacity["remaining_slots"]
-    st.info(
-        f"Plazas disponibles: {remaining_slots} de {TOTAL_CAPACITY}"
-    )
+    activity = f"Hyrox {modality}"
 
-    if remaining_slots <= 3 and remaining_slots > 0:
-        st.warning(f"⚠️ ¡Solo quedan {remaining_slots} plazas!")
-
-    if remaining_slots < people_needed:
-        if is_pair:
-            st.error("No quedan 2 plazas libres para inscribir una pareja.")
-        else:
-            st.error("No quedan plazas disponibles.")
+    filtered = [s for s in sessions
+                if s["activity"] == activity and s["remaining"] > 0]
+    
+    if not filtered:
+        st.warning("Todas las plazas de esta categoría están completas.")
         st.stop()
 
+    option_map = {}
+    options = []
+
+    for s in filtered:
+        label = f"{s['start_time'][:5]}-{s['end_time'][:5]} · {s['remaining']}/{s['capacity']}"
+        options.append(label)
+        option_map[label] = s
+
+    selected_label = st.radio("Turno", options)
+    selected_session = option_map[selected_label]
+
+    remaining = selected_session["remaining"]
+
+    if remaining <= 3:
+        st.warning(f"⚠️ ¡Solo quedan {remaining} plazas!")
+    else:
+        st.info(f"Plazas disponibles: {remaining}")
+
+
 with right:
+
     with st.form("booking_form", clear_on_submit=True):
-        st.warning(
-            "⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago."
-        )
+        
+        st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
 
         full_name = st.text_input("Nombre y Apellido")
         phone = st.text_input("Teléfono")
@@ -352,158 +341,194 @@ with right:
         partner_email = ""
 
         if is_pair:
+
             st.markdown("### Segunda persona")
+
             partner_full_name = st.text_input("Nombre y Apellido (segunda persona)")
             partner_phone = st.text_input("Teléfono (segunda persona)")
             partner_email = st.text_input("Email (segunda persona)")
-
+            
         consent = st.checkbox("Acepto el uso de datos")
+
         submit = st.form_submit_button("Reservar plaza")
 
-        if submit:
-            if not consent:
-                st.error("Debes aceptar el uso de datos.")
-                st.stop()
+    if submit:
+        
+        if not consent:
+            st.error("Debes aceptar el uso de datos.")
+            st.stop()
 
-            if not full_name.strip():
-                st.error("Introduce tu nombre.")
-                st.stop()
+        if not full_name.strip():
+            st.error("Introduce tu nombre.")
+            st.stop()
 
-            if not phone.strip():
-                st.error("Introduce tu teléfono.")
-                st.stop()
+        if not phone.strip():
+            st.error("Introduce tu teléfono.")
+            st.stop()
 
-            if not email.strip():
-                st.error("Introduce tu email.")
-                st.stop()
+        if not email.strip():
+            st.error("Introduce tu email.")
+            st.stop()
 
-            if is_pair and not partner_full_name.strip():
+        if is_pair:
+            if not partner_full_name.strip():
                 st.error("Introduce el nombre de la segunda persona.")
                 st.stop()
 
-            current_bookings = fetch_bookings(EVENT_DATE)
-            current_capacity = get_capacity_status(current_bookings)
-            current_remaining = current_capacity["remaining_slots"]
+        ok, msg = create_booking_atomic(
+            selected_session["id"],
+            full_name,
+            phone,
+            email,
+            partner_full_name if is_pair else None,
+            partner_phone if is_pair else None,
+            partner_email if is_pair else None,
+        )
 
-            if current_remaining < people_needed:
-                if is_pair:
-                    st.error("Mientras completabas el formulario se agotaron las 2 plazas necesarias.")
-                else:
-                    st.error("Mientras completabas el formulario se agotaron las plazas.")
-                st.stop()
+        if ok:
 
-            ok, msg = create_booking_atomic(
-                session_map[activity]["id"],
-                full_name=full_name,
-                phone=phone,
-                email=email,
-                partner_full_name=partner_full_name if is_pair else None,
-                partner_phone=partner_phone if is_pair else None,
-                partner_email=partner_email if is_pair else None,
-            )
+            subject = "HYROX - Inscripción recibida (pendiente de pago)"
 
-            if ok:
-                subject = "HYROX - Inscripción recibida (pendiente de pago)"
-                html = get_confirmation_email_html(EVENT_DATE, modality)
+            html = f"""
+            <h2>Inscripción recibida</h2>
 
-                email_sent = send_email(email, subject, html)
-                if not email_sent:
-                    st.warning("Inscripción creada pero el email principal no pudo enviarse.")
+            <p>Evento HYROX</p>
 
-                if is_pair and partner_email:
-                    send_email(partner_email, subject, html)
+            <ul>
+            <li>Fecha: {event_date}</li>
+            <li>Categoría: {activity}</li>
+            <li>Horario: {selected_session['start_time'][:5]}-{selected_session['end_time'][:5]}</li>
+            </ul>
 
-                st.success(msg)
-                st.rerun()
-            else:
-                st.error(msg)
+            <p>Tu plaza está pendiente de pago.</p>
+            """
+
+            email_sent = send_email(email, subject, html)
+
+            if not email_sent:
+                st.warning("Reserva creada pero el email no pudo enviarse.")
+
+            if is_pair:
+                send_email(partner_email, subject, html)
+
+            st.success(msg)
+
+            st.rerun()
+
+        else:
+
+            st.error(msg)
+
 
 
 # ---------------- Admin ----------------
 st.divider()
-with st.expander(ADMIN_TITLE):
+
+with st.expander("Panel admin"):
+
     pw = st.text_input("Password", type="password")
 
     if pw == get_admin_password():
-        rows = fetch_bookings(EVENT_DATE)
-        df = pd.DataFrame(rows)
-        capacity = get_capacity_status(rows)
 
-        admin_col1, admin_col2, admin_col3 = st.columns(3)
-        admin_col1.metric("Aforo total", capacity["total_capacity"])
-        admin_col2.metric("Plazas ocupadas", capacity["used_slots"])
-        admin_col3.metric("Plazas restantes", capacity["remaining_slots"])
+        rows = fetch_bookings(event_date)
+        df = pd.DataFrame(rows)
+
+        st.markdown("### Plazas por turno")
+
+        sessions_df = pd.DataFrame(sessions)
+
+        sessions_df["ocupadas"] = sessions_df["booked"]
+        sessions_df["restantes"] = sessions_df["remaining"]
+
+        st.dataframe(
+            sessions_df[["activity","start_time","end_time","ocupadas","restantes"]],
+            use_container_width=True
+        )
 
         if df.empty:
             st.warning("Aún no hay inscripciones.")
             st.stop()
 
-        df["estado_pago"] = df["paid"].apply(lambda paid: "✅ Pagado" if paid else "💰 Pendiente")
-        df = df.sort_values(by=["paid", "created_at"], ascending=[True, True])
+        # Crear columna visual de estado
+        df["estado_pago"] = df["paid"].apply(
+            lambda x: "✅ Pagado" if x else "💰 Pendiente"
+        )
 
+        # Ordenar pendientes arriba
+        df = df.sort_values(by="paid")
+
+        # Contadores
         pendientes = df[df["paid"] == False].shape[0]
         pagados = df[df["paid"] == True].shape[0]
 
         st.info(f"💰 Pendientes: {pendientes} | ✅ Pagados: {pagados}")
 
-        modality_summary = (
-            df.groupby("modality", dropna=False)["people_count"]
-            .sum()
-            .reset_index()
-            .rename(columns={"people_count": "personas_inscritas"})
-        )
-        st.markdown("### Resumen por modalidad")
-        st.dataframe(modality_summary, use_container_width=True)
-
         busqueda = st.text_input("Buscar por nombre o email")
+
         if busqueda:
             df = df[
-                df["full_name"].str.contains(busqueda, case=False, na=False)
-                | df["email"].str.contains(busqueda, case=False, na=False)
+                df["full_name"].str.contains(busqueda, case=False, na=False) |
+                df["email"].str.contains(busqueda, case=False, na=False)
             ]
 
         filtro = st.radio(
             "Filtrar inscripciones",
             ["Todas", "Pendientes", "Pagadas"],
-            horizontal=True,
+            horizontal=True
         )
+
         if filtro == "Pendientes":
             df = df[df["paid"] == False]
+
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
 
         st.dataframe(df, use_container_width=True)
 
-        if df.empty:
-            st.warning("No hay inscripciones con los filtros actuales.")
-            st.stop()
-
         st.markdown("### Confirmar pago")
-        booking_id = st.selectbox("Seleccionar inscripción", df["id"], key="pay_booking")
+
+        booking_id = st.selectbox(
+            "Seleccionar inscripción",
+            df["id"]
+        )
 
         if st.button("Marcar como pagado"):
-            (
-                sb.table("bookings")
-                .update({"paid": True})
-                .eq("id", booking_id)
-                .execute()
-            )
 
-            resp = (
-                sb.table("bookings")
-                .select("email, partner_email, sessions(event_date, activity)")
-                .eq("id", booking_id)
-                .single()
+            sb.table("bookings") \
+                .update({"paid": True}) \
+                .eq("id", booking_id) \
                 .execute()
-            )
+
+            # 🔥 volver a traer datos actualizados
+            resp = sb.table("bookings") \
+                .select("email, partner_email, sessions(event_date, activity, start_time, end_time)") \
+                .eq("id", booking_id) \
+                .single() \
+                .execute()
 
             row = resp.data
-            session = row["sessions"]
-            modality_text = "Pareja" if session["activity"] == ACTIVITY_PAIR else "Individual"
+            s = row["sessions"]
+
             subject = "HYROX - Inscripción confirmada"
-            html = get_paid_email_html(session["event_date"], modality_text)
+
+            html = f"""
+            <h2>Pago recibido</h2>
+
+            <p>Tu inscripción está confirmada.</p>
+
+            <ul>
+            <li><strong>Fecha:</strong> {s['event_date']}</li>
+            <li><strong>Categoría:</strong> {s['activity']}</li>
+            <li><strong>Horario:</strong> {s['start_time'][:5]}-{s['end_time'][:5]}</li>
+            </ul>
+            
+            <p>📍 Recuerda llegar con antelación.</p>
+
+            <p>¡Nos vemos en HYROX! 💥</p>
+            """
 
             send_email(row["email"], subject, html)
+
             if row["partner_email"]:
                 send_email(row["partner_email"], subject, html)
 
@@ -511,28 +536,31 @@ with st.expander(ADMIN_TITLE):
             st.rerun()
 
         st.markdown("### Eliminar inscripción")
+
         delete_id = st.selectbox(
             "Seleccionar inscripción a eliminar",
             df["id"],
-            key="delete_booking",
+            key="delete_booking"
         )
 
         if st.button("Eliminar inscripción"):
-            (
-                sb.table("bookings")
-                .delete()
-                .eq("id", delete_id)
+
+            sb.table("bookings") \
+                .delete() \
+                .eq("id", delete_id) \
                 .execute()
-            )
-            st.success("Inscripción eliminada. Las plazas vuelven a estar disponibles.")
+
+            st.success("Inscripción eliminada. La plaza vuelve a estar disponible.")
             st.rerun()
 
+        # Descargar CSV
         csv_buf = io.StringIO()
         df.to_csv(csv_buf, index=False)
+
         st.download_button(
             "Descargar CSV",
             csv_buf.getvalue(),
-            file_name=f"inscritos_{EVENT_DATE}.csv",
+            file_name=f"inscritos_{event_date}.csv"
         )
 
     elif pw:
