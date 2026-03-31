@@ -74,6 +74,7 @@ WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
 MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
+PAGO_EFECTIVO_H = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
 ENTRADA_GENERAL = "25€ (50€ por pareja)"
 ENTRADA_USUARIOS = "20€ (40€ por pareja)"
@@ -246,7 +247,7 @@ activities = sorted({s["activity"] for s in sessions})
 # ---------------- Sidebar ----------------
 with st.sidebar:
     st.markdown("## HYROX")
-    st.caption("Selecciona categoría, modalidad y turno. Plazas limitadas.")
+    st.caption("Selecciona categoría y modalidad. Plazas limitadas. El aforo total es de 100 personas.")
     st.divider()
 
     st.markdown("**Fecha del evento**")
@@ -274,11 +275,15 @@ with st.sidebar:
 - **Entrada general:** {ENTRADA_GENERAL}  
 - **Entrada usuarios:** {ENTRADA_USUARIOS}  
 
-💵 **Pago en efectivo en el centro**  
+💵 **Opciones de pago:**
+- **Pago en efectivo en nuestros centros**  
 
-📍 [Ir a la ubicación]({PAGO_EFECTIVO})
+**Centro de Entrenamiento Inteligente Roberto Fernández**
+  [Ir a la ubicación]({PAGO_EFECTIVO})
+**Centro Entrenamiento Híbrido Roberto Fernández**
+  [Ir a la ubicación]({PAGO_EFECTIVO_H})
 
-**Transferencia (IBAN):** `{BANK_IBAN}`  
+- **Transferencia (IBAN):** `{BANK_IBAN}`  
 
 ⚠️ *La plaza se confirma tras recibir el pago.*
 """.strip()
