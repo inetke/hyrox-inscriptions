@@ -163,7 +163,6 @@ def fetch_sessions(event_date_str):
 import json
 
 def create_booking_atomic(
-    session_id,
     full_name,
     phone,
     email,
@@ -171,9 +170,8 @@ def create_booking_atomic(
     partner_phone=None,
     partner_email=None,
 ):
-
     payload = {
-        "p_session_id": int(session_id),
+        "p_event_date": EVENT_DATE,
         "p_full_name": full_name,
         "p_phone": phone,
         "p_email": email,
@@ -183,25 +181,18 @@ def create_booking_atomic(
     }
 
     try:
-        resp = sb.rpc("book_session_v2", payload).execute()
+        resp = sb.rpc("book_hyrox_event", payload).execute()
 
         if not resp.data:
             return False, "Error inesperado."
 
         result = resp.data[0]
 
-        # si viene como bytes lo convertimos
-        if isinstance(result, bytes):
-            result = json.loads(result.decode())
-
-        ok = result["ok"]
-        message = result["message"]
-
-        return ok, message
+        return result["ok"], result["message"]
 
     except Exception as e:
         st.error(f"RPC error: {e}")
-        return False, "Error en el servidor al crear la reserva."
+        return False, "Error en el servidor."
 
 def fetch_bookings(event_date_str):
 
@@ -305,30 +296,33 @@ with left:
 
     activity = f"Hyrox {modality}"
 
-    filtered = [s for s in sessions
-                if s["activity"] == activity and s["remaining"] > 0]
+    st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
     
-    if not filtered:
-        st.warning("Todas las plazas de esta categoría están completas.")
+    def fetch_total_remaining():
+    resp = (
+        sb.table("bookings")
+        .select("partner_full_name")
+        .execute()
+    )
+
+    occupied = 0
+
+    for row in (resp.data or []):
+        if row["partner_full_name"]:
+            occupied += 2
+        else:
+            occupied += 1
+
+    return 100 - occupied
+
+    remaining = fetch_total_remaining()
+
+    if remaining <= 0:
+        st.error("❌ Evento completo")
         st.stop()
 
-    option_map = {}
-    options = []
-
-    for s in filtered:
-        label = f"{s['start_time'][:5]}-{s['end_time'][:5]} · {s['remaining']}/{s['capacity']}"
-        options.append(label)
-        option_map[label] = s
-
-    selected_label = st.radio("Turno", options)
-    selected_session = option_map[selected_label]
-
-    remaining = selected_session["remaining"]
-
-    if remaining <= 3:
-        st.warning(f"⚠️ ¡Solo quedan {remaining} plazas!")
-    else:
-        st.info(f"Plazas disponibles: {remaining}")
+    st.info(f"🎟️ Plazas disponibles: {remaining}/100")
+    st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
 
 
 with right:
@@ -381,7 +375,6 @@ with right:
                 st.stop()
 
         ok, msg = create_booking_atomic(
-            selected_session["id"],
             full_name,
             phone,
             email,
@@ -402,8 +395,6 @@ with right:
             <ul>
             <li>Fecha: {event_date}</li>
             <li>Categoría: {activity}</li>
-            <li>Horario: {selected_session['start_time'][:5]}-{selected_session['end_time'][:5]}</li>
-            </ul>
 
             <p>Tu plaza está pendiente de pago.</p>
             """
@@ -524,8 +515,7 @@ with st.expander("Panel admin"):
             <ul>
             <li><strong>Fecha:</strong> {s['event_date']}</li>
             <li><strong>Categoría:</strong> {s['activity']}</li>
-            <li><strong>Horario:</strong> {s['start_time'][:5]}-{s['end_time'][:5]}</li>
-            </ul>
+            <p>📢 Una semana antes te comunicaremos la tanda asignada.</p>
             
             <p>📍 Recuerda llegar con antelación.</p>
 
