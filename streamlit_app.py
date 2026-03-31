@@ -474,7 +474,6 @@ with st.expander("Panel admin"):
                 .eq("id", booking_id) \
                 .execute()
 
-            # 🔥 volver a traer datos actualizados
             resp = sb.table("bookings") \
                 .select("email, partner_email, event_date, full_name, partner_full_name") \
                 .eq("id", booking_id) \
@@ -482,8 +481,12 @@ with st.expander("Panel admin"):
                 .execute()
 
             row = resp.data
-            
-            categoria = "Pareja" if row["partner_full_name"] else "Individual"
+
+            categoria = (
+                "Pareja"
+                if row.get("partner_full_name") and row["partner_full_name"].strip()
+                else "Individual"
+            )
 
             subject = "HYROX - Inscripción confirmada"
 
