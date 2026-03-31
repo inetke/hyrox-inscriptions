@@ -10,6 +10,7 @@ from supabase import create_client, Client
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
 
 col_logo = st.columns([1,2,1])[1]
+
 with col_logo:
     st.image("assets/logo.png", use_container_width=True)
 
@@ -19,7 +20,7 @@ st.markdown(
         Inscripción Competición HYROX
     </h1>
     <p style='text-align:center; opacity:0.8;'>
-        Plazas limitadas. Evento sin turnos.
+        Plazas limitadas.
     </p>
     """,
     unsafe_allow_html=True
@@ -27,9 +28,32 @@ st.markdown(
 
 st.info("Una semana antes del evento se comunicará a cada participante la tanda en la que competirá.")
 
+st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
+
+# ---------------- CSS ----------------
+st.markdown(
+    """
+<style>
+.card { padding:16px; border-radius:16px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); margin-bottom:12px;}
+.small { opacity:0.8; font-size:0.9rem; }
+div[data-testid="stForm"] { padding:16px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);}
+.block-container { padding-top:1.5rem; }
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
 # ---------------- Constants ----------------
 EVENT_DATE = "2026-05-16"
 MAX_CAPACITY = 100
+
+WHATSAPP_PHONE = "34659092227"
+INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
+MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
+PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
+BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
+PRICE_INDIVIDUAL = "20€"
+PRICE_PAIR = "40€ por pareja"
 
 # ---------------- Supabase ----------------
 def get_supabase() -> Client:
@@ -53,7 +77,7 @@ def send_email(to_email: str, subject: str, html_content: str):
         })
         return True
     except Exception as e:
-        st.error(f"Error email: {e}")
+        st.error(f"Error enviando email: {e}")
         return False
 
 # ---------------- Helpers ----------------
@@ -94,19 +118,49 @@ def create_booking_atomic(
             "p_event_date": EVENT_DATE
         }).execute()
 
-        return True, "Inscripción registrada correctamente."
+        return True, "Inscripción creada correctamente."
 
     except Exception as e:
         return False, str(e)
 
-# ---------------- Sidebar (NO TOCADO) ----------------
+# ---------------- Sidebar (INTACTO) ----------------
 with st.sidebar:
     st.markdown("## HYROX")
-    st.caption("Selecciona modalidad y completa tus datos.")
+    st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
     st.divider()
 
     st.markdown("**Fecha del evento**")
     st.write(EVENT_DATE)
+
+    st.divider()
+    st.markdown("**📍 Ubicación**")
+    st.link_button("Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💬 Contacto**")
+
+    wa_text = "Hola! Quiero información sobre la inscripción HYROX."
+    whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
+    st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
+
+    st.link_button("Instagram", INSTAGRAM_URL, use_container_width=True)
+
+    st.divider()
+    st.markdown("**💶 Precio y pago**")
+    st.markdown(
+        f"""
+- **Individual:** {PRICE_INDIVIDUAL}  
+- **Pareja:** {PRICE_PAIR}  
+
+💵 **Pago en efectivo en el centro**  
+
+📍 [Ir a la ubicación]({PAGO_EFECTIVO})
+
+**Transferencia (IBAN):** `{BANK_IBAN}`  
+
+⚠️ *La plaza se confirma tras recibir el pago.*
+"""
+    )
 
 # ---------------- Main UI ----------------
 left, right = st.columns(2)
@@ -128,13 +182,15 @@ with left:
         st.stop()
 
     if remaining <= 10:
-        st.warning(f"⚠️ Solo quedan {remaining} plazas")
+        st.warning(f"⚠️ ¡Solo quedan {remaining} plazas!")
     else:
         st.info(f"Plazas disponibles: {remaining}")
 
 with right:
 
     with st.form("booking_form", clear_on_submit=True):
+
+        st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
 
         full_name = st.text_input("Nombre y Apellido")
         phone = st.text_input("Teléfono")
@@ -146,11 +202,12 @@ with right:
 
         if is_pair:
             st.markdown("### Segunda persona")
-            partner_full_name = st.text_input("Nombre segunda persona")
-            partner_phone = st.text_input("Teléfono segunda persona")
-            partner_email = st.text_input("Email segunda persona")
+            partner_full_name = st.text_input("Nombre y Apellido (segunda persona)")
+            partner_phone = st.text_input("Teléfono (segunda persona)")
+            partner_email = st.text_input("Email (segunda persona)")
 
         consent = st.checkbox("Acepto el uso de datos")
+
         submit = st.form_submit_button("Reservar plaza")
 
     if submit:
@@ -172,10 +229,9 @@ with right:
             st.stop()
 
         if is_pair and not partner_full_name.strip():
-            st.error("Introduce la segunda persona.")
+            st.error("Introduce el nombre de la segunda persona.")
             st.stop()
 
-        # 🔥 control capacidad
         slots_needed = 2 if is_pair else 1
         if get_total_slots() + slots_needed > MAX_CAPACITY:
             st.error("No quedan suficientes plazas.")
@@ -205,7 +261,7 @@ with right:
 
             <p>Tu plaza está pendiente de pago.</p>
 
-            <p>Una semana antes del evento recibirás tu tanda de competición.</p>
+            <p>Una semana antes del evento se comunicará tu tanda.</p>
             """
 
             send_email(email, subject, html)
@@ -219,7 +275,7 @@ with right:
         else:
             st.error(msg)
 
-# ---------------- Admin ----------------
+# ---------------- Admin (CASI INTACTO) ----------------
 st.divider()
 
 with st.expander("Panel admin"):
