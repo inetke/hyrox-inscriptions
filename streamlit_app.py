@@ -517,11 +517,16 @@ with st.expander("Panel admin"):
             email_sent = send_email(row["email"], subject, html)
 
             if not email_sent:
-                st.error("No se pudo enviar el email de confirmación")
+                st.error("No se pudo enviar el email principal")
                 st.stop()
 
+            partner_sent = True
+
             if row.get("partner_email") and str(row["partner_email"]).strip():
-                send_email(row["partner_email"], subject, html)
+                partner_sent = send_email(row["partner_email"], subject, html)
+
+            if not partner_sent:
+                st.warning("El correo de la segunda persona no pudo enviarse")
 
             st.success("Pago confirmado y emails enviados.")
             st.rerun()
