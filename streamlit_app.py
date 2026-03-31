@@ -226,6 +226,23 @@ def fetch_bookings(event_date_str):
 
     return rows
 
+def fetch_total_remaining():
+        resp = (
+            sb.table("bookings")
+            .select("partner_full_name")
+            .execute()
+        )
+
+        occupied = 0
+
+        for row in (resp.data or []):
+            if row["partner_full_name"]:
+                occupied += 2
+            else:
+                occupied += 1
+
+        return 100 - occupied
+
 
 # ---------------- Load sessions / activities ----------------
 sessions = fetch_sessions(event_date)
@@ -295,25 +312,6 @@ with left:
     st.markdown(f"**Categoría seleccionada:** {gender} - {modality}")
 
     activity = f"Hyrox {modality}"
-
-    st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
-    
-    def fetch_total_remaining():
-    resp = (
-        sb.table("bookings")
-        .select("partner_full_name")
-        .execute()
-    )
-
-    occupied = 0
-
-    for row in (resp.data or []):
-        if row["partner_full_name"]:
-            occupied += 2
-        else:
-            occupied += 1
-
-    return 100 - occupied
 
     remaining = fetch_total_remaining()
 
