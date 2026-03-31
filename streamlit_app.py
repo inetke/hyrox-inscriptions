@@ -75,8 +75,8 @@ INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFz
 MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
-PRICE_INDIVIDUAL = "20€"
-PRICE_PAIR = "40€ por pareja"
+ENTRADA_GENERAL = "25€ (50€ por pareja)"
+ENTRADA_USUARIOS = "20€ (40€ por pareja)"
 
 
 # ---------------- Secrets / Clients ----------------
@@ -271,8 +271,8 @@ with st.sidebar:
     st.markdown("**💶 Precio y pago**")
     st.markdown(
         f"""
-- **Individual:** {PRICE_INDIVIDUAL}  
-- **Pareja:** {PRICE_PAIR}  
+- **Entrada general:** {ENTRADA_GENERAL}  
+- **Entrada usuarios:** {ENTRADA_USUARIOS}  
 
 💵 **Pago en efectivo en el centro**  
 
