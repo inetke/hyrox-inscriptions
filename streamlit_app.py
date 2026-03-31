@@ -76,6 +76,7 @@ MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 PAGO_EFECTIVO_H = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
+PAGO_BIZUM = "34659092227"
 ENTRADA_GENERAL = "25€ (50€ por pareja)"
 ENTRADA_USUARIOS = "20€ (40€ por pareja)"
 
@@ -278,6 +279,8 @@ with st.sidebar:
   [Ir a la ubicación]({PAGO_EFECTIVO_H})
 
 - **Transferencia (IBAN):** `{BANK_IBAN}`  
+
+- **Bizum:** {PAGO_BIZUM}
 
 ⚠️ *La plaza se confirma tras recibir el pago.*
 """.strip()
