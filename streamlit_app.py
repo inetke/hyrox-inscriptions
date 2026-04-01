@@ -160,6 +160,17 @@ def fetch_sessions(event_date_str):
 
     return sessions
 
+def is_registration_open():
+    resp = (
+        sb.table("event_settings")
+        .select("registration_open")
+        .eq("event_date", EVENT_DATE)
+        .single()
+        .execute()
+    )
+
+    return resp.data["registration_open"]
+
 # ---------------- Create booking ----------------
 import json
 
@@ -290,6 +301,12 @@ MUY IMPORTANTE (Referencia/Concepto):
 """.strip()
     )
 
+    
+if not is_registration_open():
+    st.error("❌ Las inscripciones ya están cerradas.")
+    st.info("Gracias por vuestro interés. El plazo de inscripción ha finalizado.")
+    st.stop()
+    
 # ---------------- Main UI ----------------
 left, right = st.columns(2)
 
@@ -309,7 +326,7 @@ with left:
     remaining = fetch_total_remaining()
 
     if remaining <= 0:
-        st.error("❌ Evento completo")
+        st.error("❌ Evento completo. Inscripciones cerradas."")
         st.stop()
 
     st.info(f"🎟️ Plazas disponibles: {remaining}/100")
