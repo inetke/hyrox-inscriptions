@@ -287,7 +287,7 @@ with st.sidebar:
 MUY IMPORTANTE (Referencia/Concepto):
     Escribe obligatoriamente tu Nombre y Apellidos.*
 """.strip()
-    
+    )
 
 # ---------------- Main UI ----------------
 left, right = st.columns(2)
