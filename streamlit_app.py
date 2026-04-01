@@ -275,6 +275,7 @@ with st.sidebar:
 
 **Centro de Entrenamiento Inteligente Roberto Fernández**
   [Ir a la ubicación]({PAGO_EFECTIVO})
+  
 **Roberto Fernández Hyrox Training Club**
   [Ir a la ubicación]({PAGO_EFECTIVO_H})
 
