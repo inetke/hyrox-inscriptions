@@ -504,9 +504,9 @@ with st.expander("Panel admin"):
             subject = "HYROX - Pago recibido y plaza confirmada"
 
             html = f"""
-            <h2>✅ Pago recibido</h2>
+            <p>Hola,</p>
 
-            <p>Tu inscripción está <strong>confirmada</strong>.</p>
+            <p>Hemos recibido correctamente tu pago y tu plaza para HYROX está confirmada.</p>
 
             <ul>
                 <li><strong>Fecha:</strong> {row['event_date']}</li>
