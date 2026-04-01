@@ -24,7 +24,7 @@ st.markdown(
         Inscripción Competición HYROX
     </h1>
     <p style='text-align:center; opacity:0.8;'>
-        Plazas limitadas.
+        OUR SPORT IS HYROX. Plazas limitadas.
     </p>
     """,
     unsafe_allow_html=True
