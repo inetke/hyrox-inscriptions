@@ -285,7 +285,7 @@ with st.sidebar:
 ⚠️ *La plaza se confirma tras recibir el pago.*
 """.strip()
     )
-⚠️ *MUY IMPORTANTE (Referencia/Concepto):
+   *MUY IMPORTANTE (Referencia/Concepto):
     Escribe obligatoriamente tu Nombre y Apellidos.*
 """.strip()
     )
