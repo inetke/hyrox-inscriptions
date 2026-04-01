@@ -21,7 +21,7 @@ with col_logo:
 st.markdown(
     """
     <h1 style='text-align:center; margin-top:10px;'>
-        Inscripción Competición HYROX
+        Inscripción EVENTO HYROX
     </h1>
     <p style='text-align:center; opacity:0.8;'>
         OUR SPORT IS HYROX. Plazas limitadas.
