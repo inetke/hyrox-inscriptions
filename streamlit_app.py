@@ -275,7 +275,7 @@ with st.sidebar:
 
 **Centro de Entrenamiento Inteligente Roberto Fernández**
   [Ir a la ubicación]({PAGO_EFECTIVO})
-**Centro Entrenamiento Híbrido Roberto Fernández**
+**Roberto Fernández Hyrox Training Club**
   [Ir a la ubicación]({PAGO_EFECTIVO_H})
 
 - **Transferencia (IBAN):** `{BANK_IBAN}`  
@@ -283,6 +283,10 @@ with st.sidebar:
 - **Bizum:** {PAGO_BIZUM}
 
 ⚠️ *La plaza se confirma tras recibir el pago.*
+""".strip()
+    )
+⚠️ *MUY IMPORTANTE (Referencia/Concepto):
+    Escribe obligatoriamente tu Nombre y Apellidos.*
 """.strip()
     )
 
