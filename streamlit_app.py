@@ -77,8 +77,8 @@ PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 PAGO_EFECTIVO_H = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BANK_IBAN = "ES12 1234 0000 0000 0000 0000"
 PAGO_BIZUM = "+34 659 09 22 27"
-ENTRADA_GENERAL = "25€ (50€ por pareja)"
-ENTRADA_USUARIOS = "20€ (40€ por pareja)"
+ENTRADA_GENERAL = "25€ individual · 50€ dobles"
+ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
 
 
 # ---------------- Secrets / Clients ----------------
@@ -293,9 +293,9 @@ with left:
 
     gender = st.selectbox("Categoría", ["Masculino", "Femenino"])
 
-    modality = st.selectbox("Modalidad", ["Individual", "Pareja"])
+    modality = st.selectbox("Modalidad", ["Individual", "Dobles"])
 
-    is_pair = modality == "Pareja"
+    is_pair = modality == "Dobles"
 
     # Paso 4 (AQUÍ VA)
     st.markdown(f"**Categoría seleccionada:** {gender} - {modality}")
@@ -492,7 +492,7 @@ with st.expander("Panel admin"):
                 st.stop()
 
             modalidad = (
-                "Pareja"
+                "Dobles"
                 if row.get("partner_full_name")
                 and str(row["partner_full_name"]).strip()
                 else "Individual"
