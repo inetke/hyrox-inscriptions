@@ -515,7 +515,7 @@ with st.expander("Panel admin"):
 
             <p>📢 Una semana antes te comunicaremos la tanda asignada.</p>
 
-            <p>📍 Recuerda llegar con antelación.</p>
+            <p>Recuerda llegar con antelación.</p>
 
             <p>¡Nos vemos en HYROX! 💥</p>
             """
