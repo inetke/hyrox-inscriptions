@@ -282,10 +282,10 @@ with st.sidebar:
 
 - **Bizum:** {PAGO_BIZUM}
 
-⚠️ *La plaza se confirma tras recibir el pago.
+⚠️ La plaza se confirma tras recibir el pago.
 
 MUY IMPORTANTE (Referencia/Concepto):
-    Escribe obligatoriamente tu Nombre y Apellidos.*
+    Escribe obligatoriamente tu Nombre y Apellidos.
 """.strip()
     )
 
