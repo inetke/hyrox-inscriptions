@@ -199,7 +199,7 @@ def fetch_bookings(event_date_str):
     resp = (
         sb.table("bookings")
         .select(
-            "id,event_date,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid"
+            "id,event_date,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,modality"
         )
         .eq("event_date", event_date_str)
         .execute()
@@ -214,6 +214,7 @@ def fetch_bookings(event_date_str):
             "full_name": r["full_name"],
             "email": r["email"],
             "partner_email": r["partner_email"],
+            "modality": r["modality"],
             "paid": r["paid"],
             "created_at": r["created_at"]
         })
