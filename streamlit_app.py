@@ -312,7 +312,7 @@ with left:
         st.error("❌ Evento completo")
         st.stop()
 
-    st.info(f"🎟️ Plazas disponibles: {remaining}/100")
+    #st.info(f"🎟️ Plazas disponibles: {remaining}/100")
     st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
 
 
@@ -425,7 +425,7 @@ with st.expander("Panel admin"):
         remaining = fetch_total_remaining()
         occupied = 100 - remaining
 
-        st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
+        #st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
         
         if df.empty:
             st.warning("Aún no hay inscripciones.")
