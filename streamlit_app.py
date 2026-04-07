@@ -167,6 +167,7 @@ def create_booking_atomic(
     full_name,
     phone,
     email,
+    modality,
     partner_full_name=None,
     partner_phone=None,
     partner_email=None,
