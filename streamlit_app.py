@@ -368,13 +368,13 @@ with right:
                 st.stop()
 
         ok, msg = create_booking_atomic(
-            full_name,
-            phone,
-            email,
-            modality,
-            partner_full_name if is_pair else None,
-            partner_phone if is_pair else None,
-            partner_email if is_pair else None,
+            full_name=full_name,
+            phone=phone,
+            email=email,
+            modality=modality,
+            partner_full_name=partner_full_name if is_pair else None,
+            partner_phone=partner_phone if is_pair else None,
+            partner_email=partner_email if is_pair else None,
         )
 
         if ok:
