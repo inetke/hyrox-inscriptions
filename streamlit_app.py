@@ -298,7 +298,7 @@ left, right = st.columns(2)
 
 with left:
 
-    gender = st.selectbox("Categoría", ["Masculino", "Femenino"])
+    gender = st.selectbox("Categoría", ["Masculino", "Femenino", "Mixto"])
 
     modality = st.selectbox("Modalidad", ["Individual", "Dobles"])
 
