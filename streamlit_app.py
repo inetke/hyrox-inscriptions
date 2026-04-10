@@ -448,6 +448,43 @@ with st.expander("Panel admin"):
         pagados = df[df["paid"] == True].shape[0]
 
         st.info(f"💰 Pendientes: {pendientes} | ✅ Pagados: {pagados}")
+        
+        if st.button("📩 Enviar recordatorio a pendientes"):
+
+            pendientes_df = df[df["paid"] == False]
+        
+            enviados = 0
+            errores = 0
+
+            for _, row in pendientes_df.iterrows():
+
+                subject = "Recordatorio de pago - HYROX"
+
+                html = f"""
+                <p>Hola {row['full_name']},</p>
+
+                <p>Te recordamos que tu plaza para el evento HYROX sigue <strong>pendiente de pago</strong>.</p>
+
+                <p>Para confirmar tu inscripción, realiza el pago lo antes posible.</p>
+                
+                <p><strong>Bizum:</strong> {PAGO_BIZUM}</p>
+                <p><strong>IBAN:</strong> {BANK_IBAN}</p>
+
+                <p>Referencia: nombre y apellidos</p>
+
+                <p>⚠️ Las plazas son limitadas y no podremos garantizar la reserva sin pago.</p>
+
+                <p>Gracias 💥</p>
+                """
+
+        enviado = send_email(row["email"], subject, html)
+
+        if enviado:
+            enviados += 1
+        else:
+            errores += 1
+
+    st.success(f"Emails enviados: {enviados} | errores: {errores}")
 
         busqueda = st.text_input("Buscar por nombre o email")
 
