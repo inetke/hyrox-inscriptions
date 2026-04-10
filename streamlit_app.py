@@ -477,14 +477,14 @@ with st.expander("Panel admin"):
                 <p>Gracias 💥</p>
                 """
 
-        enviado = send_email(row["email"], subject, html)
+                enviado = send_email(row["email"], subject, html)
 
-        if enviado:
-            enviados += 1
-        else:
-            errores += 1
+                if enviado:
+                    enviados += 1
+                else:
+                    errores += 1
 
-    st.success(f"Emails enviados: {enviados} | errores: {errores}")
+            st.success(f"Emails enviados: {enviados} | errores: {errores}")
 
         busqueda = st.text_input("Buscar por nombre o email")
 
