@@ -467,6 +467,8 @@ with st.expander("Panel admin"):
 
                 <p>Para confirmar tu inscripción, realiza el pago lo antes posible.</p>
                 
+                <p><strong>Opciones de pago:</strong></p>
+                <p><strong>Pago en efectivo:</strong> Disponible en nuestros centros</p>
                 <p><strong>Bizum:</strong> {PAGO_BIZUM}</p>
                 <p><strong>IBAN:</strong> {BANK_IBAN}</p>
 
