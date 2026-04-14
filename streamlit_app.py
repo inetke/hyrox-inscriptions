@@ -315,7 +315,7 @@ with left:
         st.error("❌ Evento completo")
         st.stop()
 
-    st.info(f"🎟️ Plazas disponibles: {remaining}/100")
+    #st.info(f"🎟️ Plazas disponibles: {remaining}/100")
     st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
 
 
