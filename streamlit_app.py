@@ -239,7 +239,7 @@ def fetch_total_remaining():
         else:
             occupied += 1
 
-    return 75 - occupied
+    return 100 - occupied
 
 
 # ---------------- Sidebar ----------------
