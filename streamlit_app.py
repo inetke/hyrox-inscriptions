@@ -427,7 +427,7 @@ with st.expander("Panel admin"):
         st.markdown("### Aforo del evento")
 
         remaining = fetch_total_remaining()
-        occupied = 75 - remaining
+        occupied = 100 - remaining
 
         st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
         
