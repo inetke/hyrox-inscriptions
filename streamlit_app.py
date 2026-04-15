@@ -82,7 +82,7 @@ ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
 
 from datetime import datetime
 
-event_datetime = datetime.strptime(EVENT_DATE, "%Y-%m-%d")
+event_datetime = datetime.strptime("2026-05-16 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
 
 time_left = event_datetime - now
