@@ -5,6 +5,7 @@ import resend
 import pandas as pd
 import streamlit as st
 from supabase import create_client, Client
+from datetime import datetime
 
 
 # ---------------- Page config ----------------
@@ -79,8 +80,6 @@ BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
 PAGO_BIZUM = "+34 659 09 22 27"
 ENTRADA_GENERAL = "25€ individual · 50€ dobles"
 ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
-
-from datetime import datetime
 
 event_datetime = datetime.strptime("2026-05-16 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
