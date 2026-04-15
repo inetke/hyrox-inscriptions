@@ -32,29 +32,6 @@ st.markdown(
 
 st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
-from datetime import datetime
-
-event_datetime = datetime.strptime(EVENT_DATE, "%Y-%m-%d")
-now = datetime.now()
-
-time_left = event_datetime - now
-
-if time_left.total_seconds() > 0:
-    days = time_left.days
-    hours = time_left.seconds // 3600
-    minutes = (time_left.seconds % 3600) // 60
-
-    st.markdown(
-        f"""
-        <div style="text-align:center; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); margin-bottom:20px;">
-            ⏳ <strong>Faltan {days} días, {hours} horas y {minutes} minutos para el evento</strong>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-else:
-    st.success("💥 ¡Hoy es el día del evento!")
-
 # CSS (aplica a toda la app)
 st.markdown(
     """
@@ -102,6 +79,29 @@ BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
 PAGO_BIZUM = "+34 659 09 22 27"
 ENTRADA_GENERAL = "25€ individual · 50€ dobles"
 ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
+
+from datetime import datetime
+
+event_datetime = datetime.strptime(EVENT_DATE, "%Y-%m-%d")
+now = datetime.now()
+
+time_left = event_datetime - now
+
+if time_left.total_seconds() > 0:
+    days = time_left.days
+    hours = time_left.seconds // 3600
+    minutes = (time_left.seconds % 3600) // 60
+
+    st.markdown(
+        f"""
+        <div style="text-align:center; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); margin-bottom:20px;">
+            ⏳ <strong>Faltan {days} días, {hours} horas y {minutes} minutos para el evento</strong>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    st.success("💥 ¡Hoy es el día del evento!")
 
 
 # ---------------- Secrets / Clients ----------------
