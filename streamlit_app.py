@@ -5,7 +5,7 @@ import resend
 import pandas as pd
 import streamlit as st
 from supabase import create_client, Client
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 # ---------------- Page config ----------------
@@ -182,6 +182,18 @@ def fetch_sessions(event_date_str):
 
     return sessions
 
+# ---------------- Time slots helper -------------
+
+def generate_time_slots(start_time="08:00", interval=10, total_slots=30):
+    slots = []
+    current = datetime.strptime(start_time, "%H:%M")
+
+    for _ in range(total_slots):
+        slots.append(current.strftime("%H:%M"))
+        current += timedelta(minutes=interval)
+
+    return slots
+
 # ---------------- Create booking ----------------
 import json
 
@@ -223,7 +235,7 @@ def fetch_bookings(event_date_str):
     resp = (
         sb.table("bookings")
         .select(
-            "id,event_date,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,modality"
+            "id,event_date,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,modality,start_time"
         )
         .eq("event_date", event_date_str)
         .execute()
@@ -240,7 +252,8 @@ def fetch_bookings(event_date_str):
             "partner_email": r["partner_email"],
             "modality": r["modality"],
             "paid": r["paid"],
-            "created_at": r["created_at"]
+            "created_at": r["created_at"],
+            "start_time": r["start_time"]
         })
 
     return rows
@@ -529,11 +542,54 @@ with st.expander("Panel admin"):
 
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
+            
+        # Mostrar en tabla
+        df["start_time"] = df["start_time"].fillna("Not assigned")
 
         st.dataframe(df, use_container_width=True)
 
         st.markdown("### Confirmar pago")
+        
+        individual_slots = generate_time_slots(interval=10)
+        double_slots = generate_time_slots(interval=7)
+        
+        # Selector dinámico
+        st.markdown("### Assign start time")
 
+        selected_id = st.selectbox(
+            "Select booking",
+            df["id"],
+            key="time_booking"
+        )
+        
+        # Detectar modalidad
+        selected_row = df[df["id"] == selected_id].iloc[0]
+
+        modality = selected_row["modality"]
+        
+        # Dropdown según modalidad
+        if modality == "Dobles":
+            time_options = double_slots
+        else:
+            time_options = individual_slots
+
+        selected_time = st.selectbox(
+            "Start time",
+            time_options
+        )
+
+        # Guardar en supabase
+        if st.button("Save start time"):
+
+            sb.table("bookings") \
+                .update({"start_time": selected_time}) \
+                .eq("id", selected_id) \
+                .execute()
+
+            st.success("Start time assigned")
+            st.rerun()
+            
+        
         booking_id = st.selectbox(
             "Seleccionar inscripción",
             df["id"]
