@@ -182,18 +182,6 @@ def fetch_sessions(event_date_str):
 
     return sessions
 
-# ---------------- Time slots helper -------------
-
-def generate_time_slots(start_time="08:00", interval=10, total_slots=30):
-    slots = []
-    current = datetime.strptime(start_time, "%H:%M")
-
-    for _ in range(total_slots):
-        slots.append(current.strftime("%H:%M"))
-        current += timedelta(minutes=interval)
-
-    return slots
-
 # ---------------- Create booking ----------------
 import json
 
@@ -542,54 +530,11 @@ with st.expander("Panel admin"):
 
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
-            
-        # Mostrar en tabla
-        df["start_time"] = df["start_time"].fillna("Not assigned")
 
         st.dataframe(df, use_container_width=True)
 
         st.markdown("### Confirmar pago")
-        
-        individual_slots = generate_time_slots(interval=10)
-        double_slots = generate_time_slots(interval=7)
-        
-        # Selector dinámico
-        st.markdown("### Assign start time")
 
-        selected_id = st.selectbox(
-            "Select booking",
-            df["id"],
-            key="time_booking"
-        )
-        
-        # Detectar modalidad
-        selected_row = df[df["id"] == selected_id].iloc[0]
-
-        modality = selected_row["modality"]
-        
-        # Dropdown según modalidad
-        if modality == "Dobles":
-            time_options = double_slots
-        else:
-            time_options = individual_slots
-
-        selected_time = st.selectbox(
-            "Start time",
-            time_options
-        )
-
-        # Guardar en supabase
-        if st.button("Save start time"):
-
-            sb.table("bookings") \
-                .update({"start_time": selected_time}) \
-                .eq("id", selected_id) \
-                .execute()
-
-            st.success("Start time assigned")
-            st.rerun()
-            
-        
         booking_id = st.selectbox(
             "Seleccionar inscripción",
             df["id"]
