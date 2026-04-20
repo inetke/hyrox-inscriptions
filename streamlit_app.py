@@ -77,7 +77,7 @@ MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 PAGO_EFECTIVO_H = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
-PAGO_BIZUM = "+34 659 09 22 27"
+#PAGO_BIZUM = "+34 659 09 22 27"
 ENTRADA_GENERAL = "25€ individual · 50€ dobles"
 ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
 
@@ -307,7 +307,7 @@ with st.sidebar:
 
 - **Transferencia (IBAN):** `{BANK_IBAN}`  
 
-- **Bizum:** {PAGO_BIZUM}
+#- **Bizum:** {PAGO_BIZUM}
 
 ⚠️ La plaza se confirma tras recibir el pago.
 
@@ -492,7 +492,6 @@ with st.expander("Panel admin"):
                 
                 <p><strong>Opciones de pago:</strong></p>
                 <p><strong>Pago en efectivo:</strong> Disponible en nuestros centros</p>
-                <p><strong>Bizum:</strong> {PAGO_BIZUM}</p>
                 <p><strong>IBAN:</strong> {BANK_IBAN}</p>
 
                 <p>Referencia: nombre y apellidos</p>
