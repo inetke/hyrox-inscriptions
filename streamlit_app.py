@@ -333,7 +333,14 @@ with left:
 
     remaining = fetch_total_remaining()
     
-    if remaining <= 5:
+    if remaining <= 0:
+        st.error("❌ Evento completo")
+        st.stop()
+
+    elif remaining == 1:
+        st.error("🚨 ¡ÚLTIMA PLAZA DISPONIBLE!")
+
+    elif remaining <= 5:
         st.markdown(f"""
         <div style="
             padding:20px;
@@ -346,13 +353,6 @@ with left:
             <p style="font-size:18px;">No te quedes fuera</p>
         </div>
         """, unsafe_allow_html=True)
-    
-    if remaining == 1:
-        st.error("🚨 ¡ÚLTIMA PLAZA DISPONIBLE!")
-
-    if remaining <= 0:
-        st.error("❌ Evento completo")
-        st.stop()
         
     st.markdown("<br>", unsafe_allow_html=True)
 
