@@ -305,9 +305,7 @@ with st.sidebar:
 **Roberto Fernández Hyrox Training Club**
   [Ir a la ubicación]({PAGO_EFECTIVO_H})
 
-- **Transferencia (IBAN):** `{BANK_IBAN}`  
-
-#- **Bizum:** {PAGO_BIZUM}
+- **Transferencia (IBAN):** `{BANK_IBAN}`
 
 ⚠️ La plaza se confirma tras recibir el pago.
 
