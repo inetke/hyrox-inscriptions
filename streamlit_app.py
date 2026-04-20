@@ -353,6 +353,9 @@ with left:
             <p style="font-size:18px;">No te quedes fuera</p>
         </div>
         """, unsafe_allow_html=True)
+    
+    #elif remaining <= 10:
+    #st.warning("⚠️ Quedan pocas plazas")
         
     st.markdown("<br>", unsafe_allow_html=True)
 
