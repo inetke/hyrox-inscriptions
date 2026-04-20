@@ -353,9 +353,10 @@ with left:
     if remaining <= 0:
         st.error("❌ Evento completo")
         st.stop()
+        
+    st.markdown("<br>", unsafe_allow_html=True)
 
     #st.info(f"🎟️ Plazas disponibles: {remaining}/100")
-    
     st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
 
 
