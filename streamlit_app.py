@@ -332,6 +332,23 @@ with left:
     activity = f"Hyrox {modality}"
 
     remaining = fetch_total_remaining()
+    
+    if remaining <= 5:
+        st.markdown(f"""
+        <div style="
+            padding:20px;
+            border-radius:15px;
+            background:#ff4b4b20;
+            border:1px solid #ff4b4b;
+            text-align:center;
+        ">
+            <h2>🔥 ÚLTIMAS {remaining} PLAZAS 🔥</h2>
+            <p style="font-size:18px;">No te quedes fuera</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    if remaining == 1:
+        st.error("🚨 ¡ÚLTIMA PLAZA DISPONIBLE!")
 
     if remaining <= 0:
         st.error("❌ Evento completo")
