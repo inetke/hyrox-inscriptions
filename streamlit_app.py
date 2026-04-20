@@ -32,19 +32,6 @@ st.markdown(
 )
 
 
-st.markdown(f"""
-<div style="
-    padding:20px;
-    border-radius:15px;
-    background:#ff4b4b20;
-    border:1px solid #ff4b4b;
-    text-align:center;
-">
-    <h2>🔥 ÚLTIMAS {remaining} PLAZAS 🔥</h2>
-    <p style="font-size:18px;">No te quedes fuera</p>
-</div>
-""", unsafe_allow_html=True)
-    
 st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
 # CSS (aplica a toda la app)
