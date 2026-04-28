@@ -392,28 +392,28 @@ with right:
 
             submit = st.form_submit_button("Reservar plaza")
 
-    if submit:
+        if submit:
         
-        if not consent:
-            st.error("Debes aceptar el uso de datos.")
-            st.stop()
-
-        if not full_name.strip():
-            st.error("Introduce tu nombre.")
-            st.stop()
-
-        if not phone.strip():
-            st.error("Introduce tu teléfono.")
-            st.stop()
-
-        if not email.strip():
-            st.error("Introduce tu email.")
-            st.stop()
-
-        if is_pair:
-            if not partner_full_name.strip():
-                st.error("Introduce el nombre de la segunda persona.")
+            if not consent:
+                st.error("Debes aceptar el uso de datos.")
                 st.stop()
+
+            if not full_name.strip():
+                st.error("Introduce tu nombre.")
+                st.stop()
+
+            if not phone.strip():
+                st.error("Introduce tu teléfono.")
+                st.stop()
+
+            if not email.strip():
+                st.error("Introduce tu email.")
+                st.stop()
+
+            if is_pair:
+                if not partner_full_name.strip():
+                    st.error("Introduce el nombre de la segunda persona.")
+                    st.stop()
 
         ok, msg = create_booking_atomic(
             full_name=full_name,
