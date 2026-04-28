@@ -335,7 +335,6 @@ with left:
     
     if remaining <= 0:
         st.error("❌ Evento completo")
-        st.stop()
 
     elif remaining == 1:
         st.error("🚨 ¡ÚLTIMA PLAZA DISPONIBLE!")
@@ -365,7 +364,11 @@ with left:
 
 with right:
 
-    with st.form("booking_form", clear_on_submit=True):
+    if remaining <= 0:
+        st.warning("Las inscripciones están cerradas")
+    else:
+
+        with st.form("booking_form", clear_on_submit=True):
         
         st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
 
