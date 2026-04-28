@@ -370,23 +370,23 @@ with right:
 
         with st.form("booking_form", clear_on_submit=True):
         
-        st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
+            st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
 
-        full_name = st.text_input("Nombre y Apellido")
-        phone = st.text_input("Teléfono")
-        email = st.text_input("Email")
+            full_name = st.text_input("Nombre y Apellido")
+            phone = st.text_input("Teléfono")
+            email = st.text_input("Email")
 
-        partner_full_name = ""
-        partner_phone = ""
-        partner_email = ""
+            partner_full_name = ""
+            partner_phone = ""
+            partner_email = ""
 
-        if is_pair:
+            if is_pair:
 
-            st.markdown("### Segunda persona")
+                st.markdown("### Segunda persona")
 
-            partner_full_name = st.text_input("Nombre y Apellido (segunda persona)")
-            partner_phone = st.text_input("Teléfono (segunda persona)")
-            partner_email = st.text_input("Email (segunda persona)")
+                partner_full_name = st.text_input("Nombre y Apellido (segunda persona)")
+                partner_phone = st.text_input("Teléfono (segunda persona)")
+                partner_email = st.text_input("Email (segunda persona)")
             
         consent = st.checkbox("Acepto el uso de datos")
 
