@@ -473,6 +473,11 @@ with st.expander("Panel admin"):
 
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
+        
+        def format_phone(phone):
+            if not phone:
+                return ""
+            return "".join(filter(str.isdigit, str(phone)))
 
         st.markdown("### Aforo del evento")
 
