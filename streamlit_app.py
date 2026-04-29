@@ -473,25 +473,6 @@ with st.expander("Panel admin"):
 
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
-        
-        def format_phone(phone):
-            if not phone:
-                return ""
-    
-            digits = "".join(filter(str.isdigit, str(phone)))
-
-            # If number in spanish of 9 numbers → add 34
-            if len(digits) == 9:
-                digits = "34" + digits
-
-            return digits
-        
-        def make_whatsapp_link(phone):
-            if not phone:
-                return ""
-            return f'<a href="https://wa.me/{format_phone(phone)}" target="_blank">💬 WhatsApp</a>'
-
-        df["WhatsApp"] = df["phone"].apply(make_whatsapp_link)
 
         st.markdown("### Aforo del evento")
 
@@ -576,8 +557,8 @@ with st.expander("Panel admin"):
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
 
-        st.write(df.to_html(escape=False, index=False), unsafe_allow_html=True)
-        
+        st.dataframe(df, use_container_width=True)
+
         st.markdown("### Confirmar pago")
 
         booking_id = st.selectbox(
