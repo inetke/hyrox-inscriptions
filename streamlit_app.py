@@ -374,7 +374,6 @@ with right:
         with st.form("booking_form", clear_on_submit=True):
         
             st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
-            st.warning("Política de cancelación: Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.")
             
             full_name = st.text_input("Nombre y Apellido")
             phone = st.text_input("Teléfono")
@@ -395,6 +394,8 @@ with right:
             consent = st.checkbox("Acepto el uso de datos")
 
             submit = st.form_submit_button("Reservar plaza")
+            
+            st.warning("Política de cancelación: Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.")
 
         if submit:
         
