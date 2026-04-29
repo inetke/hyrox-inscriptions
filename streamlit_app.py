@@ -485,6 +485,10 @@ with st.expander("Panel admin"):
                 digits = "34" + digits
 
             return digits
+        
+        df["WhatsApp"] = df["phone"].apply(
+            lambda x: f"https://wa.me/{format_phone(x)}" if x else ""
+        )
 
         st.markdown("### Aforo del evento")
 
