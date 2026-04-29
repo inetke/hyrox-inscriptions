@@ -423,55 +423,55 @@ with right:
                     st.error("Introduce el nombre de la segunda persona.")
                     st.stop()
 
-        ok, msg = create_booking_atomic(
-            full_name=full_name,
-            phone=phone,
-            email=email,
-            modality=modality,
-            partner_full_name=partner_full_name if is_pair else None,
-            partner_phone=partner_phone if is_pair else None,
-            partner_email=partner_email if is_pair else None,
-        )
+            ok, msg = create_booking_atomic(
+                full_name=full_name,
+                phone=phone,
+                email=email,
+                modality=modality,
+                partner_full_name=partner_full_name if is_pair else None,
+                partner_phone=partner_phone if is_pair else None,
+                partner_email=partner_email if is_pair else None,
+            )
 
-        if ok:
+            if ok:
 
-            subject = "HYROX - Inscripción recibida (pendiente de pago)"
+                subject = "HYROX - Inscripción recibida (pendiente de pago)"
 
-            html = f"""
-            <h2>Inscripción recibida</h2>
+                html = f"""
+                <h2>Inscripción recibida</h2>
 
-            <p>Evento HYROX</p>
+                <p>Evento HYROX</p>
 
-            <ul>
-            <li>Fecha: {event_date}</li>
-            <li>Categoría: {activity}</li>
+                <ul>
+                <li>Fecha: {event_date}</li>
+                <li>Categoría: {activity}</li>
 
-            <p>Tu plaza está pendiente de pago.</p>
+                <p>Tu plaza está pendiente de pago.</p>
             
-            <hr>
+                <hr>
 
-            <h3>Política de cancelación</h3>
-            <p>
-            Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.
-            En caso de suspensión o cancelación del evento por parte de la organización, se informará de las condiciones específicas aplicables.
-            </p>
-            """
+                <h3>Política de cancelación</h3>
+                <p>
+                Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.
+                En caso de suspensión o cancelación del evento por parte de la organización, se informará de las condiciones específicas aplicables.
+                </p>
+                """
 
-            email_sent = send_email(email, subject, html)
+                email_sent = send_email(email, subject, html)
 
-            if not email_sent:
-                st.warning("Reserva creada pero el email no pudo enviarse.")
+                if not email_sent:
+                    st.warning("Reserva creada pero el email no pudo enviarse.")
 
-            if is_pair:
-                send_email(partner_email, subject, html)
+                if is_pair:
+                    send_email(partner_email, subject, html)
 
-            st.success(msg)
+                st.success(msg)
 
-            st.rerun()
+                st.rerun()
 
-        else:
+            else:
 
-            st.error(msg)
+                st.error(msg)
 
 
 
