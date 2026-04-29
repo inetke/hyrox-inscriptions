@@ -414,6 +414,10 @@ with right:
                 st.error("Introduce tu email.")
                 st.stop()
 
+            if not full_name or not phone or not email:
+                st.error("Introduce tus datos.")
+                st.stop()
+                
             if is_pair:
                 if not partner_full_name.strip():
                     st.error("Introduce el nombre de la segunda persona.")
