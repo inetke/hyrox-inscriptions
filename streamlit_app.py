@@ -566,7 +566,7 @@ with st.expander("Panel admin"):
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
 
-        st.write(df.to_html(escape=False, index=False), unsafe_allow_html=True)
+        st.dataframe(df, use_container_width=True)
 
         st.markdown("### Confirmar pago")
 
