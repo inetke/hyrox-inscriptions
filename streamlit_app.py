@@ -477,11 +477,14 @@ with st.expander("Panel admin"):
         def format_phone(phone):
             if not phone:
                 return ""
-            return "".join(filter(str.isdigit, str(phone)))
-        
-        df["WhatsApp"] = df["phone"].apply(
-            lambda x: f"https://wa.me/{format_phone(x)}" if x else ""
-        )
+    
+            digits = "".join(filter(str.isdigit, str(phone)))
+
+            # If number in spanish of 9 numbers → add 34
+            if len(digits) == 9:
+                digits = "34" + digits
+
+            return digits
 
         st.markdown("### Aforo del evento")
 
