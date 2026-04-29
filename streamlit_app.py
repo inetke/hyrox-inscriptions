@@ -442,6 +442,14 @@ with right:
             <li>Categoría: {activity}</li>
 
             <p>Tu plaza está pendiente de pago.</p>
+            
+            <hr>
+
+            <h3>Política de cancelación</h3>
+            <p>
+            Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.
+            En caso de suspensión o cancelación del evento por parte de la organización, se informará de las condiciones específicas aplicables.
+            </p>
             """
 
             email_sent = send_email(email, subject, html)
