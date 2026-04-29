@@ -486,9 +486,12 @@ with st.expander("Panel admin"):
 
             return digits
         
-        df["WhatsApp"] = df["phone"].apply(
-            lambda x: f"https://wa.me/{format_phone(x)}" if x else ""
-        )
+        def make_whatsapp_link(phone):
+            if not phone:
+                return ""
+            return f'<a href="https://wa.me/{format_phone(phone)}" target="_blank">💬 WhatsApp</a>'
+
+        df["WhatsApp"] = df["phone"].apply(make_whatsapp_link)
 
         st.markdown("### Aforo del evento")
 
@@ -573,8 +576,8 @@ with st.expander("Panel admin"):
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
 
-        st.dataframe(df, use_container_width=True)
-
+        st.write(df.to_html(escape=False, index=False), unsafe_allow_html=True)
+        
         st.markdown("### Confirmar pago")
 
         booking_id = st.selectbox(
