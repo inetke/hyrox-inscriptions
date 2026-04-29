@@ -478,6 +478,10 @@ with st.expander("Panel admin"):
             if not phone:
                 return ""
             return "".join(filter(str.isdigit, str(phone)))
+        
+        df["WhatsApp"] = df["phone"].apply(
+            lambda x: f"https://wa.me/{format_phone(x)}" if x else ""
+        )
 
         st.markdown("### Aforo del evento")
 
@@ -562,7 +566,7 @@ with st.expander("Panel admin"):
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
 
-        st.dataframe(df, use_container_width=True)
+        st.write(df.to_html(escape=False, index=False), unsafe_allow_html=True)
 
         st.markdown("### Confirmar pago")
 
