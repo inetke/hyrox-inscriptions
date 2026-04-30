@@ -369,6 +369,7 @@ with right:
 
     if remaining <= 0:
         st.warning("Las inscripciones están cerradas")
+        st.info("Política de cancelación: Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.")
     else:
 
         with st.form("booking_form", clear_on_submit=True):
