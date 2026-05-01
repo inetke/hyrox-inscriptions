@@ -194,6 +194,7 @@ def create_booking_atomic(
     partner_full_name=None,
     partner_phone=None,
     partner_email=None,
+    force=False
 ):
     payload = {
         "p_event_date": EVENT_DATE,
@@ -204,6 +205,7 @@ def create_booking_atomic(
         "p_partner_full_name": partner_full_name,
         "p_partner_phone": partner_phone,
         "p_partner_email": partner_email,
+        "p_force": force,
     }
 
     try:
@@ -687,6 +689,29 @@ with st.expander("Panel admin"):
 
             st.success("Inscripción eliminada. La plaza vuelve a estar disponible.")
             st.rerun()
+            
+        st.markdown("### ➕ Añadir inscripción manual")
+
+        admin_name = st.text_input("Nombre (admin)", key="admin_name")
+        admin_phone = st.text_input("Teléfono (admin)", key="admin_phone")
+        admin_email = st.text_input("Email (admin)", key="admin_email")
+
+        if st.button("Añadir manualmente"):
+
+            ok, msg = create_booking_atomic(
+                full_name=admin_name,
+                phone=admin_phone,
+                email=admin_email,
+                modality="Manual",
+                force=True
+            )
+
+            if ok:
+                st.success("Inscripción añadida (modo admin)")
+                st.rerun()
+            else:
+                st.error(msg)
+        
 
         # Descargar CSV
         csv_buf = io.StringIO()
