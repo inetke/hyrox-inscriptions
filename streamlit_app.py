@@ -692,23 +692,89 @@ with st.expander("Panel admin"):
             
         st.markdown("### ➕ Añadir inscripción manual")
 
-        admin_name = st.text_input("Nombre (admin)", key="admin_name")
-        admin_phone = st.text_input("Teléfono (admin)", key="admin_phone")
-        admin_email = st.text_input("Email (admin)", key="admin_email")
+        admin_modality = st.selectbox(
+            "Modalidad (admin)",
+            ["Individual", "Dobles"],
+            key="admin_modality"
+        )
 
-        if st.button("Añadir manualmente"):
+        admin_name = st.text_input("Nombre", key="admin_name")
+        admin_phone = st.text_input("Teléfono", key="admin_phone")
+        admin_email = st.text_input("Email", key="admin_email")
 
+        partner_name = ""
+        partner_phone = ""
+        partner_email = ""
+
+        if admin_modality == "Dobles":
+
+            st.markdown("#### Segunda persona")
+
+            partner_name = st.text_input("Nombre (pareja)", key="partner_name")
+            partner_phone = st.text_input("Teléfono (pareja)", key="partner_phone")
+            partner_email = st.text_input("Email (pareja)", key="partner_email")
+
+        send_email_admin = st.checkbox("Enviar email de confirmación", value=True)
+
+        if st.button("➕ Añadir inscripción manual"):
+
+            # VALIDACIONES
+            if not admin_name.strip():
+                st.error("Nombre obligatorio")
+                st.stop()
+
+            if not admin_phone.strip():
+                st.error("Teléfono obligatorio")
+                st.stop()
+
+            if not admin_email.strip():
+                st.error("Email obligatorio")
+                st.stop()
+
+            if admin_modality == "Dobles":
+                if not partner_name.strip():
+                    st.error("Nombre de la pareja obligatorio")
+                    st.stop()
+
+            # CREAR RESERVA
             ok, msg = create_booking_atomic(
                 full_name=admin_name,
                 phone=admin_phone,
                 email=admin_email,
-                modality="Manual",
-                force=True
+                modality=admin_modality,
+                partner_full_name=partner_name if admin_modality == "Dobles" else None,
+                partner_phone=partner_phone if admin_modality == "Dobles" else None,
+                partner_email=partner_email if admin_modality == "Dobles" else None,
+                force=True   # 👈 clave
             )
 
             if ok:
-                st.success("Inscripción añadida (modo admin)")
+
+                if send_email_admin:
+
+                    subject = "HYROX - Inscripción recibida (pendiente de pago)"
+
+                    html = f"""
+                    <h2>Inscripción recibida</h2>
+
+                    <p>Evento HYROX</p>
+
+                    <ul>
+                    <li>Fecha: {event_date}</li>
+                    <li>Modalidad: {admin_modality}</li>
+                    </ul>
+
+                    <p>Tu plaza está pendiente de pago.</p>
+                    """
+
+                    send_email(admin_email, subject, html)
+
+                    if admin_modality == "Dobles" and partner_email:
+                        send_email(partner_email, subject, html)
+
+                st.success("Inscripción añadida correctamente (modo admin)")
                 st.rerun()
+
             else:
                 st.error(msg)
         
