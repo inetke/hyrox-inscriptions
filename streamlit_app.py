@@ -559,6 +559,14 @@ with st.expander("Panel admin"):
                 <p>⚠️ Las plazas son limitadas y no podremos garantizar la reserva sin pago.</p>
 
                 <p>Gracias 💥</p>
+                
+                <hr>
+
+                <h3>Política de cancelación</h3>
+                <p>
+                Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.
+                En caso de suspensión o cancelación del evento por parte de la organización, se informará de las condiciones específicas aplicables.
+                </p>
                 """
 
                 enviado = send_email(row["email"], subject, html)
@@ -761,10 +769,17 @@ with st.expander("Panel admin"):
 
                     <ul>
                     <li>Fecha: {event_date}</li>
-                    <li>Modalidad: {admin_modality}</li>
-                    </ul>
+                    <li>Categoría: {activity}</li>
 
                     <p>Tu plaza está pendiente de pago.</p>
+            
+                    <hr>
+
+                    <h3>Política de cancelación</h3>
+                    <p>
+                    Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.
+                    En caso de suspensión o cancelación del evento por parte de la organización, se informará de las condiciones específicas aplicables.
+                    </p>
                     """
 
                     send_email(admin_email, subject, html)
