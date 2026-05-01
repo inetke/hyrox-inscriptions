@@ -532,18 +532,6 @@ with st.expander("Panel admin"):
 
         st.info(f"💰 Pendientes: {pendientes} | ✅ Pagados: {pagados}")
         
-import urllib.parse
-
-mensaje = f"""
-Hola, quiero cancelar mi inscripción de HYROX.
-Fecha: {event_date}
-Categoría: {activity}
-Email: {user_email}
-"""
-mensaje_encoded = urllib.parse.quote(mensaje)
-
-whatsapp_link = f"https://wa.me/34600123456?text={mensaje_encoded}"
-        
         if st.button("📩 Enviar recordatorio a pendientes"):
 
             pendientes_df = df[df["paid"] == False]
@@ -576,12 +564,7 @@ whatsapp_link = f"https://wa.me/34600123456?text={mensaje_encoded}"
                 
                 <p>
                 
-                Si finalmente no puedes participar, te pedimos que nos lo comuniques lo antes posible a través del siguiente enlace. Esto nos ayuda a organizar mejor el evento.
-                </p>
-                
-                <p>
-                
-                <a href="{whatsapp_link}">Cancelar inscripción</a>
+                Si finalmente no puedes participar, te pedimos que nos lo comuniques lo antes posible. Esto nos ayuda a organizar mejor el evento.
                 </p>
                 
                 <hr>
