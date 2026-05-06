@@ -183,6 +183,20 @@ def fetch_sessions(event_date_str):
 
     return sessions
 
+# ---------------- Create time slots ----------------
+
+from datetime import datetime, timedelta
+
+def generate_time_slots(start_time="08:00", interval=10, total_slots=30):
+    slots = []
+    current = datetime.strptime(start_time, "%H:%M")
+
+    for _ in range(total_slots):
+        slots.append(current.strftime("%H:%M"))
+        current += timedelta(minutes=interval)
+
+    return slots
+
 # ---------------- Create booking ----------------
 import json
 
@@ -604,6 +618,8 @@ with st.expander("Panel admin"):
 
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
+            
+        df["start_time"] = df["start_time"].fillna("Not assigned")
 
         st.dataframe(
             df,
@@ -616,6 +632,33 @@ with st.expander("Panel admin"):
             }
         )
 
+        
+        individual_slots = generate_time_slots(interval=10)
+        double_slots = generate_time_slots(interval=7)
+        
+        
+        st.markdown("### Assign start time")
+
+        selected_id = st.selectbox(
+            "Select booking",
+            df["id"],
+            key="time_booking"
+        )
+        
+        selected_row = df[df["id"] == selected_id].iloc[0]
+
+        modality = selected_row["modality"]
+        
+        if modality == "Dobles":
+            time_options = double_slots
+        else:
+            time_options = individual_slots
+
+        selected_time = st.selectbox(
+            "Start time",
+            time_options
+        )
+        
         st.markdown("### Confirmar pago")
 
         booking_id = st.selectbox(
@@ -800,15 +843,6 @@ with st.expander("Panel admin"):
             else:
                 st.error(msg)
         
-        st.markdown("### Asignar hora de salida")
-
-        booking_id_time = st.selectbox(
-            "Seleccionar inscripción",
-            df["id"],
-            key="time_booking"
-        )
-
-        hora = st.time_input("Hora de salida")
 
         # Descargar CSV
         csv_buf = io.StringIO()
