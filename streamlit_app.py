@@ -800,6 +800,15 @@ with st.expander("Panel admin"):
             else:
                 st.error(msg)
         
+        st.markdown("### Asignar hora de salida")
+
+        booking_id_time = st.selectbox(
+            "Seleccionar inscripción",
+            df["id"],
+            key="time_booking"
+        )
+
+        hora = st.time_input("Hora de salida")
 
         # Descargar CSV
         csv_buf = io.StringIO()
