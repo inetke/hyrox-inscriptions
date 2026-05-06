@@ -665,16 +665,16 @@ with st.expander("Panel admin"):
 
         modality = selected_row["modality"]
         
-        if modality == "Dobles":
-            time_options = double_slots
-        else:
-            time_options = individual_slots
+        time_slots = generate_mixed_time_slots()
 
         selected_time = st.selectbox(
             "Start time",
-            time_options
+            time_slots
         )
         
+        used_times = df["start_time"].dropna().tolist()
+        time_slots = [t for t in time_slots if t not in used_times]
+
         st.markdown("### Confirmar pago")
 
         booking_id = st.selectbox(
