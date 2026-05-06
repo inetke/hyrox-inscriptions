@@ -187,13 +187,18 @@ def fetch_sessions(event_date_str):
 
 from datetime import datetime, timedelta
 
-def generate_time_slots(start_time="08:00", interval=10, total_slots=30):
+def generate_mixed_time_slots(start_time="08:00", total_slots=40):
     slots = []
     current = datetime.strptime(start_time, "%H:%M")
 
-    for _ in range(total_slots):
+    for i in range(total_slots):
         slots.append(current.strftime("%H:%M"))
-        current += timedelta(minutes=interval)
+
+        # alternar intervalos
+        if i % 2 == 0:
+            current += timedelta(minutes=7)
+        else:
+            current += timedelta(minutes=3)
 
     return slots
 
@@ -633,8 +638,9 @@ with st.expander("Panel admin"):
         )
 
         
-        individual_slots = generate_time_slots(interval=10)
-        double_slots = generate_time_slots(interval=7)
+        time_slots = generate_mixed_time_slots()
+        
+        selected_time = st.selectbox("Start time", time_slots)
         
         
         st.markdown("### Assign start time")
@@ -644,6 +650,16 @@ with st.expander("Panel admin"):
             df["id"],
             key="time_booking"
         )
+        
+        if st.button("Assign start time"):
+
+            sb.table("bookings") \
+                .update({"start_time": selected_time}) \
+                .eq("id", selected_id) \
+                .execute()
+
+            st.success("Start time assigned successfully")
+            st.rerun()
         
         selected_row = df[df["id"] == selected_id].iloc[0]
 
