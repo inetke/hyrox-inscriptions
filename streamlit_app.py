@@ -739,7 +739,7 @@ with st.expander("Panel admin"):
                     partner_html = f"""
                     <h2>Tu salida HYROX ya está confirmada 💥</h2>
 
-                    <p>Hola <strong>{partner_name}</strong>,</p>
+                    <p>Hola <strong>{row["partner_full_name"]}</strong>,</p>
 
                     <p>
                     Ya tenemos preparada tu salida para el evento HYROX.
