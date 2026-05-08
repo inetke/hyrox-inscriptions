@@ -648,10 +648,13 @@ with st.expander("Panel admin"):
         used_times = df["start_time"].dropna().tolist()
         time_slots = [t for t in time_slots if t not in used_times]
 
+        # Solo atletas sin hora
+        available_df = df[df["start_time"].isna()]
+
         # Seleccionar inscripción
         selected_id = st.selectbox(
             "Select booking",
-            df["id"],
+            available_df["id"],
             key="time_booking"
         )
 
@@ -672,14 +675,6 @@ with st.expander("Panel admin"):
 
             st.success("Start time assigned successfully")
             st.rerun()
-        
-        available_df = df[df["start_time"].isna()]
-        
-        selected_id = st.selectbox(
-            "Select booking",
-            available_df["id"],
-            key="time_booking"
-        )
 
         st.markdown("### Confirmar pago")
 
