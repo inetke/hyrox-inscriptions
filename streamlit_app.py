@@ -734,7 +734,7 @@ with st.expander("Panel admin"):
                 # Email pareja con su propio nombre
                 if row.get("partner_email") and str(row["partner_email"]).strip():
 
-                    partner_name = row.get("partner_full_name", "").strip() or "tu pareja"
+                    partner_name = row.get("partner_full_name", "").strip()
 
                     partner_html = f"""
                     <h2>Tu salida HYROX ya está confirmada 💥</h2>
