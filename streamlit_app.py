@@ -287,7 +287,7 @@ def fetch_total_remaining():
         else:
             occupied += 1
 
-    return 99 - occupied
+    return 90 - occupied
 
 
 # ---------------- Sidebar ----------------
@@ -529,7 +529,7 @@ with st.expander("Panel admin"):
         st.markdown("### Aforo del evento")
 
         remaining = fetch_total_remaining()
-        occupied = 99 - remaining
+        occupied = 100 - remaining
 
         st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
         
