@@ -731,10 +731,52 @@ with st.expander("Panel admin"):
                 # Email principal
                 send_email(row["email"], subject, html)
 
-                # Email pareja
+                # Email pareja con su propio nombre
                 if row.get("partner_email") and str(row["partner_email"]).strip():
-                    send_email(row["partner_email"], subject, html)
 
+                    partner_name = row.get("partner_full_name", "").strip() or "tu pareja"
+
+                    partner_html = f"""
+                    <h2>Tu salida HYROX ya está confirmada 💥</h2>
+
+                    <p>Hola <strong>{partner_name}</strong>,</p>
+
+                    <p>
+                    Ya tenemos preparada tu salida para el evento HYROX.
+                    </p>
+
+                    <hr>
+
+                    <p>
+                    <strong>🎽 Número de dorsal:</strong> {row['id']}
+                    </p>
+
+                    <p>
+                    <strong>⏱️ Hora de salida:</strong> {row['start_time']}
+                    </p>
+
+                    <hr>
+
+                    <p>
+                    Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
+                    </p>
+
+                    <ul>
+                        <li>Recoger tu dorsal</li>
+                        <li>Preparar tu mochila</li>
+                        <li>Realizar el warm up</li>
+                        <li>Disfrutar de un cafecito pre competición ☕</li>
+                    </ul>
+
+                    <p>
+                    Nos vemos muy pronto 🔥
+                    </p>
+
+                    <p><strong>RF HYROX Training Club</strong></p>
+                    """
+
+                    send_email(row["partner_email"], subject, partner_html)
+    
             st.success("Start time assigned and email sent successfully")
             st.rerun()
 
