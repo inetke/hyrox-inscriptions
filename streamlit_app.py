@@ -639,14 +639,10 @@ with st.expander("Panel admin"):
         )
 
         
-        st.markdown("### Assign start time")
+        st.markdown("### Asignar la tanda")
 
         # Generar horarios
         time_slots = generate_mixed_time_slots()
-
-        # Eliminar horarios ya usados
-        used_times = df["start_time"].dropna().tolist()
-        time_slots = [t for t in time_slots if t not in used_times]
 
         # Solo atletas sin hora
         available_df = df[df["start_time"].isna()]
@@ -666,7 +662,7 @@ with st.expander("Panel admin"):
         )
 
         # Guardar + enviar email
-        if st.button("Assign start time"):
+        if st.button("Confirmar la asignación"):
 
             # Guardar hora
             sb.table("bookings") \
