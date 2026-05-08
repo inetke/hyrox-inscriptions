@@ -624,10 +624,11 @@ with st.expander("Panel admin"):
         elif filtro == "Pagadas":
             df = df[df["paid"] == True]
             
-        df["start_time"] = df["start_time"].fillna("Not assigned")
+        df_display = df.copy()
+        df_display["start_time"] = df_display["start_time"].fillna("Not assigned")
 
         st.dataframe(
-            df,
+            df_display,
             use_container_width=True,
             column_config={
                 "WhatsApp": st.column_config.LinkColumn(
@@ -672,6 +673,13 @@ with st.expander("Panel admin"):
             st.success("Start time assigned successfully")
             st.rerun()
         
+        available_df = df[df["start_time"].isna()]
+        
+        selected_id = st.selectbox(
+            "Select booking",
+            available_df["id"],
+            key="time_booking"
+        )
 
         st.markdown("### Confirmar pago")
 
