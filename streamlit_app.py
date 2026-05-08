@@ -649,14 +649,14 @@ with st.expander("Panel admin"):
 
         # Seleccionar inscripción
         selected_id = st.selectbox(
-            "Select booking",
+            "Seleccionar id",
             available_df["id"],
             key="time_booking"
         )
 
         # Seleccionar hora
         selected_time = st.selectbox(
-            "Start time",
+            "Seleccionar la hora",
             time_slots,
             key="time_select"
         )
