@@ -639,7 +639,7 @@ with st.expander("Panel admin"):
         )
 
         
-        st.markdown("### Asignar la tanda")
+        st.markdown("### 🚀 Asignar tanda")
 
         # Generar horarios
         time_slots = generate_mixed_time_slots()
@@ -738,7 +738,7 @@ with st.expander("Panel admin"):
             st.success("Start time assigned and email sent successfully")
             st.rerun()
 
-        st.markdown("### Confirmar pago")
+        st.markdown("### 💳 Confirmar pago")
 
         booking_id = st.selectbox(
             "Seleccionar inscripción",
@@ -809,7 +809,7 @@ with st.expander("Panel admin"):
             st.success("Pago confirmado y emails enviados.")
             st.rerun()
 
-        st.markdown("### Eliminar inscripción")
+        st.markdown("### ❌ Eliminar inscripción")
 
         delete_id = st.selectbox(
             "Seleccionar inscripción a eliminar",
