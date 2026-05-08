@@ -645,12 +645,28 @@ with st.expander("Panel admin"):
         
         st.markdown("### Assign start time")
 
+        # Generar horarios
+        time_slots = generate_mixed_time_slots()
+
+        # Eliminar horarios ya usados
+        used_times = df["start_time"].dropna().tolist()
+        time_slots = [t for t in time_slots if t not in used_times]
+
+        # Seleccionar inscripción
         selected_id = st.selectbox(
             "Select booking",
             df["id"],
             key="time_booking"
         )
-        
+
+        # Seleccionar hora
+        selected_time = st.selectbox(
+            "Start time",
+            time_slots,
+            key="time_select"
+        )
+
+        # Guardar
         if st.button("Assign start time"):
 
             sb.table("bookings") \
