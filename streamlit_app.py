@@ -187,7 +187,7 @@ def fetch_sessions(event_date_str):
 
 from datetime import datetime, timedelta
 
-def generate_mixed_time_slots(start_time="08:00", total_slots=40):
+def generate_mixed_time_slots(start_time="08:00", total_slots=60):
     slots = []
     current = datetime.strptime(start_time, "%H:%M")
 
