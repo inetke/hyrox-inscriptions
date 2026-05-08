@@ -638,11 +638,6 @@ with st.expander("Panel admin"):
         )
 
         
-        time_slots = generate_mixed_time_slots()
-        
-        selected_time = st.selectbox("Start time", time_slots)
-        
-        
         st.markdown("### Assign start time")
 
         # Generar horarios
@@ -677,19 +672,6 @@ with st.expander("Panel admin"):
             st.success("Start time assigned successfully")
             st.rerun()
         
-        selected_row = df[df["id"] == selected_id].iloc[0]
-
-        modality = selected_row["modality"]
-        
-        time_slots = generate_mixed_time_slots()
-
-        selected_time = st.selectbox(
-            "Start time",
-            time_slots
-        )
-        
-        used_times = df["start_time"].dropna().tolist()
-        time_slots = [t for t in time_slots if t not in used_times]
 
         st.markdown("### Confirmar pago")
 
