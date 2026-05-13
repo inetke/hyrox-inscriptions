@@ -185,8 +185,6 @@ def fetch_sessions(event_date_str):
 
 # ---------------- Create time slots ----------------
 
-from datetime import datetime, timedelta
-
 def generate_mixed_time_slots(start_time="08:00", total_slots=90):
     slots = []
     current = datetime.strptime(start_time, "%H:%M")
@@ -287,7 +285,7 @@ def fetch_total_remaining():
         else:
             occupied += 1
 
-    return 90 - occupied
+    return 100 - occupied
 
 
 # ---------------- Sidebar ----------------
