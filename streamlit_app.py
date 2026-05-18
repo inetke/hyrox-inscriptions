@@ -115,23 +115,30 @@ is_admin_preview = (
     st.text_input("Admin password", type="password") == get_admin_password()
 )
 
-if today < REGISTRATION_OPEN_DATE and not is_admin_preview:
+today = datetime.now()
 
-    st.markdown(
-        """
-        # 💥 HYROX JULY EDITION
+if today < REGISTRATION_OPEN_DATE:
 
-        Las inscripciones abrirán oficialmente el:
+    st.warning("🚧 Modo preparación — Inscripciones aún no abiertas")
 
-        ## 2 de junio
-
-        Estamos preparando una experiencia aún más grande.
-
-        Nos vemos muy pronto 🔥
-        """
+    preview_password = st.text_input(
+        "Acceso privado",
+        type="password"
     )
 
-    st.stop()
+    if preview_password != get_admin_password():
+
+        st.markdown("""
+        # 💥 HYROX JULY EDITION
+
+        Las inscripciones abrirán oficialmente:
+
+        ## 📅 2 de junio
+
+        Estamos preparando una experiencia increíble 🔥
+        """)
+
+        st.stop()
 
 # ---------------- Secrets / Clients ----------------
 def get_admin_password() -> str:
