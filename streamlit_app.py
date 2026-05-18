@@ -730,7 +730,7 @@ with st.expander("Panel admin"):
 
             # Recuperar datos de la reserva
             resp = sb.table("bookings") \
-                .select("id, full_name, email, partner_email, start_time") \
+                .select("id, full_name, email, partner_email, partner_full_name, start_time") \
                 .eq("id", selected_id) \
                 .single() \
                 .execute()
@@ -792,7 +792,7 @@ with st.expander("Panel admin"):
                 # Email pareja con su propio nombre
                 if row.get("partner_email") and str(row["partner_email"]).strip():
 
-                    partner_name = row.get("partner_full_name", "").strip()
+                    partner_name = (row.get("partner_full_name") or "").strip()
 
                     partner_html = f"""
                     <h2>Tu salida HYROX ya está confirmada 💥</h2>
