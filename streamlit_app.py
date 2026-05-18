@@ -541,7 +541,23 @@ with st.expander("Panel admin"):
     if pw == get_admin_password():
 
         rows = fetch_bookings(event_date)
-        df = pd.DataFrame(rows)
+        df = pd.DataFrame(
+            rows,
+            columns=[
+                "id",
+                "event_date",
+                "full_name",
+                "phone",
+                "email",
+                "partner_full_name",
+                "partner_phone",
+                "partner_email",
+                "modality",
+                "paid",
+                "created_at",
+                "start_time"
+            ]
+        )
 
         def format_phone(phone):
 
