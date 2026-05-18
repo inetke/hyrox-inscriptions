@@ -111,6 +111,10 @@ def get_admin_password() -> str:
         return st.secrets["admin"]["password"]
     return os.environ.get("ADMIN_PASSWORD", "")
 
+def get_preview_password() -> str:
+    if "preview" in st.secrets and "password" in st.secrets["preview"]:
+        return st.secrets["preview"]["password"]
+    return os.environ.get("PREVIEW_PASSWORD", "")
 
 def get_supabase() -> Client:
     if "supabase" not in st.secrets:
@@ -173,10 +177,11 @@ if today < REGISTRATION_OPEN_DATE:
 
     preview_password = st.text_input(
         "Password",
-        type="password"
+        type="password",
+        key="preview_password"
     )
 
-    if preview_password != get_admin_password():
+    if preview_password != get_preview_password():
         st.stop()
 
 # ---------------- Data helpers (REST) ----------------
@@ -531,7 +536,7 @@ st.divider()
 
 with st.expander("Panel admin"):
 
-    pw = st.text_input("Password", type="password")
+    pw = st.text_input("Password", type="password", key="admin_password")
 
     if pw == get_admin_password():
 
