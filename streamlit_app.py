@@ -542,25 +542,34 @@ with st.expander("Panel admin"):
 
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
-        
-        if df.empty:
-            st.warning("Aún no hay inscripciones.")
-        
+
         def format_phone(phone):
+
             if not phone:
                 return ""
 
-            digits = "".join(filter(str.isdigit, str(phone)))
+            digits = "".join(
+                filter(str.isdigit, str(phone))
+            )
 
-            # If number in spanish of 9 numbers → add 34
             if len(digits) == 9:
                 digits = "34" + digits
 
             return digits
-        
-        df["WhatsApp"] = df["phone"].apply(
-            lambda x: f"https://wa.me/{format_phone(x)}" if x else None
-        )
+
+
+        # Solo crear WhatsApp si hay datos
+        if not df.empty:
+
+            df["WhatsApp"] = df["phone"].apply(
+                lambda x:
+                f"https://wa.me/{format_phone(x)}"
+                if x else None
+            )
+
+        else:
+
+            st.info("Todavía no hay inscripciones")
 
         st.markdown("### Aforo del evento")
 
@@ -569,9 +578,6 @@ with st.expander("Panel admin"):
 
         st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
         
-        if df.empty:
-            st.warning("Aún no hay inscripciones.")
-            st.stop()
 
         # Crear columna visual de estado
         df["estado_pago"] = df["paid"].apply(
