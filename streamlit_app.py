@@ -650,7 +650,7 @@ with st.expander("Panel admin"):
                 
                 <p><strong>Opciones de pago:</strong></p>
                 <p><strong>Pago en efectivo:</strong> Disponible en nuestros centros</p>
-                <p><strong>IBAN:</strong> {BANK_IBAN}</p>
+                <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}</p>
 
                 <p>Referencia: nombre y apellidos</p>
 
@@ -907,8 +907,6 @@ with st.expander("Panel admin"):
             </ul>
 
             <p>📢 Una semana antes te comunicaremos la tanda asignada.</p>
-
-            <p>Recuerda llegar con antelación.</p>
 
             <p>¡Nos vemos en HYROX! 💥</p>
             """
