@@ -224,36 +224,13 @@ def generate_mixed_time_slots(start_time="08:00", total_slots=90):
 
     slots = []
 
-    base = datetime.strptime(start_time,"%H:%M")
+    current = datetime.strptime(start_time, "%H:%M")
 
-    # patrón dentro de cada hora
-    minute_pattern = [0,7,10,14,20,21,28,30,35,40,42,49,50,56]
-
-    hour = base.hour
-    start_minute = base.minute
-
-    while len(slots) < total_slots:
-
-        for m in minute_pattern:
-
-            if hour == base.hour and m < start_minute:
-                continue
-
-            slot = datetime(
-                base.year,
-                base.month,
-                base.day,
-                hour,
-                m
-            )
-
-            slots.append(slot.strftime("%H:%M"))
-
-            if len(slots) >= total_slots:
-                break
-
-        hour += 1
-
+    for i in range(total_slots):
+        slots.append(current.strftime("%H:%M"))
+        
+        current += timedelta(minutes=10)
+        
     return slots
 
 # ---------------- Create booking ----------------
