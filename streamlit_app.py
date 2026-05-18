@@ -320,7 +320,7 @@ def fetch_total_remaining():
         else:
             occupied += 1
 
-    return 10 - occupied
+    return 100 - occupied
 
 
 # ---------------- Sidebar ----------------
@@ -536,7 +536,7 @@ st.divider()
 
 with st.expander("Panel admin"):
 
-    pw = st.text_input("Password", type="password")
+    pw = st.text_input("Password", type="password", key="admin_password")
 
     if pw == get_admin_password():
 
@@ -562,9 +562,9 @@ with st.expander("Panel admin"):
         st.markdown("### Aforo del evento")
 
         remaining = fetch_total_remaining()
-        occupied = 10 - remaining
+        occupied = 100 - remaining
 
-        st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/10")
+        st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
         
         if df.empty:
             st.warning("Aún no hay inscripciones.")
