@@ -723,15 +723,19 @@ with st.expander("Panel admin"):
         # Generar horarios
         time_slots = generate_mixed_time_slots()
 
-        # Solo atletas sin hora
         available_df = df[df["start_time"].isna()]
 
-        # Seleccionar inscripción
-        selected_id = st.selectbox(
-            "Seleccionar id",
-            available_df["id"],
-            key="time_booking"
-        )
+        if available_df.empty:
+
+            st.success("Todas las tandas asignadas")
+
+        else:
+
+            selected_id = st.selectbox(
+                "Seleccionar id",
+                available_df["id"],
+                key="time_booking"
+            )
 
         # Seleccionar hora
         selected_time = st.selectbox(
