@@ -543,6 +543,10 @@ with st.expander("Panel admin"):
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(rows)
         
+        if df.empty:
+            st.warning("Aún no hay inscripciones.")
+            st.stop()
+        
         def format_phone(phone):
             if not phone:
                 return ""
