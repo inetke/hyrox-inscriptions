@@ -104,36 +104,6 @@ if time_left.total_seconds() > 0:
 else:
     st.success("💥 ¡Hoy es el día del evento!")
 
-    
-today = datetime.now()
-
-if today < REGISTRATION_OPEN_DATE:
-
-    st.markdown("""
-    # 💥 HYROX JULY EDITION
-
-    Prepárate para una nueva experiencia HYROX.
-
-    ## Evento: 11 de julio
-
-    Las inscripciones abrirán oficialmente:
-
-    # 🚀 2 de junio
-
-    Estamos preparando una experiencia increíble 🔥
-    """)
-
-    st.divider()
-
-    st.caption("Private access")
-
-    preview_password = st.text_input(
-        "Password",
-        type="password"
-    )
-
-    if preview_password != get_admin_password():
-        st.stop()
         
 # ---------------- Secrets / Clients ----------------
 def get_admin_password() -> str:
@@ -179,6 +149,35 @@ def send_email(to_email: str, subject: str, html_content: str):
         st.error(f"❌ Error enviando email: {e}")
         return False
 
+today = datetime.now()
+
+if today < REGISTRATION_OPEN_DATE:
+
+    st.markdown("""
+    # 💥 HYROX JULY EDITION
+
+    Prepárate para una nueva experiencia HYROX.
+
+    ### Evento: 11 de julio
+
+    Las inscripciones abrirán oficialmente:
+
+    ## 🚀 2 de junio
+
+    Estamos preparando una experiencia increíble 🔥
+    """)
+
+    st.divider()
+
+    st.caption("Private access")
+
+    preview_password = st.text_input(
+        "Password",
+        type="password"
+    )
+
+    if preview_password != get_admin_password():
+        st.stop()
 
 # ---------------- Data helpers (REST) ----------------
 def fetch_sessions(event_date_str):
