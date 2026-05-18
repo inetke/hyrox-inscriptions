@@ -19,17 +19,17 @@ with col_logo:
         use_container_width=True
     )
 
-st.markdown(
-    """
-    <h1 style='text-align:center; margin-top:10px;'>
-        Inscripción EVENTO HYROX
-    </h1>
-    <p style='text-align:center; opacity:0.8;'>
-        OUR SPORT IS HYROX. Plazas limitadas.
-    </p>
-    """,
-    unsafe_allow_html=True
-)
+#st.markdown(
+    #"""
+    #<h1 style='text-align:center; margin-top:10px;'>
+    #    Inscripción EVENTO HYROX
+    #</h1>
+    #<p style='text-align:center; opacity:0.8;'>
+    #    OUR SPORT IS HYROX. Plazas limitadas.
+    #</p>
+    #""",
+    #unsafe_allow_html=True
+#)
 
 
 #st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
