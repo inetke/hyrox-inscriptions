@@ -227,11 +227,11 @@ def generate_mixed_time_slots(start_time="08:00", total_slots=90):
     for i in range(total_slots):
         slots.append(current.strftime("%H:%M"))
 
-        # alternar intervalos
+        # alternar 7 y 10
         if i % 2 == 0:
             current += timedelta(minutes=7)
         else:
-            current += timedelta(minutes=3)
+            current += timedelta(minutes=10)
 
     return slots
 
