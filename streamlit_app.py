@@ -221,17 +221,38 @@ def fetch_sessions(event_date_str):
 # ---------------- Create time slots ----------------
 
 def generate_mixed_time_slots(start_time="08:00", total_slots=90):
+
     slots = []
-    current = datetime.strptime(start_time, "%H:%M")
 
-    for i in range(total_slots):
-        slots.append(current.strftime("%H:%M"))
+    base = datetime.strptime(start_time,"%H:%M")
 
-        # alternar 7 y 10
-        if i % 2 == 0:
-            current += timedelta(minutes=7)
-        else:
-            current += timedelta(minutes=10)
+    # patrón dentro de cada hora
+    minute_pattern = [0,7,10,14,20,21,28,30,35,40,42,49,50,56]
+
+    hour = base.hour
+    start_minute = base.minute
+
+    while len(slots) < total_slots:
+
+        for m in minute_pattern:
+
+            if hour == base.hour and m < start_minute:
+                continue
+
+            slot = datetime(
+                base.year,
+                base.month,
+                base.day,
+                hour,
+                m
+            )
+
+            slots.append(slot.strftime("%H:%M"))
+
+            if len(slots) >= total_slots:
+                break
+
+        hour += 1
 
     return slots
 
