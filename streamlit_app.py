@@ -572,7 +572,6 @@ with st.expander("Panel admin"):
         
         if df.empty:
             st.warning("Aún no hay inscripciones.")
-            st.stop()
 
         # Crear columna visual de estado
         df["estado_pago"] = df["paid"].apply(
