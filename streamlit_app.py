@@ -536,7 +536,7 @@ st.divider()
 
 with st.expander("Panel admin"):
 
-    pw = st.text_input("Password", type="password", key="admin_password")
+    pw = st.text_input("Password", type="password")
 
     if pw == get_admin_password():
 
