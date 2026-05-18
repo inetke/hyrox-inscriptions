@@ -104,6 +104,34 @@ if time_left.total_seconds() > 0:
 else:
     st.success("💥 ¡Hoy es el día del evento!")
 
+    
+today = datetime.now()
+
+with st.sidebar:
+    admin_preview = st.checkbox("Admin preview")
+
+is_admin_preview = (
+    admin_preview and
+    st.text_input("Admin password", type="password") == get_admin_password()
+)
+
+if today < REGISTRATION_OPEN_DATE and not is_admin_preview:
+
+    st.markdown(
+        """
+        # 💥 HYROX JULY EDITION
+
+        Las inscripciones abrirán oficialmente el:
+
+        ## 2 de junio
+
+        Estamos preparando una experiencia aún más grande.
+
+        Nos vemos muy pronto 🔥
+        """
+    )
+
+    st.stop()
 
 # ---------------- Secrets / Clients ----------------
 def get_admin_password() -> str:
@@ -339,34 +367,6 @@ MUY IMPORTANTE (Referencia/Concepto):
     )
 
 # ---------------- Main UI ----------------
-today = datetime.now()
-
-with st.sidebar:
-    admin_preview = st.checkbox("Admin preview")
-
-is_admin_preview = (
-    admin_preview and
-    st.text_input("Admin password", type="password") == get_admin_password()
-)
-
-if today < REGISTRATION_OPEN_DATE and not is_admin_preview:
-
-    st.markdown(
-        """
-        # 💥 HYROX JULY EDITION
-
-        Las inscripciones abrirán oficialmente el:
-
-        ## 📅 2 de junio
-
-        Estamos preparando una experiencia aún más grande.
-
-        Nos vemos muy pronto 🔥
-        """
-    )
-
-    st.stop()
-
 left, right = st.columns(2)
 
 with left:
