@@ -70,8 +70,9 @@ ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
 # Evento fijo (cambia aquí la fecha)
-EVENT_DATE = "2026-05-16"
+EVENT_DATE = "2026-07-11"
 event_date = EVENT_DATE
+REGISTRATION_OPEN_DATE = datetime(2026, 6, 2)
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
 MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
@@ -79,10 +80,10 @@ PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 PAGO_EFECTIVO_H = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
 #PAGO_BIZUM = "+34 659 09 22 27"
-ENTRADA_GENERAL = "25€ individual · 50€ dobles"
-ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
+ENTRADA_GENERAL = "30€ individual · 60€ dobles"
+ENTRADA_USUARIOS = "25€ individual · 50€ dobles"
 
-event_datetime = datetime.strptime("2026-05-16 08:00", "%Y-%m-%d %H:%M")
+event_datetime = datetime.strptime("2026-07-11 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
 
 time_left = event_datetime - now
@@ -285,7 +286,7 @@ def fetch_total_remaining():
         else:
             occupied += 1
 
-    return 100 - occupied
+    return 10 - occupied
 
 
 # ---------------- Sidebar ----------------
@@ -338,6 +339,34 @@ MUY IMPORTANTE (Referencia/Concepto):
     )
 
 # ---------------- Main UI ----------------
+today = datetime.now()
+
+with st.sidebar:
+    admin_preview = st.checkbox("Admin preview")
+
+is_admin_preview = (
+    admin_preview and
+    st.text_input("Admin password", type="password") == get_admin_password()
+)
+
+if today < REGISTRATION_OPEN_DATE and not is_admin_preview:
+
+    st.markdown(
+        """
+        # 💥 HYROX JULY EDITION
+
+        Las inscripciones abrirán oficialmente el:
+
+        ## 📅 2 de junio
+
+        Estamos preparando una experiencia aún más grande.
+
+        Nos vemos muy pronto 🔥
+        """
+    )
+
+    st.stop()
+
 left, right = st.columns(2)
 
 with left:
@@ -527,9 +556,9 @@ with st.expander("Panel admin"):
         st.markdown("### Aforo del evento")
 
         remaining = fetch_total_remaining()
-        occupied = 100 - remaining
+        occupied = 10 - remaining
 
-        st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/100")
+        st.info(f"🎟️ Ocupadas: {occupied} | Disponibles: {remaining}/10")
         
         if df.empty:
             st.warning("Aún no hay inscripciones.")
