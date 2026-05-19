@@ -31,6 +31,17 @@ with col_logo:
     #unsafe_allow_html=True
 #)
 
+st.markdown(
+    """
+    <h1 style='text-align:center; margin-top:10px;'>
+        THE HYBRID SERIES
+    </h1>
+    <p style='text-align:center; opacity:0.8;'>
+        Plazas limitadas 
+    </p>
+    """,
+    unsafe_allow_html=True
+)
 
 #st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
