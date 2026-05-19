@@ -122,6 +122,17 @@ li:hover {
   background-color: rgba(255,255,255,0.08) !important;
 }
 
+button[kind="primary"] {
+  background-color: #e8871e !important;
+  color: white !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+button[kind="primary"]:hover {
+  background-color: #cf7416 !important;
+}
+
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
 </style>
