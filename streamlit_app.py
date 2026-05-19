@@ -143,6 +143,40 @@ div[data-testid="stForm"] button:hover {
     transform: scale(1.02);
 }
 
+/* CHECKBOX - forzar color */
+div[data-testid="stCheckbox"] span[data-testid="stWidgetLabel"] {
+    color: white !important;
+}
+
+/* El tick del checkbox */
+div[data-testid="stCheckbox"] div[role="checkbox"] {
+    background-color: #a85e10 !important;
+    border-color: #a85e10 !important;
+}
+
+/* EXPANDER / PANEL ADMIN - fondo azul */
+details {
+    background-color: rgba(90, 75, 20, 0.5) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 12px !important;
+}
+
+details summary {
+    background-color: rgba(90, 75, 20, 0.5) !important;
+    color: white !important;
+    border-radius: 12px !important;
+}
+
+/* Por si el expander usa otro selector */
+div[data-testid="stExpander"] > details {
+    background-color: rgba(90, 75, 20, 0.5) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+div[data-testid="stExpander"] > details > summary {
+    background-color: rgba(90, 75, 20, 0.5) !important;
+}
+
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
 </style>
