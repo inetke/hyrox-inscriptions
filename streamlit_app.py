@@ -34,10 +34,10 @@ with col_logo:
 st.markdown(
     """
     <h1 style='text-align:center; margin-top:10px;'>
-        THE HYBRID SERIES
+        HYBRID SUMMER GAMES
     </h1>
     <p style='text-align:center; opacity:0.8;'>
-        by ROBERTO FERNANDEZ 
+        Plazas limitadas 
     </p>
     """,
     unsafe_allow_html=True
