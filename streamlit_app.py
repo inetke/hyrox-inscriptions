@@ -33,11 +33,13 @@ with col_logo:
 
 st.markdown(
     """
-    <h2 style='text-align:center; margin-top:10px;'>
-        HYBRID SUMMER GAMES 🥥
-    </h1>
+    <div style='text-align:center; margin-top:10px;'>
+        <h2 style='display:inline; font-size:clamp(1.2rem, 5vw, 2rem);'>
+            HYBRID SUMMER GAMES 🥥
+        </h2>
+    </div>
     <p style='text-align:center; opacity:0.8;'>
-        Plazas limitadas 
+        Plazas limitadas
     </p>
     """,
     unsafe_allow_html=True
