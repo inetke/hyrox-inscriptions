@@ -549,27 +549,38 @@ with right:
             st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
             
             full_name = st.text_input("Nombre y Apellido")
-            
-            if is_pair:
-                alias = st.text_input("Nombre de equipo")
-            else:
-                alias = st.text_input("Alias")
-    
             phone = st.text_input("Teléfono")
             email = st.text_input("Email")
 
             partner_full_name = ""
             partner_phone = ""
             partner_email = ""
+            alias = ""
+            
+            # Individual → alias arriba
+            if not is_pair:
+                alias = st.text_input("Alias")
 
+            # Dobles → segunda persona primero
             if is_pair:
 
                 st.markdown("### Segunda persona")
 
-                partner_full_name = st.text_input("Nombre y Apellido (segunda persona)")
-                partner_phone = st.text_input("Teléfono (segunda persona)")
-                partner_email = st.text_input("Email (segunda persona)")
-            
+                partner_full_name = st.text_input(
+                    "Nombre y Apellido (segunda persona)"
+                )
+
+                partner_phone = st.text_input(
+                    "Teléfono (segunda persona)"
+                )
+
+                partner_email = st.text_input(
+                    "Email (segunda persona)"
+                )
+
+                # Nombre equipo abajo
+                alias = st.text_input("Nombre de equipo")
+
             consent = st.checkbox("Acepto el uso de datos")
 
             submit = st.form_submit_button("Reservar plaza")
