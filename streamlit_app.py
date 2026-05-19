@@ -77,6 +77,22 @@ div[data-testid="stForm"] {
   border: 1px solid rgba(255,255,255,0.08);
 }
 
+/* Input de contraseña y todos los inputs */
+input[type="password"],
+input[type="text"],
+div[data-baseweb="input"] {
+  background-color: rgba(255,255,255,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+/* Contenedor del input */
+div[data-baseweb="base-input"] {
+  background-color: rgba(255,255,255,0.12) !important;
+  border-radius: 8px !important;
+}
+
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
 </style>
