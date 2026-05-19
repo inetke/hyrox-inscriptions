@@ -444,7 +444,7 @@ def fetch_total_remaining():
 # ---------------- Sidebar ----------------
 with st.sidebar:
     st.markdown("## HYROX")
-    st.caption("Selecciona categoría y modalidad. Plazas limitadas. El aforo total es de 100 personas.")
+    st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
     st.divider()
 
     st.markdown("**Fecha del evento**")
