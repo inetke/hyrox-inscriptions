@@ -80,7 +80,6 @@ div[data-testid="stForm"] {
 /* Input de contraseña y todos los inputs */
 input[type="password"],
 input[type="text"],
-input[type="panel admin"],
 div[data-baseweb="input"] {
   background-color: rgba(90, 75, 20, 0.5) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -126,7 +125,7 @@ li:hover {
 /* BOTÓN DE RESERVAR PLAZA */
 div.stButton > button,
 div[data-testid="stForm"] button {
-    background-color: #c07020 !important; /* Naranja/Dorado coco */
+    background-color: #8f4f0d !important; /* Naranja/Dorado coco */
     color: white !important;
     border-radius: 12px !important;
     border: none !important;
