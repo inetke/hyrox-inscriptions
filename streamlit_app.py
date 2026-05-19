@@ -173,7 +173,7 @@ if today < REGISTRATION_OPEN_DATE:
 
     Las inscripciones abrirán oficialmente:
 
-    ## 🚀 2 de junio
+    ## 🌴 2 de junio
 
     Estamos preparando una experiencia increíble 🔥
     """)
