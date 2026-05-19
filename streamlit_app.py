@@ -585,7 +585,7 @@ with right:
                     "🥥 Nombre de equipo"
                 )
 
-consent = st.checkbox("Acepto el uso de datos")
+            consent = st.checkbox("Acepto el uso de datos")
 
             submit = st.form_submit_button("Reservar plaza")
             
