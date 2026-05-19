@@ -34,7 +34,7 @@ with col_logo:
 st.markdown(
     """
     <h1 style='text-align:center; margin-top:10px;'>
-        HYBRID SUMMER GAMES
+        HYBRID SUMMER GAMES 🥥
     </h1>
     <p style='text-align:center; opacity:0.8;'>
         Plazas limitadas 
