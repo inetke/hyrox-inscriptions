@@ -33,7 +33,7 @@ with col_logo:
 
 st.markdown(
     """
-    <h1 style='text-align:center; margin-top:10px;'>
+    <h2 style='text-align:center; margin-top:10px;'>
         HYBRID SUMMER GAMES 🥥
     </h1>
     <p style='text-align:center; opacity:0.8;'>
@@ -169,11 +169,11 @@ today = datetime.now()
 if today < REGISTRATION_OPEN_DATE:
 
     st.markdown("""
-    ### Evento: 11 de julio
+    #### Evento: 11 de julio
 
     Las inscripciones abrirán oficialmente:
 
-    ## 🌴 2 de junio
+    #### 🌴 2 de junio
 
     Estamos preparando una experiencia increíble 🔥
     """)
