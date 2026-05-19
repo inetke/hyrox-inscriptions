@@ -889,12 +889,12 @@ with st.expander("Panel admin"):
                 subject = "🥥 HYBRID SUMMER GAMES - Hora de salida confirmada"
 
                 html = f"""
-                <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
+                <h2>Tu salida ya está confirmada 💥</h2>
 
                 <p>Hola <strong>{row['full_name']}</strong>,</p>
 
                 <p>
-                Ya tenemos preparada tu salida para el evento HYROX.
+                Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
                 </p>
 
                 <hr>
@@ -924,7 +924,7 @@ with st.expander("Panel admin"):
                 </p>
 
                 <p>
-                Nos vemos muy pronto 🥥
+                Nos vemos muy pronto 🔥
                 </p>
 
                 <p>
