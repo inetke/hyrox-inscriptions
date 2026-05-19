@@ -638,12 +638,12 @@ with right:
 
             if ok:
 
-                subject = "HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
+                subject = "🥥 HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
 
                 html = f"""
                 <h2>Inscripción recibida 🌴</h2>
 
-                <p>Evento HYBRID SUMMER GAMES 🥥</p>
+                <p>Evento HYBRID SUMMER GAMES</p>
 
                 <ul>
                 <li>Fecha: {event_date}</li>
@@ -765,7 +765,7 @@ with st.expander("Panel admin"):
 
             for _, row in pendientes_df.iterrows():
 
-                subject = "Recordatorio de pago - HYBRID SUMMER GAMES"
+                subject = "Recordatorio de pago - HYBRID SUMMER GAMES 🥥"
 
                 html = f"""
                 <p>Hola {row['full_name']},</p>
@@ -886,7 +886,7 @@ with st.expander("Panel admin"):
 
             if row:
 
-                subject = "HYBRID SUMMER GAMES - Hora de salida confirmada"
+                subject = "🥥 HYBRID SUMMER GAMES - Hora de salida confirmada"
 
                 html = f"""
                 <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
@@ -1018,7 +1018,7 @@ with st.expander("Panel admin"):
                 else "Individual"
             )
 
-            subject = "HYBRID SUMMER GAMES - Pago recibido y plaza confirmada"
+            subject = "🥥 HYBRID SUMMER GAMES - Pago recibido y plaza confirmada"
 
             html = f"""
             <p>Hola,</p>
@@ -1132,12 +1132,12 @@ with st.expander("Panel admin"):
 
                 if send_email_admin:
 
-                    subject = "HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
+                    subject = "🥥 HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
 
                     html = f"""
                     <h2>Inscripción recibida</h2>
 
-                    <p>Evento HYBRID SUMMER GAMES 🥥</p>
+                    <p>Evento HYBRID SUMMER GAMES</p>
 
                     <ul>
                     <li>Fecha: {event_date}</li>
