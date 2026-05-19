@@ -53,7 +53,7 @@ st.markdown(
 .card {
   padding: 16px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.06);
+  background: #3d3000;
   border: 1px solid rgba(255,255,255,0.08);
   margin-bottom: 12px;
 }
