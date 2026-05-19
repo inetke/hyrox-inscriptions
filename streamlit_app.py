@@ -143,9 +143,11 @@ div[data-testid="stForm"] button:hover {
     transform: scale(1.02);
 }
 
-/* CHECKBOX - forzar color */
-div[data-testid="stCheckbox"] span[data-testid="stWidgetLabel"] {
-    color: white !important;
+/* CHECKBOX - forzar color del tick */
+input[type="checkbox"] {
+    accent-color: #a85e10 !important;
+    width: 18px !important;
+    height: 18px !important;
 }
 
 /* El tick del checkbox */
