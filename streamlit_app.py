@@ -49,11 +49,19 @@ st.markdown(
 st.markdown(
     """
 <style>
+/* FONDO GENERAL DE LA APP */
+[data-testid="stAppViewContainer"] {
+  background-color: #3d3000;
+}
+[data-testid="stHeader"] {
+  background-color: #3d3000;
+}
+
 /* Cards */
 .card {
   padding: 16px;
   border-radius: 16px;
-  background: #3d3000;
+  background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.08);
   margin-bottom: 12px;
 }
