@@ -557,13 +557,14 @@ with right:
             partner_email = ""
             alias = ""
             
-            # Individual → alias arriba
+            # Individual
             if not is_pair:
-                alias = st.text_input("Alias")
+                alias = st.text_input("🥥 Alias")
 
-            # Dobles → segunda persona primero
+            # Dobles
             if is_pair:
 
+                st.divider()
                 st.markdown("### Segunda persona")
 
                 partner_full_name = st.text_input(
@@ -578,10 +579,13 @@ with right:
                     "Email (segunda persona)"
                 )
 
-                # Nombre equipo abajo
-                alias = st.text_input("Nombre de equipo")
+                st.divider()
 
-            consent = st.checkbox("Acepto el uso de datos")
+                alias = st.text_input(
+                    "🥥 Nombre de equipo"
+                )
+
+consent = st.checkbox("Acepto el uso de datos")
 
             submit = st.form_submit_button("Reservar plaza")
             
