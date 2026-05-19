@@ -81,8 +81,8 @@ div[data-testid="stForm"] {
 input[type="password"],
 input[type="text"],
 div[data-baseweb="input"] {
-  background-color: rgba(255, 200, 50, 0.15) !important;
-  border: 1px solid rgba(255, 200, 50, 0.40) !important;
+  background-color: rgba(245, 220, 150, 0.20) !important;
+  border: 1px solid rgba(245, 220, 150, 0.45) !important;
   color: white !important;
   border-radius: 8px !important;
 }
