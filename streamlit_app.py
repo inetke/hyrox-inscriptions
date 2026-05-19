@@ -355,6 +355,7 @@ import json
 
 def create_booking_atomic(
     full_name,
+    alias=None,
     phone,
     email,
     modality,
@@ -366,6 +367,7 @@ def create_booking_atomic(
     payload = {
         "p_event_date": EVENT_DATE,
         "p_full_name": full_name,
+        "p_alias": alias,
         "p_phone": phone,
         "p_email": email,
         "p_modality": modality,
@@ -393,7 +395,7 @@ def fetch_bookings(event_date_str):
     resp = (
         sb.table("bookings")
         .select(
-            "id,event_date,full_name,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,modality,start_time"
+            "id,event_date,full_name,alias,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,modality,start_time"
         )
         .eq("event_date", event_date_str)
         .execute()
@@ -406,6 +408,7 @@ def fetch_bookings(event_date_str):
             "id": r["id"],
             "event_date": r["event_date"],
             "full_name": r["full_name"],
+            "alias": r["alias"],
             "phone": r["phone"],
             "email": r["email"],
             "partner_full_name": r["partner_full_name"],
@@ -546,6 +549,12 @@ with right:
             st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
             
             full_name = st.text_input("Nombre y Apellido")
+            
+            if is_pair:
+                alias = st.text_input("Nombre de equipo")
+            else:
+                alias = st.text_input("Alias")
+    
             phone = st.text_input("Teléfono")
             email = st.text_input("Email")
 
@@ -584,6 +593,13 @@ with right:
             if not email.strip():
                 st.error("Introduce tu email.")
                 st.stop()
+                
+            if not alias.strip():
+                st.error(
+                    "Introduce un alias" if not is_pair
+                    else "Introduce nombre de equipo"
+                )
+                st.stop()
 
             if not full_name or not phone or not email:
                 st.error("Introduce tus datos.")
@@ -596,6 +612,7 @@ with right:
 
             ok, msg = create_booking_atomic(
                 full_name=full_name,
+                alias=alias,
                 phone=phone,
                 email=email,
                 modality=modality,
