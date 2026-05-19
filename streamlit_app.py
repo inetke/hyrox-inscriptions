@@ -93,6 +93,35 @@ div[data-baseweb="base-input"] {
   border-radius: 8px !important;
 }
 
+/* SELECTBOX (Categoría, Modalidad) */
+div[data-baseweb="select"] > div {
+  background-color: rgba(90, 75, 20, 0.5) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 8px !important;
+  color: white !important;
+}
+
+/* Texto dentro del select */
+div[data-baseweb="select"] span {
+  color: white !important;
+}
+
+/* Dropdown (cuando abres el select) */
+ul {
+  background-color: #3d3000 !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+/* Opciones dentro del dropdown */
+li {
+  color: white !important;
+}
+
+/* Hover de opciones */
+li:hover {
+  background-color: rgba(255,255,255,0.08) !important;
+}
+
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
 </style>
