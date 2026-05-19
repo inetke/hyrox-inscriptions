@@ -143,6 +143,33 @@ div[data-testid="stForm"] button:hover {
     transform: scale(1.02);
 }
 
+/* CHECKBOX */
+input[type="checkbox"] {
+    accent-color: #a85e10 !important;
+}
+
+/* También por si acaso con el selector de Streamlit */
+div[data-testid="stCheckbox"] label span {
+    color: white !important;
+}
+
+/* PANEL ADMIN (expander) */
+div[data-testid="stExpander"] {
+    background-color: rgba(90, 75, 20, 0.5) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 12px !important;
+}
+
+/* Texto del expander */
+div[data-testid="stExpander"] summary {
+    color: white !important;
+}
+
+/* Fondo interior del expander */
+div[data-testid="stExpander"] details {
+    background-color: rgba(90, 75, 20, 0.5) !important;
+}
+
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
 </style>
