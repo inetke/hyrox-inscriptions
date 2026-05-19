@@ -122,15 +122,25 @@ li:hover {
   background-color: rgba(255,255,255,0.08) !important;
 }
 
-button[kind="primary"] {
-  background-color: #e8871e !important;
-  color: white !important;
-  border-radius: 8px !important;
-  border: none !important;
+/* BOTÓN DE RESERVAR PLAZA */
+div.stButton > button,
+div[data-testid="stForm"] button {
+    background-color: #e8871e !important; /* Naranja/Dorado coco */
+    color: white !important;
+    border-radius: 12px !important;
+    border: none !important;
+    padding: 0.5rem 2rem !important;
+    width: 100% !important; /* Lo hace ancho completo para que luzca más en el formulario */
+    transition: all 0.3s ease;
+    font-weight: bold !important;
 }
 
-button[kind="primary"]:hover {
-  background-color: #cf7416 !important;
+/* EFECTO AL PASAR EL RATÓN */
+div.stButton > button:hover,
+div[data-testid="stForm"] button:hover {
+    background-color: #cf7416 !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    transform: scale(1.02);
 }
 
 /* Reduce top padding a bit */
