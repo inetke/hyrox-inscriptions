@@ -169,10 +169,6 @@ today = datetime.now()
 if today < REGISTRATION_OPEN_DATE:
 
     st.markdown("""
-    # 💥 HYROX JULY EDITION
-
-    Prepárate para una nueva experiencia HYROX.
-
     ### Evento: 11 de julio
 
     Las inscripciones abrirán oficialmente:
