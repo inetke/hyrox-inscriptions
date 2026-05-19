@@ -638,12 +638,12 @@ with right:
 
             if ok:
 
-                subject = "HYROX - Inscripción recibida (pendiente de pago)"
+                subject = "HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
 
                 html = f"""
-                <h2>Inscripción recibida</h2>
+                <h2>Inscripción recibida 🌴</h2>
 
-                <p>Evento HYROX</p>
+                <p>Evento HYBRID SUMMER GAMES 🥥</p>
 
                 <ul>
                 <li>Fecha: {event_date}</li>
@@ -765,12 +765,12 @@ with st.expander("Panel admin"):
 
             for _, row in pendientes_df.iterrows():
 
-                subject = "Recordatorio de pago - HYROX"
+                subject = "Recordatorio de pago - HYBRID SUMMER GAMES"
 
                 html = f"""
                 <p>Hola {row['full_name']},</p>
 
-                <p>Te recordamos que tu plaza para el evento HYROX sigue <strong>pendiente de pago</strong>.</p>
+                <p>Te recordamos que tu plaza para el evento HYBRID SUMMER GAMES sigue <strong>pendiente de pago</strong>.</p>
 
                 <p>Para confirmar tu inscripción, realiza el pago lo antes posible.</p>
                 
@@ -886,10 +886,10 @@ with st.expander("Panel admin"):
 
             if row:
 
-                subject = "HYROX - Hora de salida confirmada"
+                subject = "HYBRID SUMMER GAMES - Hora de salida confirmada"
 
                 html = f"""
-                <h2>Tu salida HYROX ya está confirmada 💥</h2>
+                <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
 
                 <p>Hola <strong>{row['full_name']}</strong>,</p>
 
@@ -900,11 +900,11 @@ with st.expander("Panel admin"):
                 <hr>
 
                 <p>
-                <strong>🎽 Número de dorsal:</strong> {row['id']}
+                <strong>Número de dorsal:</strong> {row['id']}
                 </p>
 
                 <p>
-                <strong>⏱️ Hora de salida:</strong> {row['start_time']}
+                <strong>Hora de salida:</strong> {row['start_time']}
                 </p>
 
                 <hr>
@@ -915,17 +915,16 @@ with st.expander("Panel admin"):
 
                 <ul>
                     <li>Recoger tu dorsal</li>
-                    <li>Preparar tu mochila</li>
                     <li>Realizar el warm up</li>
                     <li>Disfrutar de un cafecito pre competición ☕</li>
                 </ul>
 
                 <p>
-                Queremos que vivas la experiencia HYROX completa desde el primer minuto.
+                Queremos que vivas la experiencia HYBRID SUMMER GAMES completa desde el primer minuto.
                 </p>
 
                 <p>
-                Nos vemos muy pronto 🔥
+                Nos vemos muy pronto 🥥
                 </p>
 
                 <p>
@@ -942,22 +941,22 @@ with st.expander("Panel admin"):
                     partner_name = (row.get("partner_full_name") or "").strip()
 
                     partner_html = f"""
-                    <h2>Tu salida HYROX ya está confirmada 💥</h2>
+                    <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
 
                     <p>Hola <strong>{row["partner_full_name"]}</strong>,</p>
 
                     <p>
-                    Ya tenemos preparada tu salida para el evento HYROX.
+                    Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
                     </p>
 
                     <hr>
 
                     <p>
-                    <strong>🎽 Número de dorsal:</strong> {row['id']}
+                    <strong>Número de dorsal:</strong> {row['id']}
                     </p>
 
                     <p>
-                    <strong>⏱️ Hora de salida:</strong> {row['start_time']}
+                    <strong>Hora de salida:</strong> {row['start_time']}
                     </p>
 
                     <hr>
@@ -968,13 +967,12 @@ with st.expander("Panel admin"):
 
                     <ul>
                         <li>Recoger tu dorsal</li>
-                        <li>Preparar tu mochila</li>
                         <li>Realizar el warm up</li>
                         <li>Disfrutar de un cafecito pre competición ☕</li>
                     </ul>
 
                     <p>
-                    Nos vemos muy pronto 🔥
+                    Nos vemos muy pronto 🥥
                     </p>
 
                     <p><strong>RF HYROX Training Club</strong></p>
@@ -1020,21 +1018,21 @@ with st.expander("Panel admin"):
                 else "Individual"
             )
 
-            subject = "HYROX - Pago recibido y plaza confirmada"
+            subject = "HYBRID SUMMER GAMES - Pago recibido y plaza confirmada"
 
             html = f"""
             <p>Hola,</p>
 
-            <p>Hemos recibido correctamente tu pago y tu plaza para HYROX está confirmada.</p>
+            <p>Hemos recibido correctamente tu pago y tu plaza para HYBRID SUMMER GAMES está confirmada.</p>
 
             <ul>
                 <li><strong>Fecha:</strong> {row['event_date']}</li>
                 <li><strong>Modalidad:</strong> {modalidad}</li>
             </ul>
 
-            <p>📢 Una semana antes te comunicaremos la tanda asignada.</p>
+            <p>⚡ Una semana antes te comunicaremos la tanda asignada.</p>
 
-            <p>¡Nos vemos en HYROX! 💥</p>
+            <p>¡Nos vemos en HYBRID SUMMER GAMES! 🌴☀️</p>
             """
 
             email_sent = send_email(row["email"], subject, html)
@@ -1134,12 +1132,12 @@ with st.expander("Panel admin"):
 
                 if send_email_admin:
 
-                    subject = "HYROX - Inscripción recibida (pendiente de pago)"
+                    subject = "HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
 
                     html = f"""
                     <h2>Inscripción recibida</h2>
 
-                    <p>Evento HYROX</p>
+                    <p>Evento HYBRID SUMMER GAMES 🥥</p>
 
                     <ul>
                     <li>Fecha: {event_date}</li>
