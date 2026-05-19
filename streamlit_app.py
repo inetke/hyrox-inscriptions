@@ -355,25 +355,25 @@ import json
 
 def create_booking_atomic(
     full_name,
-    alias=None,
     phone,
     email,
     modality,
     partner_full_name=None,
     partner_phone=None,
     partner_email=None,
+    alias=None,
     force=False
 ):
     payload = {
         "p_event_date": EVENT_DATE,
         "p_full_name": full_name,
-        "p_alias": alias,
         "p_phone": phone,
         "p_email": email,
         "p_modality": modality,
         "p_partner_full_name": partner_full_name,
         "p_partner_phone": partner_phone,
         "p_partner_email": partner_email,
+        "p_alias": alias,
         "p_force": force,
     }
 
@@ -612,10 +612,10 @@ with right:
 
             ok, msg = create_booking_atomic(
                 full_name=full_name,
-                alias=alias,
                 phone=phone,
                 email=email,
                 modality=modality,
+                alias=alias,
                 partner_full_name=partner_full_name if is_pair else None,
                 partner_phone=partner_phone if is_pair else None,
                 partner_email=partner_email if is_pair else None,
