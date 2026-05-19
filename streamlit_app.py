@@ -37,7 +37,7 @@ st.markdown(
         THE HYBRID SERIES
     </h1>
     <p style='text-align:center; opacity:0.8;'>
-        Plazas limitadas 
+        by ROBERTO FERNANDEZ 
     </p>
     """,
     unsafe_allow_html=True
