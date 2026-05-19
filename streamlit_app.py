@@ -15,7 +15,7 @@ col_logo = st.columns([1,2,1])[1]
 
 with col_logo:
     st.image(
-        "assets/logo_hybrid_series.png",
+        "assets/logo_hybrid.png",
         use_container_width=True
     )
 
