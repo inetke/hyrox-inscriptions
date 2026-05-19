@@ -11,6 +11,17 @@ from datetime import datetime, timedelta
 # ---------------- Page config ----------------
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
 
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1rem !important;
+        }
+        [data-testid="stAppViewContainer"] {
+            padding-top: 0rem !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 col_logo = st.columns([1,2,1])[1]
 
 with col_logo:
