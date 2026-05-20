@@ -917,7 +917,7 @@ with st.expander("Panel admin"):
                     <li>Hacer el check-in</li>
                     <li>Recoger el regalito del corredor</li>
                     <li>Realizar el warm up</li>
-                    <li>Disfrutar de un cafecito ☕</li>
+                    <li>Disfrutar de un cafecito pre competición ☕</li>
                 </ul>
 
                 <p>
