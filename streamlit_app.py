@@ -290,7 +290,7 @@ if today < REGISTRATION_OPEN_DATE:
 
     st.divider()
 
-    st.caption("Acceso privado")
+    st.caption("Private access")
 
     preview_password = st.text_input(
         "Password",
