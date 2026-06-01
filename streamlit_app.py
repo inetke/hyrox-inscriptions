@@ -455,7 +455,7 @@ def fetch_total_remaining():
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
-    st.markdown("## HYROX")
+    st.markdown("## THE HYBRID SERIES")
     st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
     st.divider()
 
