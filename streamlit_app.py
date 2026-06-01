@@ -194,8 +194,6 @@ PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 EVENT_DATE = "2026-07-11"
 event_date = EVENT_DATE
 REGISTRATION_OPEN_DATE = datetime(2026, 6, 2, 13, 0)
-st.write("Fecha servidor:", datetime.now())
-st.write("Apertura:", REGISTRATION_OPEN_DATE)
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
 MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
