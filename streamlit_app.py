@@ -938,12 +938,12 @@ with st.expander("Panel admin"):
 
                 sb.table("bookings") \
                     .update({"start_time": selected_time}) \
-                    .eq("id", int(selected_id)) \
+                    .eq("id", selected_id) \
                     .execute()
 
                 resp = sb.table("bookings") \
                     .select("id,full_name,email,partner_email,partner_full_name,third_email,third_full_name,start_time") \
-                    .eq("id", int(selected_id)) \
+                    .eq("id", selected_id) \
                     .single() \
                     .execute()
 
