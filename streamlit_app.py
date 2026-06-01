@@ -767,7 +767,8 @@ with st.expander("Panel admin"):
                 "modality",
                 "paid",
                 "created_at",
-                "start_time"
+                "start_time",
+                "alias"
             ]
         )
 
@@ -1147,6 +1148,12 @@ with st.expander("Panel admin"):
         admin_name = st.text_input("Nombre", key="admin_name")
         admin_phone = st.text_input("Teléfono", key="admin_phone")
         admin_email = st.text_input("Email", key="admin_email")
+        
+        admin_alias = st.text_input(
+            "Alias" if admin_modality == "Individual"
+            else "Nombre de equipo",
+            key="admin_alias"
+        )
 
         partner_name = ""
         partner_phone = ""
@@ -1187,6 +1194,14 @@ with st.expander("Panel admin"):
             if not admin_email.strip():
                 st.error("Email obligatorio")
                 st.stop()
+                
+            if not admin_alias.strip():
+                st.error(
+                    "Alias obligatorio"
+                    if admin_modality == "Individual"
+                    else "Nombre de equipo obligatorio"
+                )
+                st.stop()
 
             if admin_modality in ["Dobles", "Tríos"]:
                 if not partner_name.strip():
@@ -1226,6 +1241,7 @@ with st.expander("Panel admin"):
                 third_full_name=third_name if admin_modality == "Tríos" else None,
                 third_phone=third_phone if admin_modality == "Tríos" else None,
                 third_email=third_email if admin_modality == "Tríos" else None,
+                alias=admin_alias,
                 force=True
             )
             
