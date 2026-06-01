@@ -1148,12 +1148,6 @@ with st.expander("Panel admin"):
         admin_name = st.text_input("Nombre", key="admin_name")
         admin_phone = st.text_input("Teléfono", key="admin_phone")
         admin_email = st.text_input("Email", key="admin_email")
-        
-        admin_alias = st.text_input(
-            "Alias" if admin_modality == "Individual"
-            else "Nombre de equipo",
-            key="admin_alias"
-        )
 
         partner_name = ""
         partner_phone = ""
@@ -1177,6 +1171,11 @@ with st.expander("Panel admin"):
             third_name = st.text_input("Nombre (tercera persona)", key="third_name")
             third_phone = st.text_input("Teléfono (tercera persona)", key="third_phone")
             third_email = st.text_input("Email (tercera persona)", key="third_email")
+            
+        admin_alias = st.text_input(
+            "Alias" if admin_modality == "Individual" else "Nombre de equipo",
+            key="admin_alias"
+        )
 
         send_email_admin = st.checkbox("Enviar email de confirmación", value=True)
 
