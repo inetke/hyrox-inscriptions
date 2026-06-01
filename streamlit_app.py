@@ -940,7 +940,7 @@ with st.expander("Panel admin"):
 
             # Guardar hora
             sb.table("bookings") \
-                .update({"start_time": f"{selected_time}:00}) \
+                .update({"start_time": f"{selected_time}:00"}) \
                 .eq("id", selected_id) \
                 .execute()
 
