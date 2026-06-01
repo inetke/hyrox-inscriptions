@@ -497,10 +497,12 @@ with left:
 
     gender = st.selectbox("Categoría", ["Masculino", "Femenino", "Mixto"])
 
-    modality = st.selectbox("Modalidad", ["Individual", "Dobles"])
+    modality = st.selectbox("Modalidad", ["Individual", "Dobles", "Tríos"])
 
     is_pair = modality == "Dobles"
-
+    is_trio = modality == "Tríos"
+    is_team = modality in ["Dobles", "Tríos"]
+    
     # Paso 4 (AQUÍ VA)
     st.markdown(f"**Categoría seleccionada:** {gender} - {modality}")
 
@@ -557,12 +559,16 @@ with right:
             partner_email = ""
             alias = ""
             
+            third_full_name = ""
+            third_phone = ""
+            third_email = ""
+            
             # Individual
             if not is_pair:
                 alias = st.text_input("🥥 Alias")
 
-            # Dobles
-            if is_pair:
+            # Dobles o tríos
+            if is_pair or is_trio:
 
                 st.divider()
                 st.markdown("### Segunda persona")
@@ -579,11 +585,29 @@ with right:
                     "Email (segunda persona)"
                 )
 
+                if is_trio:
+
+                    st.divider()
+                    st.markdown("### Tercera persona")
+
+                    third_full_name = st.text_input(
+                        "Nombre y Apellido (tercera persona)"
+                    )
+
+                    third_phone = st.text_input(
+                        "Teléfono (tercera persona)"
+                    )
+
+                    third_email = st.text_input(
+                        "Email (tercera persona)"
+                    )
+
                 st.divider()
 
                 alias = st.text_input(
                     "🥥 Nombre de equipo"
                 )
+            
 
             consent = st.checkbox("Acepto el uso de datos")
 
@@ -620,10 +644,33 @@ with right:
                 st.error("Introduce tus datos.")
                 st.stop()
                 
-            if is_pair:
+            if is_pair or is_trio:
+
                 if not partner_full_name.strip():
                     st.error("Introduce el nombre de la segunda persona.")
                     st.stop()
+
+                if not partner_phone.strip():
+                    st.error("Introduce el teléfono de la segunda persona.")
+                    st.stop()
+
+                if not partner_email.strip():
+                    st.error("Introduce el email de la segunda persona.")
+                    st.stop()
+                    
+                    if is_trio:
+
+                        if not third_full_name.strip():
+                            st.error("Introduce el nombre de la tercera persona.")
+                            st.stop()
+
+                        if not third_phone.strip():
+                            st.error("Introduce el teléfono de la tercera persona.")
+                            st.stop()
+
+                        if not third_email.strip():
+                            st.error("Introduce el email de la tercera persona.")
+                            st.stop()
 
             ok, msg = create_booking_atomic(
                 full_name=full_name,
