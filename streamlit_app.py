@@ -765,7 +765,7 @@ with st.expander("Panel admin"):
                 "partner_phone",
                 "partner_email",
                 "third_full_name",
-                "third_pone",
+                "third_phone",
                 "third_email",
                 "modality",
                 "paid",
