@@ -921,139 +921,122 @@ with st.expander("Panel admin"):
         # Solo atletas sin hora
         available_df = df[df["start_time"].isna()]
 
-        # Seleccionar inscripción
-        selected_id = st.selectbox(
-            "Seleccionar id",
-            available_df["id"],
-            key="time_booking"
-        )
+        if available_df.empty:
+            st.info("No hay inscripciones pendientes de asignar tanda.")
+        else:
 
-        # Seleccionar hora
-        selected_time = st.selectbox(
-            "Seleccionar la hora",
-            time_slots,
-            key="time_select"
-        )
+            # Seleccionar inscripción
+            selected_id = st.selectbox(
+                "Seleccionar id",
+                available_df["id"].tolist(),
+                key="time_booking"
+            )
 
-        # Guardar + enviar email
-        if st.button("Confirmar la asignación"):
-            
-            selected_time_db = selected_time + ":00"
+            # Seleccionar hora
+            selected_time = st.selectbox(
+                "Seleccionar la hora",
+                time_slots,
+                key="time_select"
+            )
 
-            # Guardar hora
-            sb.table("bookings") \
-                .update({"start_time": selected_time_db}) \
-                .eq("id", selected_id) \
-                .execute()
-                
-            # Recuperar datos de la reserva
-            resp = sb.table("bookings") \
-                .select("id, full_name, email, partner_email, partner_full_name, start_time") \
-                .eq("id", selected_id) \
-                .single() \
-                .execute()
+            # Guardar + enviar email
+            if st.button("Confirmar la asignación"):
 
-            row = resp.data
+                try:
 
-            if row:
+                    # Guardar hora
+                    sb.table("bookings") \
+                        .update({"start_time": selected_time}) \
+                        .eq("id", int(selected_id)) \
+                        .execute()
 
-                subject = "🥥 HYBRID SUMMER GAMES - Hora de salida confirmada"
+                    # Recuperar datos de la reserva
+                    resp = sb.table("bookings") \
+                        .select("*") \
+                        .eq("id", int(selected_id)) \
+                        .single() \
+                        .execute()
 
-                html = f"""
-                <h2>Tu salida ya está confirmada 🌴</h2>
+                    row = resp.data
 
-                <p>Hola <strong>{row['full_name']}</strong>,</p>
+                    if row:
 
-                <p>
-                Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
-                </p>
+                        subject = "🥥 HYBRID SUMMER GAMES - Hora de salida confirmada"
 
-                <hr>
+                        html = f"""
+                        <h2>Tu salida ya está confirmada 🌴</h2>
 
-                <p>
-                <strong>Número de dorsal:</strong> {row['id']}
-                </p>
+                        <p>Hola <strong>{row['full_name']}</strong>,</p>
 
-                <p>
-                <strong>Hora de salida:</strong> {row['start_time']}
-                </p>
+                        <p>
+                        Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
+                        </p>
 
-                <hr>
+                        <hr>
 
-                <p>
-                Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
-                </p>
+                        <p>
+                        <strong>Número de dorsal:</strong> {row['id']}
+                        </p>
 
-                <ul>
-                    <li>Hacer el check-in</li>
-                    <li>Recoger el regalito del corredor</li>
-                    <li>Realizar el warm up</li>
-                    <li>Disfrutar de un cafecito pre competición ☕</li>
-                </ul>
+                        <p>
+                        <strong>Hora de salida:</strong> {row['start_time']}
+                        </p>
 
-                <p>
-                Queremos que vivas la experiencia HYBRID SUMMER GAMES completa desde el primer minuto.
-                </p>
+                        <hr>
 
-                <p>
-                Nos vemos muy pronto 🔥
-                </p>
+                        <p>
+                        Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
+                        </p>
 
-                <p>
-                <strong>RF HYROX Training Club</strong>
-                </p>
-                """
+                        <ul>
+                            <li>Hacer el check-in</li>
+                            <li>Recoger el regalito del corredor</li>
+                            <li>Realizar el warm up</li>
+                            <li>Disfrutar de un cafecito pre competición ☕</li>
+                        </ul>
 
-                # Email principal
-                send_email(row["email"], subject, html)
+                        <p>
+                        Queremos que vivas la experiencia HYBRID SUMMER GAMES completa desde el primer minuto.
+                        </p>
 
-                # Email pareja con su propio nombre
-                if row.get("partner_email") and str(row["partner_email"]).strip():
+                        <p>
+                        Nos vemos muy pronto 🔥
+                        </p>
 
-                    partner_name = (row.get("partner_full_name") or "").strip()
+                        <p>
+                        <strong>RF HYROX Training Club</strong>
+                        </p>
+                        """
 
-                    partner_html = f"""
-                    <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
+                        # Email principal
+                        send_email(row["email"], subject, html)
 
-                    <p>Hola <strong>{row["partner_full_name"]}</strong>,</p>
+                        # Segunda persona
+                        if row.get("partner_email"):
 
-                    <p>
-                    Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
-                    </p>
+                            partner_html = html.replace(
+                                row["full_name"],
+                                row.get("partner_full_name", "")
+                            )
 
-                    <hr>
+                            send_email(row["partner_email"], subject, partner_html)
 
-                    <p>
-                    <strong>Número de dorsal:</strong> {row['id']}
-                    </p>
+                        # Tercera persona
+                        if row.get("third_email"):
 
-                    <p>
-                    <strong>Hora de salida:</strong> {row['start_time']}
-                    </p>
+                            third_html = html.replace(
+                                row["full_name"],
+                                row.get("third_full_name", "")
+                            )
 
-                    <hr>
+                            send_email(row["third_email"], subject, third_html)
 
-                    <p>
-                    Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
-                    </p>
+                st.success("Start time assigned and email sent successfully")
+                st.rerun()
 
-                    <ul>
-                        <li>Recoger tu dorsal</li>
-                        <li>Realizar el warm up</li>
-                        <li>Disfrutar de un cafecito pre competición ☕</li>
-                    </ul>
-
-                    <p>
-                    Nos vemos muy pronto 🥥
-                    </p>
-
-                    <p><strong>RF HYROX Training Club</strong></p>
-                    """
-
-                    send_email(row["partner_email"], subject, partner_html)
-
-            st.success("Start time assigned and email sent successfully")
-            st.rerun()
+            except Exception as e:
+                st.error("Error asignando tanda")
+                st.exception(e)
 
         st.markdown("### 💳 Confirmar pago")
 
