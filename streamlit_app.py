@@ -400,7 +400,7 @@ def fetch_bookings(event_date_str):
     resp = (
         sb.table("bookings")
         .select(
-            "id,event_date,full_name,alias,phone,email,partner_full_name,partner_phone,partner_email,created_at,paid,modality,start_time"
+            "id,event_date,full_name,alias,phone,email,partner_full_name,partner_phone,partner_email,third_full_name,third_phone,third_email,created_at,paid,modality,start_time"
         )
         .eq("event_date", event_date_str)
         .execute()
@@ -419,6 +419,9 @@ def fetch_bookings(event_date_str):
             "partner_full_name": r["partner_full_name"],
             "partner_phone": r["partner_phone"],
             "partner_email": r["partner_email"],
+            "third_full_name": r["third_full_name"],
+            "third_phone": r["third_phone"],
+            "third_email": r["third_email"],
             "modality": r["modality"],
             "paid": r["paid"],
             "created_at": r["created_at"],
@@ -430,7 +433,7 @@ def fetch_bookings(event_date_str):
 def fetch_total_remaining():
     resp = (
         sb.table("bookings")
-        .select("partner_full_name")
+        .select("modality,partner_full_name,third_full_name")
         .eq("event_date", EVENT_DATE)
         .execute()
     )
@@ -438,7 +441,11 @@ def fetch_total_remaining():
     occupied = 0
 
     for row in (resp.data or []):
-        if row["partner_full_name"]:
+        if row.get("modality") == "Tríos":
+            occupied += 3
+        elif row.get("modality") == "Dobles":
+            occupied += 2
+        elif row.get("partner_full_name"):
             occupied += 2
         else:
             occupied += 1
@@ -656,27 +663,27 @@ with right:
                     st.stop()
 
                 if not partner_phone.strip():
-                    st.error("Introduce el teléfono de la segunda persona.")
+                     st.error("Introduce el teléfono de la segunda persona.")
                     st.stop()
 
                 if not partner_email.strip():
                     st.error("Introduce el email de la segunda persona.")
                     st.stop()
+
+            if is_trio:
+
+                if not third_full_name.strip():
+                    st.error("Introduce el nombre de la tercera persona.")
+                    st.stop()
+
+                if not third_phone.strip():
+                    st.error("Introduce el teléfono de la tercera persona.")
+                    st.stop()
+
+                if not third_email.strip():
+                    st.error("Introduce el email de la tercera persona.")
+                    st.stop()
                     
-                    if is_trio:
-
-                        if not third_full_name.strip():
-                            st.error("Introduce el nombre de la tercera persona.")
-                            st.stop()
-
-                        if not third_phone.strip():
-                            st.error("Introduce el teléfono de la tercera persona.")
-                            st.stop()
-
-                        if not third_email.strip():
-                            st.error("Introduce el email de la tercera persona.")
-                            st.stop()
-
             ok, msg = create_booking_atomic(
                 full_name=full_name,
                 phone=phone,
