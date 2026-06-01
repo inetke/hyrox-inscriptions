@@ -361,6 +361,9 @@ def create_booking_atomic(
     partner_full_name=None,
     partner_phone=None,
     partner_email=None,
+    third_full_name=None,
+    third_phone=None,
+    third_email=None,
     alias=None,
     force=False
 ):
@@ -373,6 +376,9 @@ def create_booking_atomic(
         "p_partner_full_name": partner_full_name,
         "p_partner_phone": partner_phone,
         "p_partner_email": partner_email,
+        "p_third_full_name": third_full_name,
+        "p_third_phone": third_phone,
+        "p_third_email": third_email,
         "p_alias": alias,
         "p_force": force,
     }
@@ -384,7 +390,6 @@ def create_booking_atomic(
             return False, "Error inesperado."
 
         result = resp.data[0]
-
         return result["ok"], result["message"]
 
     except Exception as e:
@@ -678,9 +683,12 @@ with right:
                 email=email,
                 modality=modality,
                 alias=alias,
-                partner_full_name=partner_full_name if is_pair else None,
-                partner_phone=partner_phone if is_pair else None,
-                partner_email=partner_email if is_pair else None,
+                partner_full_name=partner_full_name if is_pair or is_trio else None,
+                partner_phone=partner_phone if is_pair or is_trio else None,
+                partner_email=partner_email if is_pair or is_trio else None,
+                third_full_name=third_full_name if is_trio else None,
+                third_phone=third_phone if is_trio else None,
+                third_email=third_email if is_trio else None,
             )
 
             if ok:
@@ -712,8 +720,11 @@ with right:
                 if not email_sent:
                     st.warning("Reserva creada pero el email no pudo enviarse.")
 
-                if is_pair:
+                if is_pair or is_trio:
                     send_email(partner_email, subject, html)
+
+                if is_trio:
+                    send_email(third_email, subject, html)
 
                 st.success(msg)
 
