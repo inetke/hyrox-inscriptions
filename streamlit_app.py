@@ -663,7 +663,7 @@ with right:
                     st.stop()
 
                 if not partner_phone.strip():
-                     st.error("Introduce el teléfono de la segunda persona.")
+                    st.error("Introduce el teléfono de la segunda persona.")
                     st.stop()
 
                 if not partner_email.strip():
