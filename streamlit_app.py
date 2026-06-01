@@ -915,43 +915,39 @@ with st.expander("Panel admin"):
         
         st.markdown("### 🚀 Asignar tanda")
 
-        # Generar horarios
         time_slots = generate_mixed_time_slots()
 
-        # Solo atletas sin hora
         available_df = df[df["start_time"].isna()]
 
-        # Seleccionar inscripción
-        selected_id = st.selectbox(
-            "Seleccionar id",
-            available_df["id"],
-            key="time_booking"
-        )
+        if available_df.empty:
+            st.info("No hay inscripciones pendientes de asignar tanda.")
+        else:
+            selected_id = st.selectbox(
+                "Seleccionar id",
+                available_df["id"].astype(int).tolist(),
+                key="time_booking"
+            )
 
-        # Seleccionar hora
-        selected_time = st.selectbox(
-            "Seleccionar la hora",
-            time_slots,
-            key="time_select"
-        )
+            selected_time = st.selectbox(
+                "Seleccionar la hora",
+                time_slots,
+                key="time_select"
+            )
 
-        # Guardar + enviar email
-        if st.button("Confirmar la asignación"):
+            if st.button("Confirmar la asignación"):
 
-            # Guardar hora
-            sb.table("bookings") \
-                .update({"start_time": selected_time}) \
-                .eq("id", selected_id) \
-                .execute()
+                sb.table("bookings") \
+                    .update({"start_time": selected_time}) \
+                    .eq("id", int(selected_id)) \
+                    .execute()
 
-            # Recuperar datos de la reserva
-            resp = sb.table("bookings") \
-                .select("id, full_name, email, partner_email, partner_full_name, third_email, third_full_name, start_time") \
-                .eq("id", selected_id) \
-                .single() \
-                .execute()
+                resp = sb.table("bookings") \
+                    .select("id,full_name,email,partner_email,partner_full_name,third_email,third_full_name,start_time") \
+                    .eq("id", int(selected_id)) \
+                    .single() \
+                    .execute()
 
-            row = resp.data
+                row = resp.data
 
             if row:
 
