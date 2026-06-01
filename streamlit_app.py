@@ -576,11 +576,11 @@ with right:
             third_email = ""
             
             # Individual
-            if not is_pair:
+            if not is_team:
                 alias = st.text_input("🥥 Alias")
 
             # Dobles o tríos
-            if is_pair or is_trio:
+            if is_team:
 
                 st.divider()
                 st.markdown("### Segunda persona")
