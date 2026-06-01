@@ -938,18 +938,22 @@ with st.expander("Panel admin"):
         # Guardar + enviar email
         if st.button("Confirmar la asignación"):
 
-            # Guardar hora
+            st.write("PASO 1")
+
             sb.table("bookings") \
-                .update({"start_time": f"{selected_time}:00"}) \
+                .update({"start_time": selected_time}) \
                 .eq("id", selected_id) \
                 .execute()
 
-            # Recuperar datos de la reserva
+            st.write("PASO 2")
+
             resp = sb.table("bookings") \
                 .select("id, full_name, email, partner_email, partner_full_name, start_time") \
                 .eq("id", selected_id) \
                 .single() \
                 .execute()
+
+            st.write("PASO 3")
 
             row = resp.data
 
