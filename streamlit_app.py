@@ -518,7 +518,7 @@ with left:
     # Paso 4 (AQUÍ VA)
     st.markdown(f"**Categoría seleccionada:** {gender} - {modality}")
 
-    activity = f"Hyrox {modality}"
+    activity = f"{modality}"
 
     remaining = fetch_total_remaining()
     
