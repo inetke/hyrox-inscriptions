@@ -1031,12 +1031,12 @@ with st.expander("Panel admin"):
 
                             send_email(row["third_email"], subject, third_html)
 
-                st.success("Start time assigned and email sent successfully")
-                st.rerun()
+                    st.success("Start time assigned and email sent successfully")
+                    st.rerun()
 
-            except Exception as e:
-                st.error("Error asignando tanda")
-                st.exception(e)
+                except Exception as e:
+                    st.error("Error asignando tanda")
+                    st.exception(e)
 
         st.markdown("### 💳 Confirmar pago")
 
