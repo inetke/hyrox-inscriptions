@@ -946,7 +946,7 @@ with st.expander("Panel admin"):
 
             # Recuperar datos de la reserva
             resp = sb.table("bookings") \
-                .select("id, full_name, email, partner_email, partner_full_name, start_time") \
+                .select("id, full_name, email, partner_email, partner_full_name, third_email, third_full_name, start_time") \
                 .eq("id", selected_id) \
                 .single() \
                 .execute()
@@ -1049,6 +1049,48 @@ with st.expander("Panel admin"):
                     """
 
                     send_email(row["partner_email"], subject, partner_html)
+                    
+                    if row.get("third_email") and str(row["third_email"]).strip():
+
+                        third_html = f"""
+                        <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
+
+                        <p>Hola <strong>{row["third_full_name"]}</strong>,</p>
+
+                        <p>
+                        Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
+                        </p>
+
+                        <hr>
+
+                        <p>
+                        <strong>Número de dorsal:</strong> {row['id']}
+                        </p>
+
+                        <p>
+                        <strong>Hora de salida:</strong> {row['start_time']}
+                        </p>
+
+                        <hr>
+
+                        <p>
+                        Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
+                        </p>
+
+                        <ul>
+                            <li>Recoger tu dorsal</li>
+                            <li>Realizar el warm up</li>
+                            <li>Disfrutar de un cafecito pre competición ☕</li>
+                        </ul>
+
+                        <p>
+                        Nos vemos muy pronto 🥥
+                        </p>
+
+                        <p><strong>RF HYROX Training Club</strong></p>
+                        """
+
+                        send_email(row["third_email"], subject, third_html)
     
             st.success("Start time assigned and email sent successfully")
             st.rerun()
