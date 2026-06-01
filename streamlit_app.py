@@ -915,48 +915,105 @@ with st.expander("Panel admin"):
         
         st.markdown("### 🚀 Asignar tanda")
 
+        # Generar horarios
         time_slots = generate_mixed_time_slots()
 
+        # Solo atletas sin hora
         available_df = df[df["start_time"].isna()]
 
-        if available_df.empty:
-            st.info("No hay inscripciones pendientes de asignar tanda.")
-        else:
-            selected_id = st.selectbox(
-                "Seleccionar id",
-                available_df["id"].astype(int).tolist(),
-                key="time_booking"
-            )
+        # Seleccionar inscripción
+        selected_id = st.selectbox(
+            "Seleccionar id",
+            available_df["id"],
+            key="time_booking"
+        )
 
-            selected_time = st.selectbox(
-                "Seleccionar la hora",
-                time_slots,
-                key="time_select"
-            )
+        # Seleccionar hora
+        selected_time = st.selectbox(
+            "Seleccionar la hora",
+            time_slots,
+            key="time_select"
+        )
 
-            if st.button("Confirmar la asignación"):
+        # Guardar + enviar email
+        if st.button("Confirmar la asignación"):
 
-                sb.table("bookings") \
-                    .update({"start_time": selected_time}) \
-                    .eq("id", selected_id) \
-                    .execute()
+            # Guardar hora
+            sb.table("bookings") \
+                .update({"start_time": selected_time}) \
+                .eq("id", selected_id) \
+                .execute()
 
-                resp = sb.table("bookings") \
-                    .select("id,full_name,email,partner_email,partner_full_name,third_email,third_full_name,start_time") \
-                    .eq("id", selected_id) \
-                    .single() \
-                    .execute()
+            # Recuperar datos de la reserva
+            resp = sb.table("bookings") \
+                .select("id, full_name, email, partner_email, partner_full_name, start_time") \
+                .eq("id", selected_id) \
+                .single() \
+                .execute()
 
-                row = resp.data
+            row = resp.data
 
-                if row:
+            if row:
 
-                    subject = "🥥 HYBRID SUMMER GAMES - Hora de salida confirmada"
+                subject = "🥥 HYBRID SUMMER GAMES - Hora de salida confirmada"
 
-                    html = f"""
-                    <h2>Tu salida ya está confirmada 🌴</h2>
+                html = f"""
+                <h2>Tu salida ya está confirmada 🌴</h2>
 
-                    <p>Hola <strong>{row['full_name']}</strong>,</p>
+                <p>Hola <strong>{row['full_name']}</strong>,</p>
+
+                <p>
+                Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
+                </p>
+
+                <hr>
+
+                <p>
+                <strong>Número de dorsal:</strong> {row['id']}
+                </p>
+
+                <p>
+                <strong>Hora de salida:</strong> {row['start_time']}
+                </p>
+
+                <hr>
+
+                <p>
+                Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
+                </p>
+
+                <ul>
+                    <li>Hacer el check-in</li>
+                    <li>Recoger el regalito del corredor</li>
+                    <li>Realizar el warm up</li>
+                    <li>Disfrutar de un cafecito pre competición ☕</li>
+                </ul>
+
+                <p>
+                Queremos que vivas la experiencia HYBRID SUMMER GAMES completa desde el primer minuto.
+                </p>
+
+                <p>
+                Nos vemos muy pronto 🔥
+                </p>
+
+                <p>
+                <strong>RF HYROX Training Club</strong>
+                </p>
+                """
+
+                # Email principal
+                send_email(row["email"], subject, html)
+
+                # Email pareja con su propio nombre
+                if row.get("partner_email") and str(row["partner_email"]).strip():
+
+                    partner_name = (row.get("partner_full_name") or "").strip()
+
+                    partner_html = f"""
+                    <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
+
+                    <p>Hola <strong>{row["partner_full_name"]}</strong>,</p>
 
                     <p>
                     Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
@@ -979,117 +1036,22 @@ with st.expander("Panel admin"):
                     </p>
 
                     <ul>
-                        <li>Hacer el check-in</li>
-                        <li>Recoger el regalito del corredor</li>
-                        <li>Realizar el warm up</li>
-                        <li>Disfrutar de un cafecito pre competición ☕</li>
+                    <li>Recoger tu dorsal</li>
+                    <li>Realizar el warm up</li>
+                    <li>Disfrutar de un cafecito pre competición ☕</li>
                     </ul>
 
                     <p>
-                    Queremos que vivas la experiencia HYBRID SUMMER GAMES completa desde el primer minuto.
+                    Nos vemos muy pronto 🥥
                     </p>
 
-                    <p>
-                    Nos vemos muy pronto 🔥
-                    </p>
-
-                    <p>
-                    <strong>RF HYROX Training Club</strong>
-                    </p>
+                    <p><strong>RF HYROX Training Club</strong></p>
                     """
 
-                    # Email principal
-                    send_email(row["email"], subject, html)
+                    send_email(row["partner_email"], subject, partner_html)
 
-                    # Email pareja con su propio nombre
-                    if row.get("partner_email") and str(row["partner_email"]).strip():
-
-                        partner_name = (row.get("partner_full_name") or "").strip()
-
-                        partner_html = f"""
-                        <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
-
-                        <p>Hola <strong>{row["partner_full_name"]}</strong>,</p>
-
-                        <p>
-                        Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
-                        </p>
-
-                        <hr>
-
-                        <p>
-                        <strong>Número de dorsal:</strong> {row['id']}
-                        </p>
-
-                        <p>
-                        <strong>Hora de salida:</strong> {row['start_time']}
-                        </p>
-
-                        <hr>
-
-                        <p>
-                        Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
-                        </p>
-
-                        <ul>
-                            <li>Recoger tu dorsal</li>
-                            <li>Realizar el warm up</li>
-                            <li>Disfrutar de un cafecito pre competición ☕</li>
-                        </ul>
-
-                        <p>
-                        Nos vemos muy pronto 🥥
-                        </p>
-
-                        <p><strong>RF HYROX Training Club</strong></p>
-                        """
-
-                        send_email(row["partner_email"], subject, partner_html)
-                    
-                    if row.get("third_email") and str(row["third_email"]).strip():
-
-                        third_html = f"""
-                        <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
-
-                        <p>Hola <strong>{row["third_full_name"]}</strong>,</p>
-
-                        <p>
-                        Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
-                        </p>
-
-                        <hr>
-
-                        <p>
-                        <strong>Número de dorsal:</strong> {row['id']}
-                        </p>
-
-                        <p>
-                        <strong>Hora de salida:</strong> {row['start_time']}
-                        </p>
-
-                        <hr>
-
-                        <p>
-                        Te recomendamos llegar <strong>1 hora antes</strong> de tu salida para:
-                        </p>
-
-                        <ul>
-                            <li>Recoger tu dorsal</li>
-                            <li>Realizar el warm up</li>
-                            <li>Disfrutar de un cafecito pre competición ☕</li>
-                        </ul>
-
-                        <p>
-                        Nos vemos muy pronto 🥥
-                        </p>
-
-                        <p><strong>RF HYROX Training Club</strong></p>
-                        """
-
-                        send_email(row["third_email"], subject, third_html)
-    
-                st.success("Start time assigned and email sent successfully")
-                st.rerun()
+            st.success("Start time assigned and email sent successfully")
+            st.rerun()
 
         st.markdown("### 💳 Confirmar pago")
 
