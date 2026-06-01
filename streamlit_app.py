@@ -1140,7 +1140,7 @@ with st.expander("Panel admin"):
 
         admin_modality = st.selectbox(
             "Modalidad (admin)",
-            ["Individual", "Dobles"],
+            ["Individual", "Dobles", "Tríos"],
             key="admin_modality"
         )
 
@@ -1151,14 +1151,25 @@ with st.expander("Panel admin"):
         partner_name = ""
         partner_phone = ""
         partner_email = ""
+        third_name = ""
+        third_phone = ""
+        third_email = ""
 
-        if admin_modality == "Dobles":
-
+        if admin_modality in ["Dobles", "Tríos"]:
+                             
             st.markdown("#### Segunda persona")
 
-            partner_name = st.text_input("Nombre (pareja)", key="partner_name")
-            partner_phone = st.text_input("Teléfono (pareja)", key="partner_phone")
-            partner_email = st.text_input("Email (pareja)", key="partner_email")
+            partner_name = st.text_input("Nombre (segunda persona)", key="partner_name")
+            partner_phone = st.text_input("Teléfono (segunda persona)", key="partner_phone")
+            partner_email = st.text_input("Email (segunda persona)", key="partner_email")
+            
+        if admin_modality == "Tríos":
+
+            st.markdown("#### Tercera persona")
+
+            third_name = st.text_input("Nombre (tercera persona)", key="third_name")
+            third_phone = st.text_input("Teléfono (tercera persona)", key="third_phone")
+            third_email = st.text_input("Email (tercera persona)", key="third_email")
 
         send_email_admin = st.checkbox("Enviar email de confirmación", value=True)
 
@@ -1177,9 +1188,30 @@ with st.expander("Panel admin"):
                 st.error("Email obligatorio")
                 st.stop()
 
-            if admin_modality == "Dobles":
+            if admin_modality in ["Dobles", "Tríos"]:
                 if not partner_name.strip():
-                    st.error("Nombre de la pareja obligatorio")
+                    st.error("Nombre de la segunda persona obligatorio")
+                    st.stop()
+
+                if not partner_phone.strip():
+                    st.error("Teléfono de la segunda persona obligatorio")
+                    st.stop()
+
+                if not partner_email.strip():
+                    st.error("Email de la segunda persona obligatorio")
+                    st.stop()
+
+            if admin_modality == "Tríos":
+                if not third_name.strip():
+                    st.error("Nombre de la tercera persona obligatorio")
+                    st.stop()
+
+                if not third_phone.strip():
+                    st.error("Teléfono de la tercera persona obligatorio")
+                    st.stop()
+
+                if not third_email.strip():
+                    st.error("Email de la tercera persona obligatorio")
                     st.stop()
 
             # CREAR RESERVA
@@ -1191,9 +1223,12 @@ with st.expander("Panel admin"):
                 partner_full_name=partner_name if admin_modality == "Dobles" else None,
                 partner_phone=partner_phone if admin_modality == "Dobles" else None,
                 partner_email=partner_email if admin_modality == "Dobles" else None,
-                force=True   # 👈 clave
+                third_full_name=third_name if admin_modality == "Tríos" else None,
+                third_phone=third_phone if admin_modality == "Tríos" else None,
+                third_email=third_email if admin_modality == "Tríos" else None,
+                force=True
             )
-
+            
             if ok:
 
                 if send_email_admin:
@@ -1222,8 +1257,11 @@ with st.expander("Panel admin"):
 
                     send_email(admin_email, subject, html)
 
-                    if admin_modality == "Dobles" and partner_email:
+                    if admin_modality in ["Dobles", "Tríos"] and partner_email:
                         send_email(partner_email, subject, html)
+
+                    if admin_modality == "Tríos" and third_email:
+                        send_email(third_email, subject, html)
 
                 st.success("Inscripción añadida correctamente (modo admin)")
                 st.rerun()
