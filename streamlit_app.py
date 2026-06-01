@@ -1124,6 +1124,24 @@ with st.expander("Panel admin"):
             st.success("Pago confirmado y emails enviados.")
             st.rerun()
             
+        st.markdown("### ❌ Eliminar inscripción")
+
+        delete_id = st.selectbox(
+            "Seleccionar inscripción a eliminar",
+            df["id"],
+            key="delete_booking"
+        )   
+
+        if st.button("Eliminar inscripción"):
+
+            sb.table("bookings") \
+                .delete() \
+                .eq("id", delete_id) \
+                .execute()
+
+            st.success("Inscripción eliminada. La plaza vuelve a estar disponible.")
+            st.rerun()
+            
         st.markdown("### ➕ Añadir inscripción manual")
 
         admin_modality = st.selectbox(
