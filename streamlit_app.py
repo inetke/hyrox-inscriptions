@@ -1284,6 +1284,9 @@ with st.expander("Panel admin"):
                 partner_full_name=partner_name if admin_modality in ["Dobles", "Tríos"] else None,
                 partner_phone=partner_phone if admin_modality in ["Dobles", "Tríos"] else None,
                 partner_email=partner_email if admin_modality in ["Dobles", "Tríos"] else None,
+                third_full_name=third_name if admin_modality == "Tríos" else None,
+                third_phone=third_phone if admin_modality == "Tríos" else None,
+                third_email=third_email if admin_modality == "Tríos" else None,
                 alias=admin_alias,
                 force=True
             )
