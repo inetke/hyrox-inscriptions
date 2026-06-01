@@ -952,11 +952,6 @@ with st.expander("Panel admin"):
                 .execute()
 
             row = resp.data
-            
-            selected_booking = df[df["id"] == selected_id].iloc[0]
-
-            third_email = selected_booking.get("third_email", "")
-            third_full_name = selected_booking.get("third_full_name", "")
 
             if row:
 
@@ -1041,9 +1036,9 @@ with st.expander("Panel admin"):
                     </p>
 
                     <ul>
-                    <li>Recoger tu dorsal</li>
-                    <li>Realizar el warm up</li>
-                    <li>Disfrutar de un cafecito pre competición ☕</li>
+                        <li>Recoger tu dorsal</li>
+                        <li>Realizar el warm up</li>
+                        <li>Disfrutar de un cafecito pre competición ☕</li>
                     </ul>
 
                     <p>
@@ -1054,31 +1049,6 @@ with st.expander("Panel admin"):
                     """
 
                     send_email(row["partner_email"], subject, partner_html)
-                    
-                    if third_email and str(third_email).strip():
-
-                        third_html = f"""
-                        <h2>Tu salida HYBRID SUMMER GAMES ya está confirmada 💥</h2>
-
-                        <p>Hola <strong>{third_full_name}</strong>,</p>
-
-                        <p>Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.</p>
-
-                        <hr>
-
-                        <p><strong>Número de dorsal:</strong> {row['id']}</p>
-                        <p><strong>Hora de salida:</strong> {row['start_time']}</p>
-
-                        <hr>
-
-                        <p>Te recomendamos llegar <strong>1 hora antes</strong> de tu salida.</p>
-
-                        <p>Nos vemos muy pronto 🥥</p>
-
-                        <p><strong>RF HYROX Training Club</strong></p>
-                        """
-
-                        send_email(third_email, subject, third_html)
 
             st.success("Start time assigned and email sent successfully")
             st.rerun()
