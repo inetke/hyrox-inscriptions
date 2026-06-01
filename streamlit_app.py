@@ -1070,7 +1070,7 @@ with st.expander("Panel admin"):
 
             # recuperar datos actualizados
             resp = sb.table("bookings") \
-                .select("email, partner_email, event_date, partner_full_name") \
+                .select("email, partner_email, third_email, event_date, modality") \
                 .eq("id", booking_id) \
                 .single() \
                 .execute()
@@ -1081,12 +1081,7 @@ with st.expander("Panel admin"):
                 st.error("No se encontró la reserva")
                 st.stop()
 
-            modalidad = (
-                "Dobles"
-                if row.get("partner_full_name")
-                and str(row["partner_full_name"]).strip()
-                else "Individual"
-            )
+            modalidad = row.get("modality") or "Individual"
 
             subject = "🥥 HYBRID SUMMER GAMES - Pago recibido y plaza confirmada"
 
@@ -1112,32 +1107,21 @@ with st.expander("Panel admin"):
                 st.stop()
 
             partner_sent = True
+            third_sent = True
 
             if row.get("partner_email") and str(row["partner_email"]).strip():
                 partner_sent = send_email(row["partner_email"], subject, html)
 
+            if row.get("third_email") and str(row["third_email"]).strip():
+                third_sent = send_email(row["third_email"], subject, html)
+
             if not partner_sent:
                 st.warning("El correo de la segunda persona no pudo enviarse")
 
+            if not third_sent:
+                st.warning("El correo de la tercera persona no pudo enviarse")
+
             st.success("Pago confirmado y emails enviados.")
-            st.rerun()
-
-        st.markdown("### ❌ Eliminar inscripción")
-
-        delete_id = st.selectbox(
-            "Seleccionar inscripción a eliminar",
-            df["id"],
-            key="delete_booking"
-        )
-
-        if st.button("Eliminar inscripción"):
-
-            sb.table("bookings") \
-                .delete() \
-                .eq("id", delete_id) \
-                .execute()
-
-            st.success("Inscripción eliminada. La plaza vuelve a estar disponible.")
             st.rerun()
             
         st.markdown("### ➕ Añadir inscripción manual")
