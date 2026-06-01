@@ -1301,7 +1301,7 @@ with st.expander("Panel admin"):
 
                     <ul>
                     <li>Fecha: {event_date}</li>
-                    <li>Categoría: {activity}</li>
+                    <li>Modalidad: {admin_modality}</li>
 
                     <p>Tu plaza está pendiente de pago.</p>
             
