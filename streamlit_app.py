@@ -202,7 +202,7 @@ PAGO_EFECTIVO_H = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
 #PAGO_BIZUM = "+34 659 09 22 27"
 ENTRADA_GENERAL = "25€ individual · 50€ dobles · 75€ tríos"
-ENTRADA_USUARIOS = "20€ individual · 40€ dobles· 60€ tríos"
+ENTRADA_USUARIOS = "20€ individual · 40€ dobles · 60€ tríos"
 
 event_datetime = datetime.strptime("2026-07-11 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
