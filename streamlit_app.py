@@ -455,7 +455,7 @@ def fetch_total_remaining():
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
-    st.markdown("## THE HYBRID SERIES")
+    st.markdown("## HYBRID SUMMER GAMES")
     st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
     st.divider()
 
