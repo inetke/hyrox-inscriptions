@@ -714,6 +714,12 @@ with right:
                 <p>Tu plaza está pendiente de pago.</p>
             
                 <hr>
+                
+                <p><strong>Opciones de pago:</strong></p>
+                <p><strong>Pago en efectivo:</strong> Disponible en nuestros centros</p>
+                <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}</p>
+
+                <p>Referencia: nombre y apellidos</p>
 
                 <h3>Política de cancelación</h3>
                 <p>
