@@ -717,7 +717,7 @@ with right:
                 
                 <p><strong>Opciones de pago:</strong></p>
                 <p><strong>Pago en efectivo:</strong> Disponible en nuestros centros</p>
-                <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}</p>
+                <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}, BIC - CAIXESBBXXX, DESTINATARIO - Garcia y Fernandez 2022 S.C</p>
 
                 <p>Referencia: nombre y apellidos</p>
 
