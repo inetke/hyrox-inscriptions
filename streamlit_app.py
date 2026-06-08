@@ -851,7 +851,7 @@ with st.expander("Panel admin"):
                 
                 <p><strong>Opciones de pago:</strong></p>
                 <p><strong>Pago en efectivo:</strong> Disponible en nuestros centros</p>
-                <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}</p>
+                <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}, BIC - CAIXESBBXXX, DESTINATARIO - Garcia y Fernandez 2022 S.C</p>
 
                 <p>Referencia: nombre y apellidos</p>
 
@@ -1254,8 +1254,16 @@ with st.expander("Panel admin"):
                     <ul>
                     <li>Fecha: {event_date}</li>
                     <li>Modalidad: {admin_modality}</li>
+                    
+                    <hr>
 
                     <p>Tu plaza está pendiente de pago.</p>
+                    
+                    <p><strong>Opciones de pago:</strong></p>
+                    <p><strong>Pago en efectivo:</strong> Disponible en nuestros centros</p>
+                    <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}, BIC - CAIXESBBXXX, DESTINATARIO - Garcia y Fernandez 2022 S.C</p>
+
+                    <p>Referencia: nombre y apellidos</p>
             
                     <hr>
 
