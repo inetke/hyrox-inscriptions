@@ -470,7 +470,7 @@ with st.sidebar:
     st.markdown("**💬 Contacto**")
 
     # WhatsApp directo (abre chat)
-    wa_text = "Hola! Quiero información sobre la inscripción HYROX."
+    wa_text = "Hola! Quiero información sobre la inscripción."
     whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
     st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
 
