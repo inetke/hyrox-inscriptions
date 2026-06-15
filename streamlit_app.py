@@ -719,6 +719,14 @@ with right:
                 <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}, BIC - CAIXESBBXXX, DESTINATARIO - Garcia y Fernandez 2022 S.C</p>
 
                 <p>Referencia: nombre y apellidos</p>
+                
+                
+                <hr>
+
+                <p>
+                <strong>Importante:</strong> Una vez realizado el pago, la validación puede tardar hasta <strong>48 horas</strong>.
+                Recibirás un segundo correo electrónico cuando tu pago haya sido verificado y tu plaza quede oficialmente confirmada.
+                </p>
 
                 <h3>Política de cancelación</h3>
                 <p>
@@ -858,6 +866,11 @@ with st.expander("Panel admin"):
                 
                 <hr>
                 
+                <p>
+                <strong>Importante:</strong> Una vez realizado el pago, la validación puede tardar hasta <strong>48 horas</strong>.
+                Recibirás un segundo correo electrónico cuando tu pago haya sido verificado y tu plaza quede oficialmente confirmada.
+                </p>
+
                 <h3>¿No puedes asistir?</h3>
                 
                 <p>
@@ -1263,6 +1276,13 @@ with st.expander("Panel admin"):
                     <p><strong>Pago por transferencia bancaria - IBAN:</strong> {BANK_IBAN}, BIC - CAIXESBBXXX, DESTINATARIO - Garcia y Fernandez 2022 S.C</p>
 
                     <p>Referencia: nombre y apellidos</p>
+                                      
+                    <hr>
+
+                    <p>
+                    <strong>Importante:</strong> Una vez realizado el pago, la validación puede tardar hasta <strong>48 horas</strong>.
+                    Recibirás un segundo correo electrónico cuando tu pago haya sido verificado y tu plaza quede oficialmente confirmada.
+                    </p>
             
                     <hr>
 
