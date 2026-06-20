@@ -1,4 +1,4 @@
-# HYROX Event Registration Management Platform
+# HYROX Training Center Event Registration Management Platform
 
 ## Overview
 
