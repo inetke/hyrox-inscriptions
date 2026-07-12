@@ -191,7 +191,7 @@ ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
 # Evento fijo (cambia aquí la fecha)
-EVENT_DATE = "2026-07-11"
+EVENT_DATE = "2026-08-01"
 event_date = EVENT_DATE
 REGISTRATION_OPEN_DATE = datetime(2026, 7, 15, 19, 0)
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
@@ -203,7 +203,7 @@ BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
 ENTRADA_GENERAL = "25€ individual · 50€ dobles · 75€ tríos"
 ENTRADA_USUARIOS = "20€ individual · 40€ dobles · 60€ tríos"
 
-event_datetime = datetime.strptime("2026-07-11 08:00", "%Y-%m-%d %H:%M")
+event_datetime = datetime.strptime("2026-08-01 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
 
 time_left = event_datetime - now
