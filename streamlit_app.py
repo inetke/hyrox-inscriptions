@@ -43,7 +43,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
+#st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
 # CSS (aplica a toda la app)
 st.markdown(
@@ -278,11 +278,11 @@ today = datetime.now()
 if today < REGISTRATION_OPEN_DATE:
 
     st.markdown("""
-    #### Evento: 11 de julio
+    #### Evento: 01 de agosto
 
     Las inscripciones abrirán oficialmente:
 
-    #### 🌴 2 de junio
+    #### 15 de julio
 
     Estamos preparando una experiencia increíble 🔥
     """)
