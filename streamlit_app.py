@@ -51,10 +51,10 @@ st.markdown(
 <style>
 /* FONDO GENERAL DE LA APP */
 [data-testid="stAppViewContainer"] {
-  background-color: #3d2200;
+  background-color: #FCF2E3;
 }
 [data-testid="stHeader"] {
-  background-color: #3d2200;
+  background-color: #FCF2E3;
 }
 
 /* Cards */
