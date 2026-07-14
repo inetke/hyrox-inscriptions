@@ -51,7 +51,7 @@ img {
     #unsafe_allow_html=True
 #)
 
-#st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
+st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
 # CSS (aplica a toda la app)
 st.markdown(
