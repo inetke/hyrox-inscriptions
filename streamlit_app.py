@@ -517,7 +517,7 @@ with left:
 
     gender = st.selectbox("Categoría", ["Masculino", "Femenino", "Mixto"])
 
-    modality = st.selectbox("Modalidad", ["Individual", "Dobles", "Tríos"])
+    modality = st.selectbox("Modalidad", ["Individual", "Dobles"])
 
     is_pair = modality == "Dobles"
     is_trio = modality == "Tríos"
