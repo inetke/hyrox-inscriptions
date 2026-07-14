@@ -584,7 +584,7 @@ with right:
             
             # Individual
             if not is_team:
-                alias = st.text_input("🥥 Alias")
+                alias = st.text_input("🌴 Alias")
 
             # Dobles o tríos
             if is_team:
@@ -624,7 +624,7 @@ with right:
                 st.divider()
 
                 alias = st.text_input(
-                    "🥥 Nombre de equipo"
+                    "🌴 Nombre de equipo"
                 )
             
 
