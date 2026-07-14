@@ -183,7 +183,7 @@ div[data-testid="stExpander"] > details {
 }
 
 div[data-testid="stExpander"] > details > summary {
-    background-color: rgba(90, 75, 20, 0.5) !important;
+    background-color: #006B7D !important;
 }
 
 /* Reduce top padding a bit */
