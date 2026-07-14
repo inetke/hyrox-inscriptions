@@ -1022,7 +1022,7 @@ with st.expander("Panel admin"):
                         </ul>
 
                         <p>
-                        Queremos que vivas la experiencia THE LAST SIMULACRO completa desde el primer minuto.
+                        Queremos que vivas la experiencia completa desde el primer minuto.
                         </p>
 
                         <p>
