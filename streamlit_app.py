@@ -11,12 +11,12 @@ from datetime import datetime, timedelta
 # ---------------- Page config ----------------
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
 
-col1, col2, col3 = st.columns([1.5, 2, 1.5])
+col_logo = st.columns([1,2,1])[1]
 
-with col2:
+with col_logo:
     st.image(
-        "assets/thelastsimulacro.png",
-        width=450
+        "assets/lastsimulacro.png",
+        use_container_width=150
     )
 
 #st.markdown(
