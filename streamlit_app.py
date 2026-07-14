@@ -462,7 +462,7 @@ def fetch_total_remaining():
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
-    st.markdown("## HYBRID SUMMER GAMES")
+    st.markdown("## THE LAST SIMULACRO")
     st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
     st.divider()
 
@@ -707,12 +707,12 @@ with right:
 
             if ok:
 
-                subject = "🥥 HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
+                subject = "THE LAST SIMULACRO - Inscripción recibida (pendiente de pago)"
 
                 html = f"""
                 <h2>Inscripción recibida 🌴</h2>
 
-                <p>Evento HYBRID SUMMER GAMES</p>
+                <p>Evento THE LAST SIMULACRO</p>
 
                 <ul>
                 <li>Fecha: {event_date}</li>
@@ -855,12 +855,12 @@ with st.expander("Panel admin"):
 
             for _, row in pendientes_df.iterrows():
 
-                subject = "Recordatorio de pago - HYBRID SUMMER GAMES 🥥"
+                subject = "Recordatorio de pago - THE LAST SIMULACRO"
 
                 html = f"""
                 <p>Hola {row['full_name']},</p>
 
-                <p>Te recordamos que tu plaza para el evento HYBRID SUMMER GAMES sigue <strong>pendiente de pago</strong>.</p>
+                <p>Te recordamos que tu plaza para el evento THE LAST SIMULACRO sigue <strong>pendiente de pago</strong>.</p>
 
                 <p>Para confirmar tu inscripción, realiza el pago lo antes posible.</p>
                 
@@ -987,7 +987,7 @@ with st.expander("Panel admin"):
 
                     if row:
 
-                        subject = "🥥 HYBRID SUMMER GAMES - Hora de salida confirmada"
+                        subject = "THE LAST SIMULACRO - Hora de salida confirmada"
 
                         html = f"""
                         <h2>Tu salida ya está confirmada 🌴</h2>
@@ -995,7 +995,7 @@ with st.expander("Panel admin"):
                         <p>Hola <strong>{row['full_name']}</strong>,</p>
 
                         <p>
-                        Ya tenemos preparada tu salida para el evento HYBRID SUMMER GAMES.
+                        Ya tenemos preparada tu salida para el evento THE LAST SIMULACRO.
                         </p>
 
                         <hr>
@@ -1022,7 +1022,7 @@ with st.expander("Panel admin"):
                         </ul>
 
                         <p>
-                        Queremos que vivas la experiencia HYBRID SUMMER GAMES completa desde el primer minuto.
+                        Queremos que vivas la experiencia THE LAST SIMULACRO completa desde el primer minuto.
                         </p>
 
                         <p>
@@ -1094,12 +1094,12 @@ with st.expander("Panel admin"):
 
             modalidad = row.get("modality") or "Individual"
 
-            subject = "🥥 HYBRID SUMMER GAMES - Pago recibido y plaza confirmada"
+            subject = "THE LAST SIMULACRO - Pago recibido y plaza confirmada"
 
             html = f"""
             <p>Hola,</p>
 
-            <p>Hemos recibido correctamente tu pago y tu plaza para HYBRID SUMMER GAMES está confirmada.</p>
+            <p>Hemos recibido correctamente tu pago y tu plaza para THE LAST SIMULACRO está confirmada.</p>
 
             <ul>
                 <li><strong>Fecha:</strong> {row['event_date']}</li>
@@ -1108,7 +1108,7 @@ with st.expander("Panel admin"):
 
             <p>⚡ Una semana antes te comunicaremos la tanda asignada.</p>
 
-            <p>¡Nos vemos en HYBRID SUMMER GAMES! 🌴☀️</p>
+            <p>¡Nos vemos en THE LAST SIMULACRO! 🌴☀️</p>
             """
 
             email_sent = send_email(row["email"], subject, html)
@@ -1264,12 +1264,12 @@ with st.expander("Panel admin"):
 
                 if send_email_admin:
 
-                    subject = "🥥 HYBRID SUMMER GAMES - Inscripción recibida (pendiente de pago)"
+                    subject = "THE LAST SIMULACRO - Inscripción recibida (pendiente de pago)"
 
                     html = f"""
                     <h2>Inscripción recibida</h2>
 
-                    <p>Evento HYBRID SUMMER GAMES</p>
+                    <p>Evento THE LAST SIMULACRO</p>
 
                     <ul>
                     <li>Fecha: {event_date}</li>
