@@ -15,7 +15,7 @@ col1, col2, col3 = st.columns([1.5, 2, 1.5])
 
 with col2:
     st.image(
-        "assets/logo_last_simulacro.png",
+        "assets/thelastsimulacro.png",
         width=250
     )
 
