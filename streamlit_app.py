@@ -165,20 +165,20 @@ div[data-testid="stCheckbox"] div[role="checkbox"] {
 
 /* EXPANDER / PANEL ADMIN - fondo azul */
 details {
-    background-color: #006B7D !important;
+    background-color: #B9AA8B !important;
     border: 1px solid rgba(255,255,255,0.1) !important;
     border-radius: 12px !important;
 }
 
 details summary {
-    background-color: #006B7D !important;
+    background-color: #B9AA8B !important;
     color: white !important;
     border-radius: 12px !important;
 }
 
 /* Por si el expander usa otro selector */
 div[data-testid="stExpander"] > details {
-    background-color: #006B7D !important;
+    background-color: #B9AA8B !important;
     border: 1px solid rgba(255,255,255,0.08) !important;
 }
 
