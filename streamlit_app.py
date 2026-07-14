@@ -18,6 +18,14 @@ with col_logo:
         "assets/simulacro.png",
         use_container_width=350
     )
+    
+st.markdown("""
+<style>
+img {
+    margin-bottom: -40px;
+}
+</style>
+""", unsafe_allow_html=True)
 
 #st.markdown(
     #"""
