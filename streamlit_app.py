@@ -133,7 +133,7 @@ li:hover {
 /* BOTÓN DE RESERVAR PLAZA */
 div.stButton > button,
 div[data-testid="stForm"] button {
-    background-color: #006B7D !important; /* Naranja/Dorado coco */
+    background-color: #006B7D !important; /* Azul marino */
     color: white !important;
     border-radius: 12px !important;
     border: none !important;
