@@ -22,7 +22,7 @@ with col_logo:
 st.markdown("""
 <style>
 img {
-    margin-bottom: -40px;
+    margin-bottom: -20px;
 }
 </style>
 """, unsafe_allow_html=True)
