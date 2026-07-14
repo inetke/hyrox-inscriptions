@@ -1158,7 +1158,7 @@ with st.expander("Panel admin"):
 
         admin_modality = st.selectbox(
             "Modalidad (admin)",
-            ["Individual", "Dobles", "Tríos"],
+            ["Individual", "Dobles"],
             key="admin_modality"
         )
 
