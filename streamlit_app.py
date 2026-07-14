@@ -88,9 +88,9 @@ div[data-testid="stForm"] {
 input[type="password"],
 input[type="text"],
 div[data-baseweb="input"] {
-  background-color: rgba(90, 75, 20, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: white !important;
+  background-color: #F4E7D4 !important;
+  border: 1px solid #B9AA8B !important;
+  color: #171717 !important;
   border-radius: 8px !important;
 }
 
@@ -115,8 +115,8 @@ div[data-baseweb="select"] span {
 
 /* Dropdown (cuando abres el select) */
 ul {
-  background-color: #3d3000 !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
+  background-color: #F4E7D4 !important;
+  border: 1px solid #B9AA8B !important;
 }
 
 /* Opciones dentro del dropdown */
