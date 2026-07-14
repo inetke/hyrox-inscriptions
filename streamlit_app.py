@@ -165,8 +165,8 @@ div[data-testid="stCheckbox"] div[role="checkbox"] {
 
 /* EXPANDER / PANEL ADMIN - fondo azul */
 details {
-    background-color: rgba(90, 75, 20, 0.5) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
+    background-color: #006B7D !important;
+    border: 1px solid #006B7D !important;
     border-radius: 12px !important;
 }
 
