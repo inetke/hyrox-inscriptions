@@ -1,8 +1,8 @@
 [theme]
 base="light"
 primaryColor="#006274"
-backgroundColor="#F6EADA"
-secondaryBackgroundColor="#EFE2D0"
+backgroundColor="#FCF2E3"
+secondaryBackgroundColor="#F7EBDD"
 textColor="#171717"
 
 [server]
