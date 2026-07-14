@@ -15,7 +15,7 @@ col_logo = st.columns([1,2,1])[1]
 
 with col_logo:
     st.image(
-        "assets/simulacrorf.png",
+        "assets/simulacro.png",
         use_container_width=50
     )
 
