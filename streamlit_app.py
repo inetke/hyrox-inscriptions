@@ -121,7 +121,7 @@ ul {
 
 /* Opciones dentro del dropdown */
 li {
-  color: white !important;
+  color: black !important;
 }
 
 /* Hover de opciones */
