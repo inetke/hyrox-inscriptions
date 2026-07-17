@@ -213,6 +213,9 @@ ENTRADA_USUARIOS = "20€ individual · 40€ dobles · 60€ tríos"
 event_datetime = datetime.strptime("2026-08-01 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
 
+registration_close_datetime = event_datetime - timedelta(days=5)
+registration_closed_by_date = datetime.now() >= registration_close_datetime
+
 time_left = event_datetime - now
 
 if time_left.total_seconds() > 0:
@@ -563,7 +566,13 @@ with right:
 
     if remaining <= 0:
         st.warning("Las inscripciones están cerradas")
-        st.info("Política de cancelación: Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.")
+        st.info("El plazo de inscripción finalizó 5 días antes del evento.")
+        
+    elif registration_closed_by_date:
+        st.warning("🔒 Las inscripciones están cerradas")
+        st.info(
+            "El plazo de inscripción finalizó 5 días antes del evento.")
+    
     else:
 
         with st.form("booking_form", clear_on_submit=True):
