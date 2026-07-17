@@ -566,11 +566,11 @@ with right:
 
     if remaining <= 0:
         st.warning("Las inscripciones están cerradas")
-        st.info("El plazo de inscripción finalizó 5 días antes del evento.")
+        #st.info("El plazo de inscripción finalizó 5 días antes del evento.")
         
     elif registration_closed_by_date:
         st.warning("🔒 Las inscripciones están cerradas")
-        st.info(
+        #st.info(
             "El plazo de inscripción finalizó 5 días antes del evento.")
     
     else:
