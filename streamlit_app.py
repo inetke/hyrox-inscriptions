@@ -200,6 +200,7 @@ PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 # Evento fijo (cambia aquí la fecha)
 EVENT_DATE = "2026-08-01"
 event_date = EVENT_DATE
+REGISTRATION_OPEN = False
 REGISTRATION_OPEN_DATE = datetime(2026, 7, 13, 19, 0)
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
@@ -533,7 +534,14 @@ with left:
 
     remaining = fetch_total_remaining()
     
-    if remaining <= 0:
+    if not REGISTRATION_OPEN:
+        st.warning("🔒 Las inscripciones están cerradas")
+        st.info(
+            "Estamos trabajando en el próximo evento. "
+            "Muy pronto publicaremos toda la información."
+        )
+    
+    elif remaining <= 0:
         st.error("❌ Evento completo")
 
     elif remaining == 1:
