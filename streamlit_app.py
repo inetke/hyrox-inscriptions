@@ -534,14 +534,7 @@ with left:
 
     remaining = fetch_total_remaining()
     
-    if not REGISTRATION_OPEN:
-        st.warning("🔒 Las inscripciones están cerradas")
-        st.info(
-            "Estamos trabajando en el próximo evento. "
-            "Muy pronto publicaremos toda la información."
-        )
-    
-    elif remaining <= 0:
+    if remaining <= 0:
         st.error("❌ Evento completo")
 
     elif remaining == 1:
@@ -572,10 +565,21 @@ with left:
 
 with right:
 
-    if remaining <= 0:
-        st.warning("Las inscripciones están cerradas")
-        #st.info("El plazo de inscripción finalizó 5 días antes del evento.")
-        
+    if not REGISTRATION_OPEN:
+        st.warning("🔒 Las inscripciones están cerradas")
+        st.info(
+            "Las inscripciones para este evento ya han finalizado. "
+            "Muy pronto publicaremos información sobre el próximo evento."
+        )
+
+    elif registration_closed_by_date:
+        st.warning("🔒 Las inscripciones están cerradas")
+        st.info("El plazo de inscripción ha finalizado.")
+
+    elif remaining <= 0:
+        st.warning("🔒 Las inscripciones están cerradas")
+        st.info("El evento ha alcanzado el límite de plazas.")
+
     else:
 
         with st.form("booking_form", clear_on_submit=True):
