@@ -235,7 +235,7 @@ if time_left.total_seconds() > 0:
 else:
     st.success("💥 ¡Hoy es el día del evento!")
     
-st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
+#st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
         
 # ---------------- Secrets / Clients ----------------
@@ -560,7 +560,7 @@ with left:
     st.markdown("<br>", unsafe_allow_html=True)
 
     #st.info(f"🎟️ Plazas disponibles: {remaining}/100")
-    st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
+    #st.info("📢 Una semana antes se les comunicará a qué tanda van a pertenecer.")
 
 
 with right:
