@@ -232,8 +232,8 @@ if time_left.total_seconds() > 0:
         """,
         unsafe_allow_html=True
     )
-else:
-    st.success("💥 ¡Hoy es el día del evento!")
+#else:
+    #st.success("💥 ¡Hoy es el día del evento!")
     
 #st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
