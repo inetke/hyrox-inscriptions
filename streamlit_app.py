@@ -516,17 +516,21 @@ MUY IMPORTANTE (Referencia/Concepto):
 
 if not REGISTRATION_OPEN:
 
-    st.markdown("""
-    <div style="
-        text-align:center;
-        padding:40px 20px;
-        font-size:24px;
-        font-weight:600;
-        color:#FFFFFF;
-    ">
-        Estamos preparando una experiencia increíble 🔥
-    </div>
-    """, unsafe_allow_html=True)
+    col_message = st.columns([1, 2, 1])[1]
+
+    with col_message:
+        st.markdown("""
+        <div style="
+            width:100%;
+            text-align:center;
+            padding:25px 0 40px 0;
+            font-size:24px;
+            font-weight:600;
+            color:#FFFFFF;
+        ">
+            Estamos preparando una experiencia increíble 🔥
+        </div>
+        """, unsafe_allow_html=True)
 
     st.stop()
     
