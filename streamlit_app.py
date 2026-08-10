@@ -15,7 +15,7 @@ col_logo = st.columns([1,2,1])[1]
 
 with col_logo:
     st.image(
-        "assets/sim.png",
+        "assets/logo.png",
         use_container_width=350
     )
     
@@ -58,10 +58,10 @@ st.markdown(
 <style>
 /* FONDO GENERAL DE LA APP */
 [data-testid="stAppViewContainer"] {
-  background-color: #FCF2E3;
+  background-color: #000000;
 }
 [data-testid="stHeader"] {
-  background-color: #FCF2E3;
+  background-color: #000000;
 }
 
 /* Cards */
@@ -522,6 +522,7 @@ if not REGISTRATION_OPEN:
         padding:40px 20px;
         font-size:24px;
         font-weight:600;
+        color:#FFFFFF;
     ">
         Estamos preparando una experiencia increíble 🔥
     </div>
