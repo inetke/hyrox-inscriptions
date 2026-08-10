@@ -514,7 +514,7 @@ MUY IMPORTANTE (Referencia/Concepto):
 """.strip()
     )
 
-    if not REGISTRATION_OPEN:
+if not REGISTRATION_OPEN:
 
     st.markdown("""
     <div style="
