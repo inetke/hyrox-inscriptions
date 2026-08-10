@@ -198,7 +198,7 @@ ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
 # Evento fijo (cambia aquí la fecha)
-EVENT_DATE = "2026-12-01"
+EVENT_DATE = "2026-08-01"
 event_date = EVENT_DATE
 REGISTRATION_OPEN = False
 REGISTRATION_OPEN_DATE = datetime(2026, 7, 13, 19, 0)
@@ -233,7 +233,7 @@ if time_left.total_seconds() > 0:
         unsafe_allow_html=True
     )
 else:
-    st.success("💥 ¡Hoy es el día del evento!")
+    #st.success("💥 ¡Hoy es el día del evento!")
     
 #st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
