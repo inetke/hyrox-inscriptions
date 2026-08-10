@@ -198,7 +198,7 @@ ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
 # Evento fijo (cambia aquí la fecha)
-EVENT_DATE = "2026-08-01"
+EVENT_DATE = "2026-12-01"
 event_date = EVENT_DATE
 REGISTRATION_OPEN = False
 REGISTRATION_OPEN_DATE = datetime(2026, 7, 13, 19, 0)
