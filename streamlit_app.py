@@ -518,11 +518,8 @@ if not REGISTRATION_OPEN:
 
     st.markdown("""
     <div style="
-        width:600px;
-        max-width:90%;
-        margin:0 auto;
         text-align:center;
-        padding:25px 0 40px 0;
+        padding:40px 20px;
         font-size:24px;
         font-weight:600;
         color:#FFFFFF;
