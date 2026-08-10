@@ -527,6 +527,7 @@ if not REGISTRATION_OPEN:
             font-size:24px;
             font-weight:600;
             color:#FFFFFF;
+            transform:translateX(-35px);
         ">
             Estamos preparando una experiencia increíble 🔥
         </div>
