@@ -11,4 +11,4 @@ jobs:
 
     steps:
       - name: Ping Streamlit app
-        run: curl -L --fail --silent --show-error https://rfhyroxclub.streamlit.app
+        run: curl --fail --silent --show-error https://rfhyroxclub.streamlit.app/_stcore/health
