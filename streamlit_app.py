@@ -201,6 +201,7 @@ PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 EVENT_DATE = "2026-08-01"
 event_date = EVENT_DATE
 REGISTRATION_OPEN = False
+PORTFOLIO_MODE = True
 REGISTRATION_OPEN_DATE = datetime(2026, 7, 13, 19, 0)
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
 INSTAGRAM_URL = "https://www.instagram.com/rfhyroxtrainingclub?igsh=MTJ3Mnh5aDFzMGMxaA=="
@@ -288,31 +289,31 @@ def send_email(to_email: str, subject: str, html_content: str):
 
 today = datetime.now()
 
-if today < REGISTRATION_OPEN_DATE:
+if PORTFOLIO_MODE and not REGISTRATION_OPEN:
 
-    st.markdown("""
-    #### Evento: 01 de agosto
+    st.markdown(
+        """
+        <div style="
+            text-align:center;
+            padding:16px 20px;
+            margin-bottom:25px;
+            border-radius:12px;
+            border:1px solid #006B7D;
+        ">
+            <h3 style="margin-bottom:8px;">
+                🏁 Evento finalizado — inscripciones cerradas
+            </h3>
 
-    Las inscripciones abrirán oficialmente:
-
-    #### 13 de julio
-
-    Estamos preparando una experiencia increíble 🔥
-    """)
-
-    st.divider()
-
-    st.caption("Private access")
-
-    preview_password = st.text_input(
-        "Password",
-        type="password",
-        key="preview_password"
+            <p style="margin:0;">
+                Esta aplicación gestionó las inscripciones de
+                <strong>The Last Simulacro</strong>.
+                El evento ya se ha celebrado y actualmente no se aceptan nuevas inscripciones.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
-
-    if preview_password != get_preview_password():
-        st.stop()
-
+    
 # ---------------- Data helpers (REST) ----------------
 def fetch_sessions(event_date_str):
 
