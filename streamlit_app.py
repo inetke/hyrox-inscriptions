@@ -515,27 +515,6 @@ MUY IMPORTANTE (Referencia/Concepto):
 """.strip()
     )
 
-if not REGISTRATION_OPEN:
-
-    col_message = st.columns([1, 2, 1])[1]
-
-    with col_message:
-        st.markdown("""
-        <div style="
-            width:100%;
-            text-align:center;
-            padding:25px 0 40px 0;
-            font-size:24px;
-            font-weight:600;
-            color:#FFFFFF;
-            transform:translateX(-35px);
-        ">
-            Estamos preparando una experiencia increíble 🔥
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.stop()
-    
 # ---------------- Main UI ----------------
 left, right = st.columns(2)
 
@@ -587,93 +566,99 @@ with left:
 
 with right:
 
-    if not REGISTRATION_OPEN:
-        st.warning("🔒 Las inscripciones están cerradas")
-        st.info(
-            "Las inscripciones para este evento ya han finalizado. "
-            "Muy pronto publicaremos información sobre el próximo evento."
+    booking_enabled = (
+        REGISTRATION_OPEN
+        and not registration_closed_by_date
+        and remaining > 0
+    )
+
+    with st.form("booking_form", clear_on_submit=True):
+
+        if not booking_enabled:
+            st.info(
+                "🏁 Evento finalizado — formulario disponible únicamente como demostración."
+            )
+
+        st.warning(
+            "⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago."
         )
 
-    elif registration_closed_by_date:
-        st.warning("🔒 Las inscripciones están cerradas")
-        st.info("El plazo de inscripción ha finalizado.")
+        full_name = st.text_input("Nombre y Apellido")
+        phone = st.text_input("Teléfono")
+        email = st.text_input("Email")
 
-    elif remaining <= 0:
-        st.warning("🔒 Las inscripciones están cerradas")
-        st.info("El evento ha alcanzado el límite de plazas.")
+        partner_full_name = ""
+        partner_phone = ""
+        partner_email = ""
+        alias = ""
 
-    else:
+        third_full_name = ""
+        third_phone = ""
+        third_email = ""
 
-        with st.form("booking_form", clear_on_submit=True):
+        # Individual
+        if not is_team:
+            alias = st.text_input("🌴 Alias")
+
+        # Dobles o tríos
+        if is_team:
+
+            st.divider()
+            st.markdown("### Segunda persona")
+
+            partner_full_name = st.text_input(
+                "Nombre y Apellido (segunda persona)"
+            )
+
+            partner_phone = st.text_input(
+                "Teléfono (segunda persona)"
+            )
+
+            partner_email = st.text_input(
+                "Email (segunda persona)"
+            )
+
+            if is_trio:
+
+                st.divider()
+                st.markdown("### Tercera persona")
+
+                third_full_name = st.text_input(
+                    "Nombre y Apellido (tercera persona)"
+                )
+
+                third_phone = st.text_input(
+                    "Teléfono (tercera persona)"
+                )
+
+                third_email = st.text_input(
+                    "Email (tercera persona)"
+                )
+
+            st.divider()
+
+            alias = st.text_input(
+                "🌴 Nombre de equipo"
+            )
+
+        consent = st.checkbox("Acepto el uso de datos")
+
+        submit = st.form_submit_button(
+            "Reservar plaza",
+            disabled=not booking_enabled
+        )
+
+        st.warning(
+            "Política de cancelación: Una vez confirmado el pago "
+            "de la inscripción, no se admitirán devoluciones bajo "
+            "ningún concepto en caso de cancelación voluntaria del participante."
+        )
         
-            st.warning("⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago.")
-            
-            full_name = st.text_input("Nombre y Apellido")
-            phone = st.text_input("Teléfono")
-            email = st.text_input("Email")
-
-            partner_full_name = ""
-            partner_phone = ""
-            partner_email = ""
-            alias = ""
-            
-            third_full_name = ""
-            third_phone = ""
-            third_email = ""
-            
-            # Individual
-            if not is_team:
-                alias = st.text_input("🌴 Alias")
-
-            # Dobles o tríos
-            if is_team:
-
-                st.divider()
-                st.markdown("### Segunda persona")
-
-                partner_full_name = st.text_input(
-                    "Nombre y Apellido (segunda persona)"
-                )
-
-                partner_phone = st.text_input(
-                    "Teléfono (segunda persona)"
-                )
-
-                partner_email = st.text_input(
-                    "Email (segunda persona)"
-                )
-
-                if is_trio:
-
-                    st.divider()
-                    st.markdown("### Tercera persona")
-
-                    third_full_name = st.text_input(
-                        "Nombre y Apellido (tercera persona)"
-                    )
-
-                    third_phone = st.text_input(
-                        "Teléfono (tercera persona)"
-                    )
-
-                    third_email = st.text_input(
-                        "Email (tercera persona)"
-                    )
-
-                st.divider()
-
-                alias = st.text_input(
-                    "🌴 Nombre de equipo"
-                )
-            
-
-            consent = st.checkbox("Acepto el uso de datos")
-
-            submit = st.form_submit_button("Reservar plaza")
-            
-            st.warning("Política de cancelación: Una vez confirmado el pago de la inscripción, no se admitirán devoluciones bajo ningún concepto en caso de cancelación voluntaria del participante.")
-
         if submit:
+            
+            if not booking_enabled:
+                st.error("Las inscripciones para este evento están cerradas.")
+                st.stop()
         
             if not consent:
                 st.error("Debes aceptar el uso de datos.")
