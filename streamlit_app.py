@@ -533,8 +533,13 @@ with left:
 
     activity = f"{modality}"
 
-    remaining = fetch_total_remaining()
+    if REGISTRATION_OPEN:
+        remaining = fetch_total_remaining()
+    else:
+        remaining = None
     
+    if REGISTRATION_OPEN:
+
     if remaining <= 0:
         st.error("❌ Evento completo")
 
@@ -569,6 +574,7 @@ with right:
     booking_enabled = (
         REGISTRATION_OPEN
         and not registration_closed_by_date
+        and remaining is not None
         and remaining > 0
     )
 
