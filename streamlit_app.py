@@ -290,26 +290,12 @@ def send_email(to_email: str, subject: str, html_content: str):
 today = datetime.now()
 
 if PORTFOLIO_MODE and not REGISTRATION_OPEN:
-
     st.markdown(
         """
-        <div style="
-            text-align:center;
-            padding:16px 20px;
-            margin-bottom:25px;
-            border-radius:12px;
-            border:1px solid #006B7D;
-        ">
-            <h3 style="margin-bottom:8px;">
-                🏁 Evento finalizado — inscripciones cerradas
-            </h3>
-
-            <p style="margin:0;">
-                Esta aplicación gestionó las inscripciones de
-                <strong>The Last Simulacro</strong>.
-                El evento ya se ha celebrado y actualmente no se aceptan nuevas inscripciones.
-            </p>
-        </div>
+<div style="text-align:center; padding:16px 20px; margin-bottom:25px; border-radius:12px; border:1px solid #006B7D; color:#FFFFFF;">
+<h3 style="margin-bottom:8px; color:#FFFFFF;">🏁 Evento finalizado — inscripciones cerradas</h3>
+<p style="margin:0; color:#FFFFFF;">Esta aplicación gestionó las inscripciones de <strong>The Last Simulacro</strong>.<br>El evento ya se ha celebrado y actualmente no se aceptan nuevas inscripciones.</p>
+</div>
         """,
         unsafe_allow_html=True
     )
