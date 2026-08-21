@@ -540,25 +540,25 @@ with left:
     
     if REGISTRATION_OPEN:
 
-    if remaining <= 0:
-        st.error("❌ Evento completo")
+        if remaining <= 0:
+            st.error("❌ Evento completo")
 
-    elif remaining == 1:
-        st.error("🚨 ¡ÚLTIMA PLAZA DISPONIBLE!")
+        elif remaining == 1:
+            st.error("🚨 ¡ÚLTIMA PLAZA DISPONIBLE!")
 
-    elif remaining <= 5:
-        st.markdown(f"""
-        <div style="
-            padding:20px;
-            border-radius:15px;
-            background:#ff4b4b20;
-            border:1px solid #ff4b4b;
-            text-align:center;
-        ">
-            <h2>🔥 ÚLTIMAS {remaining} PLAZAS 🔥</h2>
-            <p style="font-size:18px;">No te quedes fuera</p>
-        </div>
-        """, unsafe_allow_html=True)
+        elif remaining <= 5:
+            st.markdown(f"""
+            <div style="
+                padding:20px;
+                border-radius:15px;
+                background:#ff4b4b20;
+                border:1px solid #ff4b4b;
+                text-align:center;
+            ">
+                <h2>🔥 ÚLTIMAS {remaining} PLAZAS 🔥</h2>
+                <p style="font-size:18px;">No te quedes fuera</p>
+            </div>
+            """, unsafe_allow_html=True)
     
     #elif remaining <= 10:
     #st.warning("⚠️ Quedan pocas plazas")
