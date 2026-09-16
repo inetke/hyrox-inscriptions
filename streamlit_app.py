@@ -36,7 +36,7 @@ st.markdown(
 <span>RUN · PUSH · ELEVATE</span>
 <span>────</span>
 </div>
-<p style="margin:0; font-size:17px; font-weight:600; letter-spacing:1px; color:#171717;">TU SIGUIENTE RETO TE ESPERA</p>
+<p style="margin:0; font-size:17px; font-weight:600; letter-spacing:1px; color:#171717;">TU SIGUIENTE <span style="color:#cf7416;">RETO TE ESPERA</span></p>
 </div>
     """,
     unsafe_allow_html=True
