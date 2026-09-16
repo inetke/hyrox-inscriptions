@@ -332,8 +332,6 @@ if PORTFOLIO_MODE and not REGISTRATION_OPEN and not st.session_state.preview_acc
                 st.rerun()
             else:
                 st.error("Contraseña incorrecta.")
-
-    st.stop()
     
 # ---------------- Data helpers (REST) ----------------
 def fetch_sessions(event_date_str):
