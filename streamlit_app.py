@@ -293,8 +293,8 @@ if PORTFOLIO_MODE and not REGISTRATION_OPEN:
     st.markdown(
         """
 <div style="text-align:center; padding:16px 20px; margin-bottom:25px; border-radius:12px; border:1px solid #006B7D; color:#000000;">
-<h3 style="margin-bottom:8px; color:#000000;">🏁 Evento finalizado — inscripciones cerradas</h3>
-<p style="margin:0; color:#000000;">Esta aplicación gestionó las inscripciones de <strong>The Last Simulacro</strong>.<br>El evento ya se ha celebrado y actualmente no se aceptan nuevas inscripciones.</p>
+<h3 style="margin-bottom:8px; color:#000000;">🏁 Próximo evento — inscripciones próximamente</h3>
+<p style="margin:0; color:#000000;">Estamos preparando nuestro próximo evento.<br>Las inscripciones todavía no están disponibles.</p>
 </div>
         """,
         unsafe_allow_html=True
