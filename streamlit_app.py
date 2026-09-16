@@ -304,16 +304,36 @@ def send_email(to_email: str, subject: str, html_content: str):
 
 today = datetime.now()
 
-if PORTFOLIO_MODE and not REGISTRATION_OPEN:
+if "preview_access" not in st.session_state:
+    st.session_state.preview_access = False
+
+if PORTFOLIO_MODE and not REGISTRATION_OPEN and not st.session_state.preview_access:
+
     st.markdown(
         """
 <div style="text-align:center; padding:16px 20px; margin-bottom:25px; border-radius:12px; border:1px solid #006B7D; color:#000000;">
 <h3 style="margin-bottom:8px; color:#000000;">🏁 Próximo evento — inscripciones próximamente</h3>
-<p style="margin:0; color:#000000;">Estamos preparando nuestro próximo evento.</p>
+<p style="margin:0; color:#000000;">Estamos preparando nuestro próximo evento.<br>Las inscripciones todavía no están disponibles.</p>
 </div>
         """,
         unsafe_allow_html=True
     )
+
+    with st.expander("🔐 Acceso privado"):
+        preview_password = st.text_input(
+            "Contraseña",
+            type="password",
+            key="preview_password_input"
+        )
+
+        if st.button("Entrar", key="preview_login"):
+            if preview_password == get_preview_password():
+                st.session_state.preview_access = True
+                st.rerun()
+            else:
+                st.error("Contraseña incorrecta.")
+
+    st.stop()
     
 # ---------------- Data helpers (REST) ----------------
 def fetch_sessions(event_date_str):
