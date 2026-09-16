@@ -583,7 +583,7 @@ with right:
 
         if not booking_enabled:
             st.info(
-                #"🔒 Inscripciones todavía no disponibles — formulario disponible únicamente como demostración."
+                "🔒 Inscripciones todavía no disponibles — formulario disponible únicamente como demostración."
             )
 
         st.warning(
