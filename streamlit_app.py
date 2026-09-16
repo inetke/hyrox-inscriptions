@@ -15,7 +15,7 @@ col_logo = st.columns([1,2,1])[1]
 
 with col_logo:
     st.image(
-        "assets/sim.png",
+        "assets/echorace.png",
         use_container_width=350
     )
     
@@ -568,7 +568,7 @@ with right:
 
         if not booking_enabled:
             st.info(
-                "🏁 Evento finalizado — formulario disponible únicamente como demostración."
+                "🔒 Inscripciones todavía no disponibles — formulario disponible únicamente como demostración."
             )
 
         st.warning(
