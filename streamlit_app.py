@@ -30,43 +30,13 @@ img {
 st.markdown(
     """
 <div style="text-align:center; margin-top:10px; margin-bottom:25px;">
-
-    <h2 style="
-        margin:0;
-        font-size:30px;
-        font-weight:800;
-        letter-spacing:2px;
-        color:#171717;
-    ">
-        SIMULACRO DE CARRERA
-    </h2>
-
-    <div style="
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        gap:12px;
-        margin:12px 0;
-        color:#cf7416;
-        font-size:15px;
-        font-weight:700;
-        letter-spacing:2px;
-    ">
-        <span>────</span>
-        <span>RUN · PUSH · ELEVATE</span>
-        <span>────</span>
-    </div>
-
-    <p style="
-        margin:0;
-        font-size:17px;
-        font-weight:600;
-        letter-spacing:1px;
-        color:#171717;
-    ">
-        TU SIGUIENTE RETO TE ESPERA
-    </p>
-
+<h2 style="margin:0; font-size:30px; font-weight:800; letter-spacing:2px; color:#171717;">SIMULACRO DE CARRERA</h2>
+<div style="display:flex; align-items:center; justify-content:center; gap:12px; margin:12px 0; color:#cf7416; font-size:15px; font-weight:700; letter-spacing:2px;">
+<span>────</span>
+<span>RUN · PUSH · ELEVATE</span>
+<span>────</span>
+</div>
+<p style="margin:0; font-size:17px; font-weight:600; letter-spacing:1px; color:#171717;">TU SIGUIENTE RETO TE ESPERA</p>
 </div>
     """,
     unsafe_allow_html=True
