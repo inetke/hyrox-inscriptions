@@ -9,7 +9,7 @@ on:
 jobs:
   visit-app:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
 
     steps:
       - name: Checkout repository
@@ -18,14 +18,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Install Playwright
         run: |
           npm install playwright
           npx playwright install --with-deps chromium
 
-      - name: Visit Streamlit app with browser
+      - name: Visit and wake Streamlit app
         run: |
           node <<'EOF'
           const { chromium } = require('playwright');
@@ -33,7 +33,9 @@ jobs:
           (async () => {
             const browser = await chromium.launch({ headless: true });
 
-            const page = await browser.newPage();
+            const page = await browser.newPage({
+              viewport: { width: 1280, height: 900 }
+            });
 
             console.log('Opening Streamlit app...');
 
@@ -45,13 +47,44 @@ jobs:
               }
             );
 
+            console.log('Initial URL:', page.url());
+            console.log('Initial title:', await page.title());
+
+            // Look for Streamlit's hibernation/wake-up button.
+            const wakeButton = page.getByRole('button', {
+              name: /yes.*get this app back up/i
+            });
+
+            if (await wakeButton.isVisible().catch(() => false)) {
+              console.log('Sleeping Streamlit app detected.');
+              console.log('Clicking wake-up button...');
+
+              await wakeButton.click();
+
+              console.log('Wake-up requested. Waiting for app to start...');
+
+              await page.waitForTimeout(60000);
+            } else {
+              console.log('Wake-up button not found. App may already be awake.');
+            }
+
+            // Give Streamlit time to establish the browser session.
             await page.waitForTimeout(30000);
 
             console.log('Final URL:', page.url());
-            console.log('Page title:', await page.title());
+            console.log('Final title:', await page.title());
+
+            const pageText = await page.locator('body').innerText();
+
+            if (/yes.*get this app back up/i.test(pageText)) {
+              throw new Error(
+                'Streamlit is still showing the sleeping-app screen.'
+              );
+            }
+
+            console.log('Streamlit sleeping screen is no longer present.');
+            console.log('Browser visit completed successfully.');
 
             await browser.close();
-
-            console.log('Browser visit completed successfully.');
           })();
           EOF
