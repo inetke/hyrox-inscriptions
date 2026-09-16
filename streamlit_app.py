@@ -592,16 +592,21 @@ with left:
 
 with right:
 
+    preview_access = st.session_state.get("preview_access", False)
+
     booking_enabled = (
-        REGISTRATION_OPEN
-        and not registration_closed_by_date
-        and remaining is not None
-        and remaining > 0
+        preview_access
+        or (
+            REGISTRATION_OPEN
+            and not registration_closed_by_date
+            and remaining is not None
+            and remaining > 0
+        )
     )
 
     with st.form("booking_form", clear_on_submit=True):
 
-        if not booking_enabled:
+        if not booking_enabled and not st.session_state.get("preview_access", False):
             st.info(
                 "🔒 Inscripciones todavía no disponibles — formulario disponible únicamente como demostración."
             )
