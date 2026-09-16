@@ -668,7 +668,7 @@ with right:
             st.divider()
 
             alias = st.text_input(
-                "🌴 Nombre de equipo"
+                "⚡ Nombre de equipo"
             )
 
         consent = st.checkbox("Acepto el uso de datos")
