@@ -1,0 +1,57 @@
+name: Keep Streamlit Awake - Browser
+
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  visit-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Playwright
+        run: |
+          npm install playwright
+          npx playwright install --with-deps chromium
+
+      - name: Visit Streamlit app with browser
+        run: |
+          node <<'EOF'
+          const { chromium } = require('playwright');
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+
+            const page = await browser.newPage();
+
+            console.log('Opening Streamlit app...');
+
+            await page.goto(
+              'https://rfhyroxclub.streamlit.app',
+              {
+                waitUntil: 'domcontentloaded',
+                timeout: 120000
+              }
+            );
+
+            await page.waitForTimeout(30000);
+
+            console.log('Final URL:', page.url());
+            console.log('Page title:', await page.title());
+
+            await browser.close();
+
+            console.log('Browser visit completed successfully.');
+          })();
+          EOF
