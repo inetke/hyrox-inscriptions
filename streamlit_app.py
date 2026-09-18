@@ -57,7 +57,7 @@ st.markdown(
 #st.markdown(
     #"""
     #<h2 style='text-align:center; margin-top:10px;'>
-        #THE LAST SIMULACRO
+        #ECHO HY-RACE
     #</h1>
     #<p style='text-align:center; opacity:0.8;'>
         #Plazas limitadas 
@@ -487,7 +487,7 @@ def fetch_total_remaining():
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
-    st.markdown("## THE LAST SIMULACRO")
+    st.markdown("## ECHO HY-RACE")
     st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
     st.divider()
 
@@ -761,12 +761,12 @@ with right:
 
             if ok:
 
-                subject = "THE LAST SIMULACRO - Inscripción recibida (pendiente de pago)"
+                subject = "ECHO HY-RACE - Inscripción recibida (pendiente de pago)"
 
                 html = f"""
-                <h2>Inscripción recibida 🌴</h2>
+                <h2>Inscripción recibida 🏁</h2>
 
-                <p>Evento THE LAST SIMULACRO</p>
+                <p>Evento ECHO HY-RACE</p>
 
                 <ul>
                 <li>Fecha: {event_date}</li>
@@ -909,12 +909,12 @@ with st.expander("Panel admin"):
 
             for _, row in pendientes_df.iterrows():
 
-                subject = "Recordatorio de pago - THE LAST SIMULACRO"
+                subject = "Recordatorio de pago - ECHO HY-RACE"
 
                 html = f"""
                 <p>Hola {row['full_name']},</p>
 
-                <p>Te recordamos que tu plaza para el evento THE LAST SIMULACRO sigue <strong>pendiente de pago</strong>.</p>
+                <p>Te recordamos que tu plaza para el evento ECHO HY-RACE sigue <strong>pendiente de pago</strong>.</p>
 
                 <p>Para confirmar tu inscripción, realiza el pago lo antes posible.</p>
                 
@@ -1041,15 +1041,15 @@ with st.expander("Panel admin"):
 
                     if row:
 
-                        subject = "THE LAST SIMULACRO - Hora de salida confirmada"
+                        subject = "ECHO HY-RACE - Hora de salida confirmada"
 
                         html = f"""
-                        <h2>Tu salida ya está confirmada 🌴</h2>
+                        <h2>Tu salida ya está confirmada 🏁</h2>
 
                         <p>Hola <strong>{row['full_name']}</strong>,</p>
 
                         <p>
-                        Ya tenemos preparada tu salida para el evento THE LAST SIMULACRO.
+                        Ya tenemos preparada tu salida para el evento ECHO HY-RACE.
                         </p>
 
                         <hr>
@@ -1148,12 +1148,12 @@ with st.expander("Panel admin"):
 
             modalidad = row.get("modality") or "Individual"
 
-            subject = "THE LAST SIMULACRO - Pago recibido y plaza confirmada"
+            subject = "ECHO HY-RACE - Pago recibido y plaza confirmada"
 
             html = f"""
             <p>Hola,</p>
 
-            <p>Hemos recibido correctamente tu pago y tu plaza para THE LAST SIMULACRO está confirmada.</p>
+            <p>Hemos recibido correctamente tu pago y tu plaza para ECHO HY-RACE está confirmada.</p>
 
             <ul>
                 <li><strong>Fecha:</strong> {row['event_date']}</li>
@@ -1162,7 +1162,7 @@ with st.expander("Panel admin"):
 
             <p>⚡ Una semana antes te comunicaremos la tanda asignada.</p>
 
-            <p>¡Nos vemos en THE LAST SIMULACRO! 🌴☀️</p>
+            <p>¡Nos vemos en ECHO HY-RACE! ⚡</p>
             """
 
             email_sent = send_email(row["email"], subject, html)
@@ -1318,12 +1318,12 @@ with st.expander("Panel admin"):
 
                 if send_email_admin:
 
-                    subject = "THE LAST SIMULACRO - Inscripción recibida (pendiente de pago)"
+                    subject = "ECHO HY-RACE - Inscripción recibida (pendiente de pago)"
 
                     html = f"""
                     <h2>Inscripción recibida</h2>
 
-                    <p>Evento THE LAST SIMULACRO</p>
+                    <p>Evento ECHO HY-RACE</p>
 
                     <ul>
                     <li>Fecha: {event_date}</li>
