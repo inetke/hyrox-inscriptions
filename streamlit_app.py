@@ -224,8 +224,8 @@ MAPS_URL = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 PAGO_EFECTIVO = "https://maps.app.goo.gl/qHpFpn4dkEvpHkt69"
 PAGO_EFECTIVO_H = "https://maps.app.goo.gl/GFaQENB6pXwxRyUL7?g_st=ic"
 BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
-ENTRADA_GENERAL = "25€ individual · 50€ dobles · 75€ tríos"
-ENTRADA_USUARIOS = "20€ individual · 40€ dobles · 60€ tríos"
+ENTRADA_GENERAL = "25€ individual · 50€ dobles"
+ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
 
 event_datetime = datetime.strptime("2026-08-01 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
