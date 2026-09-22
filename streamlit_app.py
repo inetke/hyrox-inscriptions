@@ -213,7 +213,7 @@ ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
 # Evento fijo (cambia aquí la fecha)
-EVENT_DATE = "2026-08-01"
+EVENT_DATE = "2026-11-07"
 event_date = EVENT_DATE
 REGISTRATION_OPEN = False
 PORTFOLIO_MODE = True
@@ -227,7 +227,7 @@ BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
 ENTRADA_GENERAL = "25€ individual · 50€ dobles"
 ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
 
-event_datetime = datetime.strptime("2026-08-01 08:00", "%Y-%m-%d %H:%M")
+event_datetime = datetime.strptime("2026-11-07 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
 
 registration_close_datetime = event_datetime - timedelta(days=5)
