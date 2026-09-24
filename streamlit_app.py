@@ -255,15 +255,20 @@ if time_left.total_seconds() > 0:
 
         
 # ---------------- Secrets / Clients ----------------
-def get_admin_password() -> str:
+def get_admin_password() -> str | None:
     if "admin" in st.secrets and "password" in st.secrets["admin"]:
         return st.secrets["admin"]["password"]
-    return os.environ.get("ADMIN_PASSWORD", "")
 
-def get_preview_password() -> str:
+    password = os.environ.get("ADMIN_PASSWORD")
+    return password if password else None
+
+
+def get_preview_password() -> str | None:
     if "preview" in st.secrets and "password" in st.secrets["preview"]:
         return st.secrets["preview"]["password"]
-    return os.environ.get("PREVIEW_PASSWORD", "")
+
+    password = os.environ.get("PREVIEW_PASSWORD")
+    return password if password else None
 
 def get_supabase() -> Client:
     if "supabase" not in st.secrets:
@@ -327,12 +332,14 @@ if PORTFOLIO_MODE and not REGISTRATION_OPEN and not st.session_state.preview_acc
         )
 
         if st.button("Entrar", key="preview_login"):
-            if preview_password == get_preview_password():
+            expected_password = get_preview_password()
+
+            if expected_password and preview_password == expected_password:
                 st.session_state.preview_access = True
                 st.rerun()
             else:
                 st.error("Contraseña incorrecta.")
-    
+            
 # ---------------- Data helpers (REST) ----------------
 def fetch_sessions(event_date_str):
 
