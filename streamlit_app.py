@@ -832,7 +832,9 @@ with st.expander("Panel admin"):
 
     pw = st.text_input("Password", type="password", key="admin_password")
 
-    if pw == get_admin_password():
+    expected_password = get_admin_password()
+    
+    if expected_password and pw == expected_password:
 
         rows = fetch_bookings(event_date)
         df = pd.DataFrame(
