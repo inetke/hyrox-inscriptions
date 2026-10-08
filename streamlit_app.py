@@ -215,7 +215,7 @@ PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 # Evento fijo (cambia aquí la fecha)
 EVENT_DATE = "2026-11-07"
 event_date = EVENT_DATE
-REGISTRATION_OPEN = False
+REGISTRATION_OPEN = True
 PORTFOLIO_MODE = True
 REGISTRATION_OPEN_DATE = datetime(2026, 7, 13, 19, 0)
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
@@ -385,7 +385,7 @@ def generate_mixed_time_slots(start_time="08:00", total_slots=90):
     for i in range(total_slots):
         slots.append(current.strftime("%H:%M"))
         
-        current += timedelta(minutes=10)
+        current += timedelta(minutes=15)
         
     return slots
 
@@ -1081,7 +1081,6 @@ with st.expander("Panel admin"):
                             <li>Hacer el check-in</li>
                             <li>Recoger el regalito del corredor</li>
                             <li>Realizar el warm up</li>
-                            <li>Disfrutar de un cafecito pre competición ☕</li>
                         </ul>
 
                         <p>
