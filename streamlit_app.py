@@ -958,12 +958,37 @@ with st.expander("Panel admin"):
                 </p>
                 """
 
-                enviado = send_email(row["email"], subject, html)
+                # Participante principal
+                destinatarios = [
+                    (row["email"], row["full_name"])
+                ]
 
-                if enviado:
-                    enviados += 1
-                else:
-                    errores += 1
+                # Segunda persona (Dobles o Tríos)
+                if pd.notna(row.get("partner_email")) and str(row["partner_email"]).strip():
+                    destinatarios.append(
+                        (row["partner_email"], row["partner_full_name"])
+                    )
+
+                # Tercera persona (Tríos)
+                if pd.notna(row.get("third_email")) and str(row["third_email"]).strip():
+                    destinatarios.append(
+                        (row["third_email"], row["third_full_name"])
+                    )
+
+                # Enviar recordatorio a cada participante
+                for destinatario, nombre in destinatarios:
+
+                    html_personalizado = html.replace(
+                        f"Hola {row['full_name']},",
+                        f"Hola {nombre},"
+                    )
+
+                    enviado = send_email(destinatario, subject, html_personalizado)
+
+                    if enviado:
+                        enviados += 1
+                    else:
+                        errores += 1
 
             st.success(f"Emails enviados: {enviados} | errores: {errores}")
 
