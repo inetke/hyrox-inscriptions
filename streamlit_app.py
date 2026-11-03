@@ -230,7 +230,7 @@ ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
 event_datetime = datetime.strptime("2026-11-07 08:00", "%Y-%m-%d %H:%M")
 now = datetime.now()
 
-registration_close_datetime = event_datetime - timedelta(days=5)
+registration_close_datetime = event_datetime - timedelta(days=1)
 registration_closed_by_date = datetime.now() >= registration_close_datetime
 
 time_left = event_datetime - now
