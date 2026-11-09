@@ -578,10 +578,6 @@ elif EVENT_STATUS == "finished":
         "Gracias a todos los participantes por formar parte "
         "de este evento. ❤️"
     )
-    st.markdown(
-        "**Ya estamos trabajando en nuestros próximos eventos. "
-        "¡Nos vemos muy pronto!**"
-    )
 
 elif EVENT_STATUS == "coming_soon":
     st.info(
