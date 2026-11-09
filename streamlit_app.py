@@ -259,7 +259,11 @@ elif REGISTRATION_OPEN:
 else:
     EVENT_STATUS = "coming_soon"
     
-st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
+if EVENT_STATUS == "open":
+    st.info(
+        "Abre el menú lateral (arriba a la izquierda >>) "
+        "para ver precios, ubicación y contacto."
+    )
 
         
 # ---------------- Secrets / Clients ----------------
@@ -655,9 +659,13 @@ with right:
 
     with st.form("booking_form", clear_on_submit=True):
 
-        if not booking_enabled and not st.session_state.get("preview_access", False):
+        if (
+            EVENT_STATUS == "coming_soon"
+            and not st.session_state.get("preview_access", False)
+        ):
             st.info(
-                "🔒 Inscripciones todavía no disponibles — formulario disponible únicamente como demostración."
+                "🔒 Inscripciones todavía no disponibles — "
+                "estamos preparando nuestro próximo evento."
             )
 
         st.warning(
