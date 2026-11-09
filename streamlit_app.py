@@ -215,7 +215,7 @@ PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 # Evento fijo (cambia aquí la fecha)
 EVENT_DATE = "2026-11-07"
 event_date = EVENT_DATE
-REGISTRATION_OPEN = True
+REGISTRATION_OPEN = False
 PORTFOLIO_MODE = True
 REGISTRATION_OPEN_DATE = datetime(2026, 7, 13, 19, 0)
 WHATSAPP_PHONE = "34659092227"  # sin + ni espacios (España: 34 + número)
@@ -227,29 +227,37 @@ BANK_IBAN = "ES27 2100 6749 2702 0041 0384"
 ENTRADA_GENERAL = "25€ individual · 50€ dobles"
 ENTRADA_USUARIOS = "20€ individual · 40€ dobles"
 
-event_datetime = datetime.strptime("2026-11-07 08:00", "%Y-%m-%d %H:%M")
-now = datetime.now()
+# ---------------- Estado automático del evento ----------------
 
-registration_close_datetime = event_datetime - timedelta(days=1)
-registration_closed_by_date = datetime.now() >= registration_close_datetime
+event_datetime = datetime.strptime(
+    f"{EVENT_DATE} 08:00", "%Y-%m-%d %H:%M"
+)
 
-time_left = event_datetime - now
+today = datetime.now().date()
+event_day = event_datetime.date()
 
-if time_left.total_seconds() > 0:
-    days = time_left.days
-    hours = time_left.seconds // 3600
-    minutes = (time_left.seconds % 3600) // 60
+# Cierre automático 3 días antes
+registration_close_datetime = event_datetime - timedelta(days=3)
 
-    st.markdown(
-        f"""
-        <div style="text-align:center; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); margin-bottom:20px;">
-            ⏳ <strong>Faltan {days} días, {hours} horas y {minutes} minutos para el evento</strong>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-#else:
-    #st.success("💥 ¡Hoy es el día del evento!")
+registration_closed_by_date = (
+    datetime.now() >= registration_close_datetime
+)
+
+# Estado de la pantalla pública
+if today > event_day:
+    EVENT_STATUS = "finished"
+
+elif today == event_day:
+    EVENT_STATUS = "event_day"
+
+elif registration_closed_by_date:
+    EVENT_STATUS = "closed"
+
+elif REGISTRATION_OPEN:
+    EVENT_STATUS = "open"
+
+else:
+    EVENT_STATUS = "coming_soon"
     
 st.info("Abre el menú lateral (arriba a la izquierda >>) para ver precios, ubicación y contacto.")
 
@@ -541,6 +549,42 @@ MUY IMPORTANTE (Referencia/Concepto):
 """.strip()
     )
 
+# ---------------- Mensajes según estado del evento ----------------
+
+if EVENT_STATUS == "closed":
+    st.warning(
+        "🔒 Las inscripciones para ECHO HY-RACE ya están cerradas. "
+        "¡Nos vemos muy pronto!"
+    )
+
+elif EVENT_STATUS == "event_day":
+    st.success(
+        "🏁 ¡HOY ES EL GRAN DÍA! 🔥"
+    )
+    st.markdown(
+        "¡Ha llegado el momento de darlo todo! "
+        "Mucha suerte a todos los participantes de ECHO HY-RACE."
+    )
+
+elif EVENT_STATUS == "finished":
+    st.success(
+        "🏁 ¡GRACIAS POR PARTICIPAR EN ECHO HY-RACE!"
+    )
+    st.markdown(
+        "Gracias a todos los participantes por formar parte "
+        "de este evento. ❤️"
+    )
+    st.markdown(
+        "**Ya estamos trabajando en nuestros próximos eventos. "
+        "¡Nos vemos muy pronto!**"
+    )
+
+elif EVENT_STATUS == "coming_soon":
+    st.info(
+        "📢 Estamos preparando nuestro próximo evento. "
+        "¡Muy pronto abriremos las inscripciones!"
+    )
+    
 # ---------------- Main UI ----------------
 left, right = st.columns(2)
 
