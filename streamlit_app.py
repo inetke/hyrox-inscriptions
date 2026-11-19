@@ -362,8 +362,6 @@ if PORTFOLIO_MODE and not REGISTRATION_OPEN and not st.session_state.preview_acc
         """
 <div style="text-align:center; padding:16px 20px; margin-bottom:25px; border-radius:12px; border:1px solid #780711; color:#000000;">
 <h3 style="margin-bottom:8px; color:#000000;"> Próximo evento — inscripciones próximamente</h3>
-<p style="margin:0; color:#000000;">Estamos preparando nuestro próximo evento.<br>Las inscripciones todavía no están disponibles.</p>
-</div>
         """,
         unsafe_allow_html=True
     )
@@ -711,10 +709,15 @@ with right:
                 "estamos preparando nuestro próximo evento."
             )
 
-        st.warning(
-            "⚠️ IMPORTANTE: LA RESERVA SOLO QUEDARÁ CONFIRMADA UNA VEZ RECIBIDO EL PAGO."
-        )
-
+        if EVENT_STATUS == "open":
+            st.warning(
+                "📩 IMPORTANTE: Al completar tu inscripción recibirás "
+                "un correo electrónico con las instrucciones para realizar el pago. "
+                "Puedes pagar en efectivo en nuestros centros o mediante transferencia bancaria. "
+                "⚠️ Tu plaza NO estará confirmada hasta que verifiquemos el pago. "
+                "Después recibirás un segundo correo confirmando tu plaza."
+            )
+            
         full_name = st.text_input("Nombre y Apellido")
         phone = st.text_input("Teléfono")
         email = st.text_input("Email")
