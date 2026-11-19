@@ -35,31 +35,6 @@ img {
 </style>
 """, unsafe_allow_html=True)
 
-import textwrap
-
-st.markdown(
-    textwrap.dedent("""
-<div style="text-align:center; padding:12px 0 28px 0; color:#780711;">
-
-  <div style="font-size:13px; letter-spacing:3px; font-weight:600; margin-bottom:20px;">
-    CHRISTMAS EDITION · CLOSING 2026
-  </div>
-
-  <div style="font-size:12px; letter-spacing:3px; margin-bottom:16px;">
-    ───── COLABORADORES ─────
-  </div>
-
-  <div style="font-size:22px; font-weight:700; letter-spacing:1px;">
-    BIKILA
-    <span style="color:#C6A18A; padding:0 18px;">|</span>
-    PURA VIDA AÇAÍ
-  </div>
-
-</div>
-"""),
-    unsafe_allow_html=True
-)
-
 #st.markdown(
     #"""
     #<h1 style='text-align:center; margin-top:10px;'>
