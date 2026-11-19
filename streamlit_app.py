@@ -37,15 +37,41 @@ img {
 
 st.markdown(
     """
-<div style="text-align:center; margin-top:10px; margin-bottom:25px;">
-<h2 style="margin:0; font-size:30px; font-weight:800; letter-spacing:2px; color:#171717;">SIMULACRO DE CARRERA</h2>
-<div style="display:flex; align-items:center; justify-content:center; gap:12px; margin:12px 0; color:#cf7416; font-size:15px; font-weight:700; letter-spacing:2px;">
-<span>────</span>
-<span>RUN · PUSH · ELEVATE</span>
-<span>────</span>
-</div>
-<p style="margin:0; font-size:17px; font-weight:600; letter-spacing:1px; color:#171717;">TU SIGUIENTE <span style="color:#cf7416;">RETO TE ESPERA</span></p>
-</div>
+    <div style="
+        text-align: center;
+        padding: 12px 0 28px 0;
+        color: #780711;
+    ">
+        <div style="
+            font-size: 13px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        ">
+            CHRISTMAS EDITION · CLOSING 2026
+        </div>
+
+        <div style="
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 16px;
+        ">
+            ───── COLABORADORES ─────
+        </div>
+
+        <div style="
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        ">
+            BIKILA
+            <span style="
+                color: #C6A18A;
+                padding: 0 18px;
+            ">|</span>
+            PURA VIDA AÇAÍ
+        </div>
+    </div>
     """,
     unsafe_allow_html=True
 )
