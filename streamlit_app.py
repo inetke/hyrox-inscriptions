@@ -11,12 +11,14 @@ from datetime import datetime, timedelta
 # ---------------- Page config ----------------
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
 
-st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+st.markdown(
+    "<div style='height: 25px;'></div>",
+    unsafe_allow_html=True
+)
 
 st.image(
     "assets/christmas.jpg",
-    width=350,
-    output_format="auto"
+    width=350
 )
     
 st.markdown("""
@@ -71,18 +73,6 @@ st.markdown(
 st.markdown(
     """
 <style>
-
-/* Centrar logo navideño */
-div[data-testid="stImage"] {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-div[data-testid="stImage"] img {
-    max-width: 100%;
-    height: auto;
-}
 
 /* FONDO GENERAL DE LA APP */
 [data-testid="stAppViewContainer"] {
@@ -216,6 +206,13 @@ div[data-testid="stExpander"] > details > summary {
 
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
+
+/* Centrar únicamente la primera imagen de la página */
+div[data-testid="stMainBlockContainer"] div[data-testid="stImage"]:first-of-type {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
 </style>
 """,
     unsafe_allow_html=True,
