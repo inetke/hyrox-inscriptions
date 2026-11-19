@@ -39,7 +39,7 @@ import textwrap
 
 st.markdown(
     textwrap.dedent("""
-<div style="text-align:center; padding:12px 0 28px 0; color:#780711;">
+<div style="text-align:center; padding:12px 0 8px 0; color:#780711;">
 
   <div style="font-size:13px; letter-spacing:3px; font-weight:600; margin-bottom:20px;">
     CHRISTMAS EDITION · CLOSING 2026
@@ -49,16 +49,18 @@ st.markdown(
     ───── COLABORADORES ─────
   </div>
 
-  <div style="font-size:22px; font-weight:700; letter-spacing:1px;">
-    BIKILA
-    <span style="color:#C6A18A; padding:0 18px;">|</span>
-    PURA VIDA AÇAÍ
-  </div>
-
 </div>
 """),
     unsafe_allow_html=True
 )
+
+col_izq, col_centro, col_der = st.columns([1.5, 1, 1.5])
+
+with col_centro:
+    st.image(
+        "assets/logocolab.png",
+        use_container_width=True
+    )
 
 #st.markdown(
     #"""
