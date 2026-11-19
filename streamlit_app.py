@@ -590,7 +590,7 @@ MUY IMPORTANTE (Referencia/Concepto):
 
 if EVENT_STATUS == "closed":
     st.warning(
-        "🔒 Las inscripciones para ECHO HY-RACE ya están cerradas. "
+        "🔒 Las inscripciones ya están cerradas. "
         "¡Nos vemos muy pronto!"
     )
 
@@ -600,23 +600,23 @@ elif EVENT_STATUS == "event_day":
     )
     st.markdown(
         "¡Ha llegado el momento de darlo todo! "
-        "Mucha suerte a todos los participantes de ECHO HY-RACE."
+        "Mucha suerte a todos los participantes."
     )
 
 elif EVENT_STATUS == "finished":
     st.success(
-        "🏁 ¡GRACIAS POR PARTICIPAR EN ECHO HY-RACE!"
+        "🏁 ¡GRACIAS POR PARTICIPAR!"
     )
     st.markdown(
         "Gracias a todos los participantes por formar parte "
         "de este evento. ❤️"
     )
 
-elif EVENT_STATUS == "coming_soon":
-    st.info(
-        "📢 Estamos preparando nuestro próximo evento. "
-        "¡Muy pronto abriremos las inscripciones!"
-    )
+#elif EVENT_STATUS == "coming_soon":
+    #st.info(
+        #"📢 Estamos preparando nuestro próximo evento. "
+        #"¡Muy pronto abriremos las inscripciones!"
+    #)
     
 # ---------------- Main UI ----------------
 left, right = st.columns(2)
@@ -705,8 +705,8 @@ with right:
             and not st.session_state.get("preview_access", False)
         ):
             st.info(
-                "🔒 Inscripciones todavía no disponibles — "
-                "estamos preparando nuestro próximo evento."
+                "🔒 Formulario de demostración. "
+                "Las inscripciones para el próximo evento todavía no están abiertas."
             )
 
         if EVENT_STATUS == "open":
