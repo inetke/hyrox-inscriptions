@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 # ---------------- Page config ----------------
 st.set_page_config(page_title="HYROX Inscripciones", page_icon="💥", layout="wide")
 
-col_logo = st.columns([1,2,1])[1]
+col_logo = st.columns([1,1,1])[1]
 
 with col_logo:
     st.image(
