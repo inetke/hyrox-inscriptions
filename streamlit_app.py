@@ -790,16 +790,22 @@ with right:
             if is_pair or is_trio:
 
                 if not partner_full_name.strip():
-                    st.error("Introduce el nombre de la segunda persona.")
+                    if gender == "Kids":
+                        st.error("Introduce el nombre y apellidos del niño/a.")
+                    else:
+                        st.error("Introduce el nombre de la segunda persona.")
                     st.stop()
 
-                if not partner_phone.strip():
-                    st.error("Introduce el teléfono de la segunda persona.")
-                    st.stop()
+            # Teléfono y email obligatorios excepto en Kids
+                if gender != "Kids":
 
-                if not partner_email.strip():
-                    st.error("Introduce el email de la segunda persona.")
-                    st.stop()
+                    if not partner_phone.strip():
+                        st.error("Introduce el teléfono de la segunda persona.")
+                        st.stop()
+
+                    if not partner_email.strip():
+                        st.error("Introduce el email de la segunda persona.")
+                        st.stop()
 
             if is_trio:
 
