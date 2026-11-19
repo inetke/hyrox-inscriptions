@@ -223,6 +223,15 @@ div[data-testid="stExpander"] > details > summary {
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
 
+/* Avisos informativos en burdeos */
+div[data-testid="stAlert"][data-baseweb="notification"][kind="info"] {
+    background-color: #F7E5E3 !important;
+}
+
+div[data-testid="stAlert"][data-baseweb="notification"][kind="info"] * {
+    color: #780711 !important;
+}
+
 </style>
 """,
     unsafe_allow_html=True,
