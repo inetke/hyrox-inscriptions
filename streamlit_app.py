@@ -48,8 +48,6 @@ st.markdown(
   <div style="font-size:12px; letter-spacing:3px; margin-bottom:16px;">
     ───── COLABORADORES ─────
   </div>
-
-</div>
 """),
     unsafe_allow_html=True
 )
