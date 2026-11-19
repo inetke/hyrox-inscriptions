@@ -17,7 +17,7 @@ st.markdown(
 )
 
 col_izquierda, col_centro, col_derecha = st.columns(
-    [1, 1, 1],
+    [1.5, 1, 1.5],
     vertical_alignment="center"
 )
 
