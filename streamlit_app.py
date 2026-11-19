@@ -427,7 +427,7 @@ def generate_mixed_time_slots(start_time="08:00", total_slots=90):
     for i in range(total_slots):
         slots.append(current.strftime("%H:%M"))
         
-        current += timedelta(minutes=15)
+        current += timedelta(minutes=5)
         
     return slots
 
@@ -542,7 +542,7 @@ with st.sidebar:
     
     if EVENT_STATUS == "open":
         
-        st.markdown("## ECHO HY-RACE")
+        st.markdown("## Simulacro Hyrox - Christmas Edition")
         st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
         st.divider()
 
@@ -736,7 +736,7 @@ with right:
 
         # Individual
         if not is_team:
-            alias = st.text_input("⚡ Alias")
+            alias = st.text_input("🎄 Alias")
 
         # Dobles o tríos
         if is_team:
@@ -793,7 +793,7 @@ with right:
             st.divider()
 
             alias = st.text_input(
-                "⚡ Nombre de equipo"
+                "🎄 Nombre de equipo"
             )
 
         consent = st.checkbox("Acepto el uso de datos")
@@ -893,12 +893,12 @@ with right:
 
             if ok:
 
-                subject = "ECHO HY-RACE - Inscripción recibida (pendiente de pago)"
+                subject = "SIMULACRO HYROX - Christmas Edition - Inscripción recibida (pendiente de pago)"
 
                 html = f"""
                 <h2>Inscripción recibida 🏁</h2>
 
-                <p>Evento ECHO HY-RACE</p>
+                <p>Evento SIMULACRO HYROX - Christmas Edition</p>
 
                 <ul>
                 <li>Fecha: {event_date}</li>
@@ -1061,12 +1061,12 @@ with st.expander("Panel admin"):
 
             for _, row in pendientes_df.iterrows():
 
-                subject = "Recordatorio de pago - ECHO HY-RACE"
+                subject = "Recordatorio de pago - SIMULACRO HYROX - Christmas Edition"
 
                 html = f"""
                 <p>Hola {row['full_name']},</p>
 
-                <p>Te recordamos que tu plaza para el evento ECHO HY-RACE sigue <strong>pendiente de pago</strong>.</p>
+                <p>Te recordamos que tu plaza para el evento SIMULACRO HYROX - Christmas Edition sigue <strong>pendiente de pago</strong>.</p>
 
                 <p>Para confirmar tu inscripción, realiza el pago lo antes posible.</p>
                 
@@ -1218,15 +1218,15 @@ with st.expander("Panel admin"):
 
                     if row:
 
-                        subject = "ECHO HY-RACE - Hora de salida confirmada"
+                        subject = "SIMULACRO HYROX - Christmas Edition - Hora de salida confirmada"
 
                         html = f"""
-                        <h2>Tu salida ya está confirmada 🏁</h2>
+                        <h2>Tu salida ya está confirmada 🎁</h2>
 
                         <p>Hola <strong>{row['full_name']}</strong>,</p>
 
                         <p>
-                        Ya tenemos preparada tu salida para el evento ECHO HY-RACE.
+                        Ya tenemos preparada tu salida para el evento SIMULACRO HYROX - Christmas Edition.
                         </p>
 
                         <hr>
@@ -1324,12 +1324,12 @@ with st.expander("Panel admin"):
 
             modalidad = row.get("modality") or "Individual"
 
-            subject = "ECHO HY-RACE - Pago recibido y plaza confirmada"
+            subject = "SIMULACRO HYROX - Christmas Edition - Pago recibido y plaza confirmada"
 
             html = f"""
             <p>Hola,</p>
 
-            <p>Hemos recibido correctamente tu pago y tu plaza para ECHO HY-RACE está confirmada.</p>
+            <p>Hemos recibido correctamente tu pago y tu plaza para SIMULACRO HYROX - Christmas Edition está confirmada.</p>
 
             <ul>
                 <li><strong>Fecha:</strong> {row['event_date']}</li>
@@ -1338,7 +1338,7 @@ with st.expander("Panel admin"):
 
             <p>⚡ Una semana antes te comunicaremos la tanda asignada.</p>
 
-            <p>¡Nos vemos en ECHO HY-RACE! ⚡</p>
+            <p>¡Nos vemos en SIMULACRO HYROX - Christmas Edition! 🎁</p>
             """
 
             email_sent = send_email(row["email"], subject, html)
@@ -1531,12 +1531,12 @@ with st.expander("Panel admin"):
 
                 if send_email_admin:
 
-                    subject = "ECHO HY-RACE - Inscripción recibida (pendiente de pago)"
+                    subject = "SIMULACRO HYROX - Christmas Edition - Inscripción recibida (pendiente de pago)"
 
                     html = f"""
                     <h2>Inscripción recibida</h2>
 
-                    <p>Evento ECHO HY-RACE</p>
+                    <p>Evento SIMULACRO HYROX - Christmas Edition</p>
 
                     <ul>
                     <li>Fecha: {event_date}</li>
