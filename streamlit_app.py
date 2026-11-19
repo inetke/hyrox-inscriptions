@@ -1502,7 +1502,7 @@ with st.expander("Panel admin"):
 
                     <ul>
                     <li>Fecha: {event_date}</li>
-                    <li>Modalidad: {admin_modality}</li>
+                    <li>Categoría: {admin_gender} - {admin_modality}</li>
                     
                     <hr>
 
