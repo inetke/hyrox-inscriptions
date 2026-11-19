@@ -73,18 +73,18 @@ st.markdown(
 <style>
 /* FONDO GENERAL DE LA APP */
 [data-testid="stAppViewContainer"] {
-  background-color: #FCF2E3;
+  background-color: #FAF0E2;
 }
 [data-testid="stHeader"] {
-  background-color: #FCF2E3;
+  background-color: #FAF0E2;
 }
 
 /* Cards */
 .card {
   padding: 16px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid #D8C5B5;
   margin-bottom: 12px;
 }
 
@@ -95,8 +95,8 @@ st.markdown(
 div[data-testid="stForm"] {
   padding: 16px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid #D8C5B5;
 }
 
 /* Input de contraseña y todos los inputs */
@@ -111,21 +111,21 @@ div[data-baseweb="input"] {
 
 /* Contenedor del input */
 div[data-baseweb="base-input"] {
-  background-color: rgba(255,255,255,0.12) !important;
+  background-color: #F4E7D4 !important;
   border-radius: 8px !important;
 }
 
 /* SELECTBOX (Categoría, Modalidad) */
 div[data-baseweb="select"] > div {
-  background-color: rgba(90, 75, 20, 0.5) !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
+  background-color: #F4E7D4 !important;
+  border: 1px solid #B9AA8B !important;
   border-radius: 8px !important;
-  color: white !important;
+  color: #171717 !important;
 }
 
 /* Texto dentro del select */
 div[data-baseweb="select"] span {
-  color: white !important;
+  color: #171717 !important;
 }
 
 /* Dropdown (cuando abres el select) */
@@ -147,7 +147,7 @@ li:hover {
 /* BOTÓN DE RESERVAR PLAZA */
 div.stButton > button,
 div[data-testid="stForm"] button {
-    background-color: #006B7D !important; /* Azul marino */
+    background-color: #780711 !important; /* Azul marino */
     color: white !important;
     border-radius: 12px !important;
     border: none !important;
@@ -160,45 +160,45 @@ div[data-testid="stForm"] button {
 /* EFECTO AL PASAR EL RATÓN */
 div.stButton > button:hover,
 div[data-testid="stForm"] button:hover {
-    background-color: #cf7416 !important;
-    border: 1px solid rgba(255,255,255,0.3) !important;
+    background-color: #A72B30 !important;
+    border: 1px solid #C6A18A !important;
     transform: scale(1.02);
 }
 
 /* CHECKBOX - forzar color del tick */
 input[type="checkbox"] {
-    accent-color: #a85e10 !important;
+    accent-color: #780711 !important;
     width: 18px !important;
     height: 18px !important;
 }
 
 /* El tick del checkbox */
 div[data-testid="stCheckbox"] div[role="checkbox"] {
-    background-color: #a85e10 !important;
-    border-color: #a85e10 !important;
+    background-color: #780711 !important;
+    border-color: #780711 !important;
 }
 
 /* EXPANDER / PANEL ADMIN - fondo azul */
 details {
-    background-color: #B9AA8B !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
+    background-color: #F4E7D4 !important;
+    border: 1px solid #C6A18A !important;
     border-radius: 12px !important;
 }
 
 details summary {
-    background-color: #B9AA8B !important;
+    background-color: #780711 !important;
     color: white !important;
     border-radius: 12px !important;
 }
 
 /* Por si el expander usa otro selector */
 div[data-testid="stExpander"] > details {
-    background-color: #B9AA8B !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
+    background-color: #F4E7D4 !important;
+    border: 1px solid #C6A18A !important;
 }
 
 div[data-testid="stExpander"] > details > summary {
-    background-color: #006B7D !important;
+    background-color: #780711 !important;
 }
 
 /* Reduce top padding a bit */
@@ -864,7 +864,7 @@ with right:
 
                 <ul>
                 <li>Fecha: {event_date}</li>
-                <li>Categoría: {activity}</li>
+                <li>Categoría: {admin_gender} - {admin_modality}</li>
 
                 <p>Tu plaza está pendiente de pago.</p>
             
