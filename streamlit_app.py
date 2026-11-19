@@ -16,10 +16,16 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.image(
-    "assets/christmas.jpg",
-    width=350
+col_izquierda, col_centro, col_derecha = st.columns(
+    [1, 1, 1],
+    vertical_alignment="center"
 )
+
+with col_centro:
+    st.image(
+        "assets/christmas.jpg",
+        use_container_width=True
+    )
     
 st.markdown("""
 <style>
@@ -206,12 +212,6 @@ div[data-testid="stExpander"] > details > summary {
 
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
-
-/* Centrar únicamente la primera imagen de la página */
-div[data-testid="stMainBlockContainer"] div[data-testid="stImage"]:first-of-type {
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
 
 </style>
 """,
