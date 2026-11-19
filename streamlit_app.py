@@ -409,6 +409,7 @@ def create_booking_atomic(
     phone,
     email,
     modality,
+    gender,
     partner_full_name=None,
     partner_phone=None,
     partner_email=None,
@@ -424,6 +425,7 @@ def create_booking_atomic(
         "p_phone": phone,
         "p_email": email,
         "p_modality": modality,
+        "p_gender": gender,
         "p_partner_full_name": partner_full_name,
         "p_partner_phone": partner_phone,
         "p_partner_email": partner_email,
@@ -451,7 +453,7 @@ def fetch_bookings(event_date_str):
     resp = (
         sb.table("bookings")
         .select(
-            "id,event_date,full_name,alias,phone,email,partner_full_name,partner_phone,partner_email,third_full_name,third_phone,third_email,created_at,paid,modality,start_time"
+            "id,event_date,full_name,alias,phone,email,partner_full_name,partner_phone,partner_email,third_full_name,third_phone,third_email,created_at,paid,modality,gender,start_time"
         )
         .eq("event_date", event_date_str)
         .execute()
@@ -474,6 +476,7 @@ def fetch_bookings(event_date_str):
             "third_phone": r["third_phone"],
             "third_email": r["third_email"],
             "modality": r["modality"],
+            "gender": r["gender"],
             "paid": r["paid"],
             "created_at": r["created_at"],
             "start_time": r["start_time"]
@@ -590,9 +593,21 @@ left, right = st.columns(2)
 
 with left:
 
-    gender = st.selectbox("Categoría", ["Masculino", "Femenino", "Mixto"])
+    gender = st.selectbox(
+        "Categoría",
+        ["Masculino", "Femenino", "Mixto", "Kids"]
+    )
 
-    modality = st.selectbox("Modalidad", ["Individual", "Dobles"])
+    if gender == "Kids":
+        modality = st.selectbox(
+            "Modalidad",
+            ["Dobles"]
+        )
+    else:
+        modality = st.selectbox(
+            "Modalidad",
+            ["Individual", "Dobles"]
+        )
 
     is_pair = modality == "Dobles"
     is_trio = modality == "Tríos"
@@ -805,6 +820,7 @@ with right:
                 phone=phone,
                 email=email,
                 modality=modality,
+                gender=gender,
                 alias=alias,
                 partner_full_name=partner_full_name if is_pair or is_trio else None,
                 partner_phone=partner_phone if is_pair or is_trio else None,
@@ -900,12 +916,30 @@ with st.expander("Panel admin"):
                 "third_phone",
                 "third_email",
                 "modality",
+                "gender",
                 "paid",
                 "created_at",
                 "start_time",
                 "alias"
             ]
         )
+        
+# ---------------- Estadísticas Kids ----------------
+
+        kids_teams = int(
+            ((df["gender"] == "Kids") & (df["modality"] == "Dobles")).sum()
+        )
+
+        st.markdown("### 👨‍👧 Categoría Kids")
+
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric("Equipos Kids", kids_teams)
+        col2.metric("Niños", kids_teams)
+        col3.metric("Participantes Kids", kids_teams * 2)
+
+# ---------------- Resto del panel admin ----------------
+
 
         def format_phone(phone):
 
