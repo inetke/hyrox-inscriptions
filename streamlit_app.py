@@ -1347,9 +1347,15 @@ with st.expander("Panel admin"):
             
         st.markdown("### ➕ Añadir inscripción manual")
 
+        admin_gender = st.selectbox(
+            "Categoría (admin)",
+            ["Masculino", "Femenino", "Mixto", "Kids"],
+            key="admin_gender"
+        )
+
         admin_modality = st.selectbox(
             "Modalidad (admin)",
-            ["Individual", "Dobles"],
+            ["Dobles"] if admin_gender in ["Mixto", "Kids"] else ["Individual", "Dobles"],
             key="admin_modality"
         )
 
@@ -1365,12 +1371,35 @@ with st.expander("Panel admin"):
         third_email = ""
 
         if admin_modality in ["Dobles", "Tríos"]:
-                             
-            st.markdown("#### Segunda persona")
 
-            partner_name = st.text_input("Nombre (segunda persona)", key="partner_name")
-            partner_phone = st.text_input("Teléfono (segunda persona)", key="partner_phone")
-            partner_email = st.text_input("Email (segunda persona)", key="partner_email")
+            if admin_gender == "Kids":
+                st.markdown("#### Datos del niño/a")
+
+                partner_name = st.text_input(
+                    "Nombre y apellidos del niño/a",
+                    key="partner_name"
+                )
+
+                partner_phone = ""
+                partner_email = ""
+
+            else:
+                st.markdown("#### Segunda persona")
+
+                partner_name = st.text_input(
+                    "Nombre (segunda persona)",
+                    key="partner_name"
+                )
+
+                partner_phone = st.text_input(
+                    "Teléfono (segunda persona)",
+                    key="partner_phone"
+                )
+
+                partner_email = st.text_input(
+                    "Email (segunda persona)",
+                    key="partner_email"
+                )
             
         if admin_modality == "Tríos":
 
@@ -1411,17 +1440,24 @@ with st.expander("Panel admin"):
                 st.stop()
 
             if admin_modality in ["Dobles", "Tríos"]:
+
                 if not partner_name.strip():
-                    st.error("Nombre de la segunda persona obligatorio")
+                    st.error(
+                        "Nombre del niño/a obligatorio"
+                        if admin_gender == "Kids"
+                        else "Nombre de la segunda persona obligatorio"
+                    )
                     st.stop()
 
-                if not partner_phone.strip():
-                    st.error("Teléfono de la segunda persona obligatorio")
-                    st.stop()
+                if admin_gender != "Kids":
+
+                    if not partner_phone.strip():
+                        st.error("Teléfono de la segunda persona obligatorio")
+                        st.stop()
 
                 if not partner_email.strip():
-                    st.error("Email de la segunda persona obligatorio")
-                    st.stop()
+                        st.error("Email de la segunda persona obligatorio")
+                        st.stop()
 
             if admin_modality == "Tríos":
                 if not third_name.strip():
@@ -1442,6 +1478,7 @@ with st.expander("Panel admin"):
                 phone=admin_phone,
                 email=admin_email,
                 modality=admin_modality,
+                gender=admin_gender,
                 partner_full_name=partner_name if admin_modality in ["Dobles", "Tríos"] else None,
                 partner_phone=partner_phone if admin_modality in ["Dobles", "Tríos"] else None,
                 partner_email=partner_email if admin_modality in ["Dobles", "Tríos"] else None,
