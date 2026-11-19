@@ -539,52 +539,55 @@ def fetch_total_remaining():
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
-    st.markdown("## ECHO HY-RACE")
-    st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
-    st.divider()
+    
+    if EVENT_STATUS == "open":
+        
+        st.markdown("## ECHO HY-RACE")
+        st.caption("Selecciona categoría y modalidad. Plazas limitadas.")
+        st.divider()
 
-    st.markdown("**Fecha del evento**")
-    st.write(event_date)
+        st.markdown("**Fecha del evento**")
+        st.write(event_date)
 
-    st.divider()
-    st.markdown("**📍 Ubicación**")
-    st.link_button("Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
+        st.divider()
+        st.markdown("**📍 Ubicación**")
+        st.link_button("Cómo llegar / Google Maps", MAPS_URL, use_container_width=True)
 
-    st.divider()
-    st.markdown("**💬 Contacto**")
+        st.divider()
+        st.markdown("**💬 Contacto**")
 
-    # WhatsApp directo (abre chat)
-    wa_text = "Hola! Quiero información sobre la inscripción."
-    whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
-    st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
+        # WhatsApp directo (abre chat)
+        wa_text = "Hola! Quiero información sobre la inscripción."
+        whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={wa_text.replace(' ', '%20')}"
+        st.link_button("WhatsApp", whatsapp_url, use_container_width=True)
 
-    # Instagram
-    st.link_button("Instagram", INSTAGRAM_URL, use_container_width=True)
+        # Instagram
+        st.link_button("Instagram", INSTAGRAM_URL, use_container_width=True)
 
-    st.divider()
-    st.markdown("**💶 Precio y pago**")
-    st.markdown(
-        f"""
-- **Entrada general:** {ENTRADA_GENERAL}  
-- **Entrada usuarios:** {ENTRADA_USUARIOS}  
+        st.divider()
+        st.markdown("**💶 Precio y pago**")
+        st.markdown(
+            f"""
+        - **Entrada general:** {ENTRADA_GENERAL}  
+        - **Entrada usuarios:** {ENTRADA_USUARIOS}  
 
-💵 **Opciones de pago:**
-- **Pago en efectivo en nuestros centros**  
+        💵 **Opciones de pago:**
+        - **Pago en efectivo en nuestros centros**  
 
-**Centro de Entrenamiento Inteligente Roberto Fernández**
-  [Ir a la ubicación]({PAGO_EFECTIVO})
+        **Centro de Entrenamiento Inteligente Roberto Fernández**
+            [Ir a la ubicación]({PAGO_EFECTIVO})
   
-**Roberto Fernández Hyrox Training Club**
-  [Ir a la ubicación]({PAGO_EFECTIVO_H})
+        **Roberto Fernández Hyrox Training Club**
+            [Ir a la ubicación]({PAGO_EFECTIVO_H})
 
-- **Transferencia (IBAN):** `{BANK_IBAN}`
+        - **Transferencia (IBAN):** `{BANK_IBAN}`
 
-⚠️ La plaza se confirma tras recibir el pago.
+        ⚠️ La plaza se confirma tras recibir el pago.
 
-MUY IMPORTANTE (Referencia/Concepto):
-    Escribe obligatoriamente tu Nombre y Apellidos.
-""".strip()
-    )
+        MUY IMPORTANTE (Referencia/Concepto):
+            Escribe obligatoriamente tu Nombre y Apellidos.
+        """.strip()
+        )
 
 # ---------------- Mensajes según estado del evento ----------------
 
