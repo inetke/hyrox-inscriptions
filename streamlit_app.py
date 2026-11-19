@@ -233,7 +233,7 @@ ADMIN_TITLE = "Panel admin"
 PHONE_REGEX = r"^[0-9+() \-]{7,20}$"
 
 # Evento fijo (cambia aquí la fecha)
-EVENT_DATE = "2026-11-07"
+EVENT_DATE = "2026-12-26"
 event_date = EVENT_DATE
 REGISTRATION_OPEN = False
 PORTFOLIO_MODE = True
