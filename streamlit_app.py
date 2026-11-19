@@ -598,7 +598,7 @@ with left:
         ["Masculino", "Femenino", "Mixto", "Kids"]
     )
 
-    if gender == "Kids":
+    if gender in ["Kids", "Mixto"]:
         modality = st.selectbox(
             "Modalidad",
             ["Dobles"]
@@ -708,7 +708,7 @@ with right:
             # Categoría Kids: solo pedimos el nombre del niño/a
             if gender == "Kids":
 
-                st.markdown("### 👧 Datos del niño/a")
+                st.markdown("### Datos del niño/a")
 
                 partner_full_name = st.text_input(
                     "Nombre y apellidos del niño/a"
