@@ -16,7 +16,7 @@ col_logo = st.columns([1,2,1])[1]
 with col_logo:
     st.image(
         "assets/christmas.jpg",
-        width=200
+        width=350
     )
     
 st.markdown("""
