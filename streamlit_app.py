@@ -39,15 +39,17 @@ import textwrap
 
 st.markdown(
     textwrap.dedent("""
-<div style="text-align:center; padding:12px 0 8px 0; color:#780711;">
+<div style="text-align:center; padding:0 0 4px 0; color:#780711;">
 
-  <div style="font-size:13px; letter-spacing:3px; font-weight:600; margin-bottom:20px;">
+  <div style="font-size:13px; letter-spacing:3px; font-weight:600; margin-bottom:12px;">
     CHRISTMAS EDITION · CLOSING 2026
   </div>
 
-  <div style="font-size:12px; letter-spacing:3px; margin-bottom:16px;">
+  <div style="font-size:12px; letter-spacing:3px; margin-bottom:0;">
     ───── COLABORADORES ─────
   </div>
+
+</div>
 """),
     unsafe_allow_html=True
 )
@@ -59,6 +61,12 @@ with col_centro:
         "assets/logocolab.png",
         use_container_width=True
     )
+
+# Espacio entre los colaboradores y el siguiente bloque
+st.markdown(
+    "<div style='height: 25px;'></div>",
+    unsafe_allow_html=True
+)
 
 #st.markdown(
     #"""
