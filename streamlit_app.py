@@ -680,7 +680,7 @@ with right:
             )
 
         st.warning(
-            "⚠️ IMPORTANTE: La reserva solo quedará confirmada una vez recibido el pago."
+            "⚠️ IMPORTANTE: LA RESERVA SOLO QUEDARÁ CONFIRMADA UNA VEZ RECIBIDO EL PAGO."
         )
 
         full_name = st.text_input("Nombre y Apellido")
@@ -704,20 +704,37 @@ with right:
         if is_team:
 
             st.divider()
-            st.markdown("### Segunda persona")
+            
+            # Categoría Kids: solo pedimos el nombre del niño/a
+            if gender == "Kids":
 
-            partner_full_name = st.text_input(
-                "Nombre y Apellido (segunda persona)"
-            )
+                st.markdown("### 👧 Datos del niño/a")
 
-            partner_phone = st.text_input(
-                "Teléfono (segunda persona)"
-            )
+                partner_full_name = st.text_input(
+                    "Nombre y apellidos del niño/a"
+                )
 
-            partner_email = st.text_input(
-                "Email (segunda persona)"
-            )
+                partner_phone = ""
+                partner_email = ""
 
+            # Resto de categorías: formulario completo
+            else:
+
+                st.markdown("### Segunda persona")
+
+                partner_full_name = st.text_input(
+                    "Nombre y Apellido (segunda persona)"
+                )
+
+                partner_phone = st.text_input(
+                    "Teléfono (segunda persona)"
+                )
+
+                partner_email = st.text_input(
+                    "Email (segunda persona)"
+                )
+
+            # Tercera persona (si se habilitan tríos)
             if is_trio:
 
                 st.divider()
