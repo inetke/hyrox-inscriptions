@@ -223,13 +223,16 @@ div[data-testid="stExpander"] > details > summary {
 /* Reduce top padding a bit */
 .block-container { padding-top: 1.5rem; }
 
-/* Avisos informativos en burdeos */
-div[data-testid="stAlert"][data-baseweb="notification"][kind="info"] {
+/* AVISOS INFORMATIVOS - CHRISTMAS EDITION */
+div[data-testid="stAlert"] {
     background-color: #F7E5E3 !important;
+    border-radius: 10px !important;
 }
 
-div[data-testid="stAlert"][data-baseweb="notification"][kind="info"] * {
+div[data-testid="stAlert"] p,
+div[data-testid="stAlert"] svg {
     color: #780711 !important;
+    fill: #780711 !important;
 }
 
 </style>
